@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Mac OS folder attributes
+.DS_Store
+
+# Virtual environments
+.env
+venv/
+env/
+ENV/
+
+# Output directories (optional - if you don't want to track generated images)
+# outputs/
