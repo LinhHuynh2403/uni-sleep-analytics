@@ -3,16 +3,31 @@ import matplotlib.pyplot as plt
 
 # Load both datasets
 df_patterns = pd.read_csv('dataset/student_sleep_patterns.csv')
-df_health = pd.read_csv('dataset/sleep_health_and_lifestyle_dataset.csv')
+df_health = pd.read_csv('dataset/mental_health_social_media_dataset.csv')
 
 # Calculate correlations from Student Sleep Patterns
 factors_patterns = ['Study_Hours', 'Screen_Time', 'Caffeine_Intake']
 correlations_patterns = df_patterns[['Sleep_Duration'] + factors_patterns].corr()['Sleep_Duration'].drop('Sleep_Duration')
 
-# Calculate correlations from Sleep Health and Lifestyle (treating it as the "Social Media / Lifestyle" context)
-# The dataset has 'Sleep Duration' (with space) and 'Stress Level'
-factors_health = ['Stress Level']
-correlations_health = df_health[['Sleep Duration'] + factors_health].corr()['Sleep Duration'].drop('Sleep Duration')
+# Process Mental Health & Social Media Dataset
+# One-hot encode the 'platform' column so we can calculate correlations for each social media platform
+df_health_encoded = pd.get_dummies(df_health, columns=['platform'], dtype=int)
+platform_cols = [col for col in df_health_encoded.columns if col.startswith('platform_')]
+
+# Define the numerical factors (including the interactions you mentioned)
+factors_health = ['social_media_time_min', 'anxiety_level', 'stress_level', 'negative_interactions_count', 'positive_interactions_count']
+all_health_factors = factors_health + platform_cols
+
+# Calculate correlations
+correlations_health = df_health_encoded[['sleep_hours'] + all_health_factors].corr()['sleep_hours'].drop('sleep_hours')
+
+# Clean up index names so they look beautiful on the chart
+def clean_health_name(name):
+    if name.startswith('platform_'):
+        return name.replace('platform_', '') + ' (Platform)'
+    return name.replace('_', ' ').title().replace(' Min', '').replace(' Count', '')
+
+correlations_health.index = correlations_health.index.map(clean_health_name)
 
 # Combine the correlations
 all_correlations = pd.concat([correlations_patterns, correlations_health])
