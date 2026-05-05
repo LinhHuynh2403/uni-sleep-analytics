@@ -29,6 +29,4 @@ for ax in g.axes.flat:
 g.fig.subplots_adjust(top=0.9)
 g.fig.suptitle('How much do students actually sleep? (By University Year)', fontsize=16, fontweight='bold')
 g.set_axis_labels('Hours of Sleep', 'Number of Students')
-plt.legend()
 plt.savefig('outputs/visual1_histogram.png', dpi=300, bbox_inches='tight')
-plt.show()
