@@ -23,7 +23,11 @@ def create_heatmap():
     plt.figure(figsize=(10, 6))
     
     # Create the heatmap using seaborn
-    sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='Blues', cbar_kws={'label': 'Number of Students'})
+    ax = sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='Blues', cbar_kws={'label': 'Number of Students'})
+    
+    # Invert the colorbar (legend) so that smaller numbers are at the bottom
+    cbar = ax.collections[0].colorbar
+    cbar.ax.invert_yaxis()
     
     # Add titles and labels
     plt.title('Relationship Between Sleep Duration and Screen Time', fontsize=14, pad=15)
