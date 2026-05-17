@@ -4,38 +4,38 @@
     },
     "rings": [
         {
-            "activity": "Study Blocks",
+            "activity": "Study Hours",
             "hours": 6.0,
-            "goal": 6.0,
-            "color": "#D6C96C",
+            "goal": 4.0,
+            "color": "#382D1A",
             "story": "Students average 6.0 hours of daily study. Driven by intense 'extremely high stress' workloads, academic demands consistently compress other life rings."
         },
         {
-            "activity": "Screen Engagement",
+            "activity": "Screen Time",
             "hours": 2.5,
-            "goal": 3.0,
-            "color": "#B3A859",
+            "goal": 1.5,
+            "color": "#614E2D",
             "story": "Accounting for 2.5 hours. The dataset reveals device interaction before bed is 'often (5-6 times a week)', fueling insomnia loops."
         },
         {
             "activity": "Sleep Focus",
             "hours": 6.5,
             "goal": 8.0,
-            "color": "#8A8245",
+            "color": "#8A6E3F",
             "story": "With an average of only 6.5 hours, this ring fails to close, directly causing a cascading impact on recent 'Poor' academic performance benchmarks."
         },
         {
             "activity": "Pre-Bedtime Routine",
             "hours": 1.5,
             "goal": 2.0,
-            "color": "#615B30",
+            "color": "#B38F52",
             "story": "A 1.5-hour evening block characterized by checking phones, streaming, or consuming caffeine to battle midnight deadlines."
         },
         {
             "activity": "Physical Exercise",
             "hours": 1.0,
             "goal": 1.0,
-            "color": "#38351C",
+            "color": "#D6AC62",
             "story": "Averaging a slim 1.0 hours. Physical activity outlets are the first routines dropped when study and screen times spike."
         }
     ]
