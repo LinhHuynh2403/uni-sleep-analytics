@@ -11,14 +11,6 @@
 
 <body>
 
-  <div class="apple-tooltip" id="chart-tooltip">
-    <div class="tt-header" id="tt-activity">Activity</div>
-    <div class="tt-metrics">
-      <span class="tt-hours" id="tt-actual">0.0h</span>
-      <span class="tt-goal" id="tt-target">/ 0.0h goal</span>
-    </div>
-  </div>
-
   <div class="scrollytelling-wrapper">
     <div class="sticky-visual-center" id="canvas-target"></div>
 
@@ -43,35 +35,70 @@
       <section class="step split-step" id="ring-study">
         <div class="content-box">
           <h2>Study Blocks</h2>
-          <p>TBD</p>
+          <p>
+            Academics claim the crown. Students average a massive <strong>6.0 hours of study daily</strong>.
+            Fueled by persistent, high-stress workloads, these demanding requirements squeeze the rest of the
+            day—transforming
+            what should be a healthy evening wind-down into a chaotic, late-night balancing act where sleep is the first
+            sacrifice.
+          </p>
         </div>
       </section>
 
       <section class="step split-step" id="ring-screen">
         <div class="content-box">
           <h2>Screen Engagement</h2>
-          <p>TBD</p>
+          <p>Directly following study obligations, screens capture a significant <strong>2.5 hours</strong> of a
+            student's
+            day.
+            Our integrated data reveals that device interaction right before bed is an
+            <em>almost every-night habit</em> for the vast majority of cohorts. This constant exposure to blue light
+            late into
+            the
+            night blocks melatonin production and delays sleep onset, artificially prolonging wakefulness long after the
+            physical
+            workload has ended.
+          </p>
         </div>
       </section>
 
       <section class="step split-step" id="ring-sleep">
         <div class="content-box">
           <h2>Sleep Focus</h2>
-          <p>TBD</p>
+          <p>This is where the system bottlenecks. While health organizations universally mandate an <strong>8.0-hour
+              goal</strong>
+            for optimal cognitive baseline health, the severe gravitational pull of study requirements and screen
+            engagement
+            shrinks the student sleep window down to a narrow average of just <strong>6.5 hours</strong>. This leaves
+            this crucial
+            ring permanently unclosed, triggering a rolling biological deficit that students carry with them into the
+            next day.</p>
         </div>
       </section>
 
       <section class="step split-step" id="ring-bedtime">
         <div class="content-box">
           <h2>Pre-Bedtime Routine</h2>
-          <p>TBD</p>
+          <p>A student's <strong>1.5-hour transitional evening routine</strong> is rarely peaceful. According to our
+            survey datasets,
+            this block is consistently corrupted by midnight caffeine consumption, stress-induced pacing, and lingering
+            assignment anxiety.
+            Instead of serving as a proper wind-down window to ease into rest, this period functions as high-friction
+            "late-night energy"—a
+            main driver for why <strong>28% of surveyed students struggle with clinical insomnia symptoms</strong>.</p>
         </div>
       </section>
 
       <section class="step split-step" id="ring-exercise">
         <div class="content-box">
           <h2>Physical Exercise</h2>
-          <p>TBD</p>
+          <p>At an average of just <strong>1.0 hours</strong>, physical recovery and active wellness outlets are the
+            very first
+            sacrifices students make when deadlines pile up. As the academic workload and screen tracking rings expand
+            out of balance,
+            this final ring shrinks away. This creates a lifestyle completely lacking in physical stress-relief
+            channels, compounding
+            the mental health and anxiety strains felt throughout the semester.</p>
         </div>
       </section>
 
@@ -136,21 +163,54 @@
         .attr("id", (d, i) => `ring-index-${i}`)
         .style("fill", d => d.color);
 
+      // Add Central Metrics Group
+      const centerGroup = svg.append("g")
+        .attr("id", "center-metrics")
+        .style("opacity", 0)
+        .style("text-anchor", "middle");
+
+      centerGroup.append("text")
+        .attr("id", "center-activity")
+        .attr("y", -30)
+        .style("font-size", "0.9rem")
+        .style("font-weight", "600")
+        .style("text-transform", "uppercase")
+        .style("letter-spacing", "1.5px")
+        .style("fill", "#ffffff")
+        .text("ACTIVITY");
+
+      centerGroup.append("text")
+        .attr("id", "center-value")
+        .attr("y", 15)
+        .style("font-size", "3.5rem")
+        .style("font-weight", "800")
+        .style("fill", "#ffffff")
+        .text("0.0h");
+
+      centerGroup.append("text")
+        .attr("id", "center-goal")
+        .attr("y", 45)
+        .style("font-size", "0.95rem")
+        .style("fill", "#86868b")
+        .text("/ 0.0h goal");
+
       // Hover Interactive States
       activeRings
         .on("mouseover", function (event, d) {
-          tooltip.style("opacity", 1);
-          d3.select("#tt-activity").text(d.activity);
-          d3.select("#tt-actual").text(`${d.hours}h`);
-          d3.select("#tt-target").text(`/ ${d.goal}h goal`);
-        })
-        .on("mousemove", function (event) {
-          tooltip
-            .style("left", (event.pageX + 20) + "px")
-            .style("top", (event.pageY - 30) + "px");
+          d3.select("#center-value").text(`${d.hours}h`);
+          d3.select("#center-goal").text(`/ ${d.goal}h goal`);
+          d3.select("#center-activity").text(d.activity);
+          d3.select("#center-metrics").style("opacity", 1);
+
+          d3.selectAll(".foreground-arc").style("opacity", 0.15);
+          d3.select(this).style("opacity", 1);
         })
         .on("mouseout", function () {
-          tooltip.style("opacity", 0);
+          // Re-evaluate current step to restore highlighting properly
+          const currentStep = document.querySelector('.step.active');
+          if (currentStep) {
+            updateHighlights(currentStep.id);
+          }
         });
 
       // Entry animations are now handled strictly by the scroll highlighter!
@@ -186,10 +246,20 @@
         visualCenter.style("background-color", ringColor);
       }
 
+      // Update Center text and background track opacities
       if (stepId === 'intro-step') {
+        d3.select("#center-metrics").style("opacity", 0);
         d3.selectAll(".track-bg").style("opacity", 0.05);
       } else if (stepId === 'all-rings') {
+        d3.select("#center-metrics").style("opacity", 0);
         d3.selectAll(".track-bg").style("opacity", 0.4);
+      } else if (targetIndex !== undefined) {
+        const d = complexData.rings[targetIndex];
+        d3.select("#center-value").text(`${d.hours}h`);
+        d3.select("#center-goal").text(`/ ${d.goal}h goal`);
+        d3.select("#center-activity").text(d.activity);
+        d3.select("#center-metrics").style("opacity", 1);
+        d3.selectAll(".track-bg").style("opacity", 0.15);
       } else {
         d3.selectAll(".track-bg").style("opacity", 0.15);
       }
