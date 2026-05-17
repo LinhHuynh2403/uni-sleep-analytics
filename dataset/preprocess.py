@@ -26,35 +26,35 @@ rings_data = [
         "activity": "Study Blocks",
         "hours": round(avg_study, 1),
         "goal": 6.0,
-        "color": "#ff3366", # Apple Crimson/Pink
+        "color": "#D6C96C", 
         "story": f"Students average {round(avg_study, 1)} hours of daily study. Driven by intense '{stress_mode.lower()}' workloads, academic demands consistently compress other life rings."
     },
     {
         "activity": "Screen Engagement",
         "hours": round(avg_screen, 1),
         "goal": 3.0,
-        "color": "#ffff33", # Apple Neon Yellow
+        "color": "#B3A859", 
         "story": f"Accounting for {round(avg_screen, 1)} hours. The dataset reveals device interaction before bed is '{device_usage.lower()}', fueling insomnia loops."
     },
     {
         "activity": "Sleep Focus",
         "hours": round(avg_sleep, 1),
         "goal": 8.0,
-        "color": "#00ffcc", # Apple Cyan/Green
+        "color": "#8A8245", 
         "story": f"With an average of only {round(avg_sleep, 1)} hours, this ring fails to close, directly causing a cascading impact on recent '{gpa_impact}' academic performance benchmarks."
     },
     {
         "activity": "Pre-Bedtime Routine",
         "hours": 1.5, # Aggregated average wind-down time
         "goal": 2.0,
-        "color": "#ff9900", # Apple Vibrant Orange
+        "color": "#615B30",
         "story": "A 1.5-hour evening block characterized by checking phones, streaming, or consuming caffeine to battle midnight deadlines."
     },
     {
         "activity": "Physical Exercise",
         "hours": round(avg_exercise, 1),
         "goal": 1.0,
-        "color": "#0099ff", # Apple Royal Blue
+        "color": "#38351C",
         "story": f"Averaging a slim {round(avg_exercise, 1)} hours. Physical activity outlets are the first routines dropped when study and screen times spike."
     }
 ]
