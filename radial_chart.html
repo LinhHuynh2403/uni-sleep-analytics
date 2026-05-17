@@ -11,46 +11,77 @@
 
 <body>
 
-  <div class="radial-tooltip" id="chart-tooltip">
+  <div class="apple-tooltip" id="chart-tooltip">
     <div class="tt-header" id="tt-activity">Activity</div>
     <div class="tt-metrics">
       <span class="tt-hours" id="tt-actual">0.0h</span>
       <span class="tt-goal" id="tt-target">/ 0.0h goal</span>
     </div>
-    <div class="tt-story" id="tt-desc">Story loading...</div>
   </div>
 
-  <div class="container">
-    <div class="text-side">
-      <section class="step active" id="step-1">
-        <h2>The Deficit</h2>
-        <div class="huge-stat">58.2%</div>
-        <p>of university students survive under a structural sleep deficiency. Demanding daily schedules continually
-          compress rest periods below biological minimums.</p>
+  <div class="scrollytelling-wrapper">
+    <div class="sticky-visual-center" id="canvas-target"></div>
+
+    <div class="story-layers">
+
+      <section class="step centered-step active" id="intro-step">
+        <div class="content-box">
+          <h2>The Deficit</h2>
+          <div class="huge-stat">58.2%</div>
+          <p>of university students survive under a structural sleep deficiency. Demanding daily schedules continually
+            compress rest periods below biological minimums.</p>
+        </div>
       </section>
 
-      <section class="step" id="step-2">
-        <h2>Closing the Rings</h2>
-        <p>Hover directly over the concentric tracks to isolate data. When <strong>Study Blocks</strong>, <strong>Screen
-            Time</strong>, and night-time habits swell past recommended limits, they prevent the vital <strong>Sleep
-            Ring</strong> from closing completely.</p>
+      <section class="step centered-step" id="all-rings">
+        <div class="content-box">
+          <h2>24-Hour Cycle</h2>
+          <p>Here is the full picture of a student's day. Let's break it down layer by layer.</p>
+        </div>
       </section>
 
-      <section class="step" id="step-3">
-        <h2>The Toll on Health & GPA</h2>
-        <p>When sleep values fail to scale alongside daily strain, academic performance takes an immediate hit. Chronic
-          insomnia data strongly correlates with compressed memory retention and lowered average GPA outcomes.</p>
+      <section class="step split-step" id="ring-study">
+        <div class="content-box">
+          <h2>Study Blocks</h2>
+          <p>TBD</p>
+        </div>
       </section>
+
+      <section class="step split-step" id="ring-screen">
+        <div class="content-box">
+          <h2>Screen Engagement</h2>
+          <p>TBD</p>
+        </div>
+      </section>
+
+      <section class="step split-step" id="ring-sleep">
+        <div class="content-box">
+          <h2>Sleep Focus</h2>
+          <p>TBD</p>
+        </div>
+      </section>
+
+      <section class="step split-step" id="ring-bedtime">
+        <div class="content-box">
+          <h2>Pre-Bedtime Routine</h2>
+          <p>TBD</p>
+        </div>
+      </section>
+
+      <section class="step split-step" id="ring-exercise">
+        <div class="content-box">
+          <h2>Physical Exercise</h2>
+          <p>TBD</p>
+        </div>
+      </section>
+
     </div>
-
-    <div class="sticky-visual" id="canvas-target"></div>
   </div>
 
   <script>
-    // Global variable to hold our data once fetched
     let complexData = null;
 
-    // SVG Window Dimensions
+    // Centerpiece Dimensions
     const width = 550, height = 550;
     const svg = d3.select("#canvas-target")
       .append("svg")
@@ -61,21 +92,16 @@
 
     const tooltip = d3.select("#chart-tooltip");
 
-    // Unified Layout Ring Anchors 
     const ringThickness = 26;
-    const ringGap = 8;
+    const ringGap = 10;
     const innerBaseRadius = 80;
 
-    // Render Loop for Dense Apple Rings
-    function drawActivityRings() {
-      if (!complexData || !complexData.rings) {
-        console.error("Data structure is invalid or not yet loaded.");
-        return;
-      }
+    function drawActivityRings(callback) {
+      if (!complexData || !complexData.rings) return;
 
-      svg.selectAll("*").remove(); // Wipe canvas clean
+      svg.selectAll("*").remove();
 
-      // 1. Render Dark Background Track Rings
+      // 1. Draw Background Tracks
       const backgroundArcGenerator = d3.arc()
         .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
         .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
@@ -89,9 +115,9 @@
         .attr("class", "track-bg")
         .attr("d", backgroundArcGenerator)
         .style("fill", "#141417")
-        .style("opacity", 0.8);
+        .style("opacity", 0.4);
 
-      // 2. Render Scaled Foreground Progress Rings
+      // 2. Draw Active Progress Rings
       const dynamicArcGenerator = d3.arc()
         .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
         .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
@@ -107,25 +133,16 @@
         .enter()
         .append("path")
         .attr("class", "foreground-arc")
-        .style("fill", d => d.color)
-        .attr("d", d3.arc() // Initialize at 0 for drawing transition
-          .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
-          .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
-          .startAngle(0)
-          .endAngle(0)
-        );
+        .attr("id", (d, i) => `ring-index-${i}`)
+        .style("fill", d => d.color);
 
-      // Dynamic Hover Interactivity & Tooltip Positioning
+      // Hover Interactive States
       activeRings
         .on("mouseover", function (event, d) {
-          d3.selectAll(".foreground-arc").style("opacity", 0.25);
-          d3.select(this).style("opacity", 1);
-
           tooltip.style("opacity", 1);
           d3.select("#tt-activity").text(d.activity);
           d3.select("#tt-actual").text(`${d.hours}h`);
           d3.select("#tt-target").text(`/ ${d.goal}h goal`);
-          d3.select("#tt-desc").text(d.story);
         })
         .on("mousemove", function (event) {
           tooltip
@@ -133,19 +150,73 @@
             .style("top", (event.pageY - 30) + "px");
         })
         .on("mouseout", function () {
-          d3.selectAll(".foreground-arc").style("opacity", 1);
           tooltip.style("opacity", 0);
         });
 
-      // Animate Ring Generation on Activation
-      activeRings.transition()
-        .duration(1500)
+      // Entry animations are now handled strictly by the scroll highlighter!
+      if (callback) {
+        callback();
+      }
+    }
+
+    // --- SCROLL DRIVEN ISOLATION HIGHLIGHTER ---
+    function updateHighlights(stepId) {
+      if (!complexData) return;
+
+      const highlightMap = {
+        'ring-study': 0,
+        'ring-screen': 1,
+        'ring-sleep': 2,
+        'ring-bedtime': 3,
+        'ring-exercise': 4
+      };
+
+      const targetIndex = highlightMap[stepId];
+      const wrapper = document.querySelector('.scrollytelling-wrapper');
+      const visualCenter = d3.select(".sticky-visual-center");
+
+      // Layout Switch: Shift canvas to left and add background tint if isolating a ring!
+      if (stepId === 'intro-step' || stepId === 'all-rings') {
+        wrapper.classList.remove('split-mode');
+        visualCenter.style("background-color", "transparent");
+      } else if (targetIndex !== undefined) {
+        wrapper.classList.add('split-mode');
+        const ringColor = d3.color(complexData.rings[targetIndex].color);
+        ringColor.opacity = 0.12; // Apple-like subtle vibrant background tint on the left half
+        visualCenter.style("background-color", ringColor);
+      }
+
+      if (stepId === 'intro-step') {
+        d3.selectAll(".track-bg").style("opacity", 0.05);
+      } else if (stepId === 'all-rings') {
+        d3.selectAll(".track-bg").style("opacity", 0.4);
+      } else {
+        d3.selectAll(".track-bg").style("opacity", 0.15);
+      }
+
+      d3.selectAll(".foreground-arc").interrupt().transition()
+        .duration(1200)
         .ease(d3.easeCubicOut)
         .attrTween("d", function (d, i) {
           const finalAngle = Math.min((d.hours / d.goal) * 2 * Math.PI, 2 * Math.PI);
-          const interpolate = d3.interpolate(0, finalAngle);
 
-          // Create a local arc generator for this specific element to avoid shared state mutations
+          let targetAngle = 0;
+          if (stepId === 'all-rings') {
+            targetAngle = finalAngle;
+          } else if (i === targetIndex) {
+            targetAngle = finalAngle;
+          }
+
+          if (typeof d.currentAngle === 'undefined') {
+            d.currentAngle = 0;
+          }
+
+          if (i === targetIndex) {
+            d.currentAngle = 0;
+          }
+
+          const interpolate = d3.interpolate(d.currentAngle, targetAngle);
+
           const localArc = d3.arc()
             .innerRadius(innerBaseRadius + i * (ringThickness + ringGap))
             .outerRadius(innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
@@ -153,38 +224,42 @@
             .cornerRadius(8);
 
           return function (t) {
-            localArc.endAngle(interpolate(t));
+            d.currentAngle = interpolate(t);
+            localArc.endAngle(d.currentAngle);
             return localArc();
           };
+        })
+        .style("opacity", function (d, i) {
+          if (stepId === 'intro-step') return 0;
+          if (stepId === 'all-rings') return 1;
+          return i === targetIndex ? 1 : 0.15;
         });
     }
 
-    // --- Scroll Tracking Management ---
+    // --- Intersection Observer ---
     const scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           document.querySelectorAll('.step').forEach(element => element.classList.remove('active'));
           entry.target.classList.add('active');
-
-          // Trigger or redraw chart dynamically during narrative updates
-          if (complexData) {
-            drawActivityRings();
-          }
+          updateHighlights(entry.target.id);
         }
       });
-    }, { root: null, threshold: 0.5 });
+    }, { root: null, threshold: 0.6 });
 
-    // --- ASYNCHRONOUS DATA FETCH BLOCK ---
+    // --- Async Data Load Initialization ---
     d3.json("student_activity_rings.json").then(data => {
       complexData = data;
 
-      // 1. Draw chart immediately on baseline initialization
-      drawActivityRings();
+      // Draw immediately, then run the initial highlight configuration once complete
+      drawActivityRings(() => {
+        updateHighlights('intro-step');
+      });
 
-      // 2. Safely attach scroll trackers now that data is loaded
+      // Bind scroll updates safely
       document.querySelectorAll('.step').forEach(section => scrollObserver.observe(section));
     }).catch(error => {
-      console.error("Error loading the JSON data file:", error);
+      console.error("Error loading JSON parameters:", error);
     });
   </script>
 </body>
