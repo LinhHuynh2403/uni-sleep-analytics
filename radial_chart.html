@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Closing the Student Sleep Ring</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="radial-tooltip" id="chart-tooltip">
+    <div class="tt-header" id="tt-activity">Activity</div>
+    <div class="tt-metrics">
+      <span class="tt-hours" id="tt-actual">0.0h</span>
+      <span class="tt-goal" id="tt-target">/ 0.0h goal</span>
+    </div>
+    <div class="tt-story" id="tt-desc">Story loading...</div>
+  </div>
+
+  <div class="container">
+    <div class="text-side">
+      <section class="step active" id="step-1">
+        <h2>The Deficit</h2>
+        <div class="huge-stat">58.2%</div>
+        <p>of university students survive under a structural sleep deficiency. Demanding daily schedules continually
+          compress rest periods below biological minimums.</p>
+      </section>
+
+      <section class="step" id="step-2">
+        <h2>Closing the Rings</h2>
+        <p>Hover directly over the concentric tracks to isolate data. When <strong>Study Blocks</strong>, <strong>Screen
+            Time</strong>, and night-time habits swell past recommended limits, they prevent the vital <strong>Sleep
+            Ring</strong> from closing completely.</p>
+      </section>
+
+      <section class="step" id="step-3">
+        <h2>The Toll on Health & GPA</h2>
+        <p>When sleep values fail to scale alongside daily strain, academic performance takes an immediate hit. Chronic
+          insomnia data strongly correlates with compressed memory retention and lowered average GPA outcomes.</p>
+      </section>
+    </div>
+
+    <div class="sticky-visual" id="canvas-target"></div>
+  </div>
+
+  <script>
+    // Global variable to hold our data once fetched
+    let complexData = null;
+
+    // SVG Window Dimensions
+    const width = 550, height = 550;
+    const svg = d3.select("#canvas-target")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    const tooltip = d3.select("#chart-tooltip");
+
+    // Unified Layout Ring Anchors 
+    const ringThickness = 26;
+    const ringGap = 8;
+    const innerBaseRadius = 80;
+
+    // Render Loop for Dense Apple Rings
+    function drawActivityRings() {
+      if (!complexData || !complexData.rings) {
+        console.error("Data structure is invalid or not yet loaded.");
+        return;
+      }
+
+      svg.selectAll("*").remove(); // Wipe canvas clean
+
+      // 1. Render Dark Background Track Rings
+      const backgroundArcGenerator = d3.arc()
+        .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
+        .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+        .startAngle(0)
+        .endAngle(2 * Math.PI);
+
+      svg.selectAll(".track-bg")
+        .data(complexData.rings)
+        .enter()
+        .append("path")
+        .attr("class", "track-bg")
+        .attr("d", backgroundArcGenerator)
+        .style("fill", "#141417")
+        .style("opacity", 0.8);
+
+      // 2. Render Scaled Foreground Progress Rings
+      const dynamicArcGenerator = d3.arc()
+        .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
+        .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+        .startAngle(0)
+        .endAngle(d => {
+          const percentage = d.hours / d.goal;
+          return Math.min(percentage * 2 * Math.PI, 2 * Math.PI);
+        })
+        .cornerRadius(8);
+
+      const activeRings = svg.selectAll(".foreground-arc")
+        .data(complexData.rings)
+        .enter()
+        .append("path")
+        .attr("class", "foreground-arc")
+        .style("fill", d => d.color)
+        .attr("d", d3.arc() // Initialize at 0 for drawing transition
+          .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
+          .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+          .startAngle(0)
+          .endAngle(0)
+        );
+
+      // Dynamic Hover Interactivity & Tooltip Positioning
+      activeRings
+        .on("mouseover", function (event, d) {
+          d3.selectAll(".foreground-arc").style("opacity", 0.25);
+          d3.select(this).style("opacity", 1);
+
+          tooltip.style("opacity", 1);
+          d3.select("#tt-activity").text(d.activity);
+          d3.select("#tt-actual").text(`${d.hours}h`);
+          d3.select("#tt-target").text(`/ ${d.goal}h goal`);
+          d3.select("#tt-desc").text(d.story);
+        })
+        .on("mousemove", function (event) {
+          tooltip
+            .style("left", (event.pageX + 20) + "px")
+            .style("top", (event.pageY - 30) + "px");
+        })
+        .on("mouseout", function () {
+          d3.selectAll(".foreground-arc").style("opacity", 1);
+          tooltip.style("opacity", 0);
+        });
+
+      // Animate Ring Generation on Activation
+      activeRings.transition()
+        .duration(1500)
+        .ease(d3.easeCubicOut)
+        .attrTween("d", function (d, i) {
+          const finalAngle = Math.min((d.hours / d.goal) * 2 * Math.PI, 2 * Math.PI);
+          const interpolate = d3.interpolate(0, finalAngle);
+
+          // Create a local arc generator for this specific element to avoid shared state mutations
+          const localArc = d3.arc()
+            .innerRadius(innerBaseRadius + i * (ringThickness + ringGap))
+            .outerRadius(innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+            .startAngle(0)
+            .cornerRadius(8);
+
+          return function (t) {
+            localArc.endAngle(interpolate(t));
+            return localArc();
+          };
+        });
+    }
+
+    // --- Scroll Tracking Management ---
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.step').forEach(element => element.classList.remove('active'));
+          entry.target.classList.add('active');
+
+          // Trigger or redraw chart dynamically during narrative updates
+          if (complexData) {
+            drawActivityRings();
+          }
+        }
+      });
+    }, { root: null, threshold: 0.5 });
+
+    // --- ASYNCHRONOUS DATA FETCH BLOCK ---
+    d3.json("student_activity_rings.json").then(data => {
+      complexData = data;
+
+      // 1. Draw chart immediately on baseline initialization
+      drawActivityRings();
+
+      // 2. Safely attach scroll trackers now that data is loaded
+      document.querySelectorAll('.step').forEach(section => scrollObserver.observe(section));
+    }).catch(error => {
+      console.error("Error loading the JSON data file:", error);
+    });
+  </script>
+</body>
+
+</html>
