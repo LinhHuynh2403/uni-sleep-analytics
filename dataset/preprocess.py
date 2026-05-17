@@ -23,16 +23,16 @@ stress_mode = df_outcomes['14. How would you describe your stress levels related
 # Goals match healthy lifestyle standards vs actual demanding student constraints
 rings_data = [
     {
-        "activity": "Study Blocks",
+        "activity": "Study Hours",
         "hours": round(avg_study, 1),
-        "goal": 6.0,
+        "goal": 4.0,
         "color": "#382D1A", 
         "story": f"Students average {round(avg_study, 1)} hours of daily study. Driven by intense '{stress_mode.lower()}' workloads, academic demands consistently compress other life rings."
     },
     {
-        "activity": "Screen Engagement",
+        "activity": "Screen Time",
         "hours": round(avg_screen, 1),
-        "goal": 3.0,
+        "goal": 1.5,
         "color": "#614E2D", 
         "story": f"Accounting for {round(avg_screen, 1)} hours. The dataset reveals device interaction before bed is '{device_usage.lower()}', fueling insomnia loops."
     },
