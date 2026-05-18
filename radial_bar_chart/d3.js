@@ -1,0 +1,311 @@
+
+let complexData = null;
+
+// Centerpiece Dimensions
+const width = 550, height = 550;
+const svg = d3.select("#canvas-target")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+const tooltip = d3.select("#chart-tooltip");
+
+const ringThickness = 26;
+const ringGap = 10;
+const innerBaseRadius = 80;
+
+function drawActivityRings(callback) {
+    if (!complexData || !complexData.rings) return;
+
+    svg.selectAll("*").remove();
+
+    // 1. Draw Background Tracks
+    const backgroundArcGenerator = d3.arc()
+        .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
+        .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+        .startAngle(0)
+        .endAngle(2 * Math.PI);
+
+    svg.selectAll(".track-bg")
+        .data(complexData.rings)
+        .enter()
+        .append("path")
+        .attr("class", "track-bg")
+        .attr("d", backgroundArcGenerator)
+        .style("fill", "#141417")
+        .style("opacity", 0.4);
+
+    // 2. Draw Active Progress Rings
+    const dynamicArcGenerator = d3.arc()
+        .innerRadius((d, i) => innerBaseRadius + i * (ringThickness + ringGap))
+        .outerRadius((d, i) => innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+        .startAngle(0)
+        .endAngle(d => {
+            const percentage = d.hours / d.goal;
+            return Math.min(percentage * 2 * Math.PI, 2 * Math.PI);
+        })
+        .cornerRadius(8);
+
+    const activeRings = svg.selectAll(".foreground-arc")
+        .data(complexData.rings)
+        .enter()
+        .append("path")
+        .attr("class", "foreground-arc")
+        .attr("id", (d, i) => `ring-index-${i}`)
+        .style("fill", d => d.color);
+
+    // 3. Draw Overflow Arcs (for rings exceeding 100%)
+    const overflowRings = svg.selectAll(".overflow-arc")
+        .data(complexData.rings)
+        .enter()
+        .append("path")
+        .attr("class", "overflow-arc")
+        .attr("id", (d, i) => `overflow-index-${i}`)
+        .style("fill", d => d.color)
+        .style("filter", "drop-shadow(2px 4px 6px rgba(0,0,0,0.6))")
+        .style("opacity", 0);
+
+    // Add Central Metrics Group
+    const centerGroup = svg.append("g")
+        .attr("id", "center-metrics")
+        .style("opacity", 0)
+        .style("text-anchor", "middle");
+
+    // for the Categories Text
+    centerGroup.append("text")
+        .attr("id", "center-activity")
+        .attr("y", -30)
+        .style("font-size", "1rem")
+        .style("font-weight", "600")
+        .style("text-transform", "uppercase")
+        .style("letter-spacing", "1.5px")
+        .style("fill", "#ffffff")
+        .text("ACTIVITY");
+
+    // for the Time Value inside the ring
+    centerGroup.append("text")
+        .attr("id", "center-value")
+        .attr("y", 20)
+        .style("font-size", "3.2rem")
+        .style("font-weight", "460000")
+        .style("letter-spacing", "1.5px")
+        .style("fill", "#ffffff")
+        .text("0.0h");
+
+    // for the Goal Text under the time value
+    centerGroup.append("text")
+        .attr("id", "center-goal")
+        .attr("y", 45)
+        .style("font-size", "1.1rem")
+        .style("fill", "#86868b")
+        .text("/ 0.0h goal");
+
+    // Hover Interactive States for both ring types
+    svg.selectAll(".foreground-arc, .overflow-arc")
+        .on("mouseover", function (event, d) {
+            const isStudy = d.activity === "Study Hours";
+            const suffix = isStudy ? "average" : (d.activity === "Screen Time" ? "recommended" : "goal");
+            const unit = isStudy ? "hrs" : "h";
+
+            d3.select("#center-value").text(`${d.hours}${isStudy ? 'hrs' : 'h'}`);
+            d3.select("#center-goal").text(`/ ${d.goal}${unit} ${suffix}`);
+            d3.select("#center-activity").text(d.activity);
+            d3.select("#center-metrics").style("opacity", 1);
+
+            const currentStep = document.querySelector('.step.active');
+            const stepId = currentStep ? currentStep.id : '';
+
+            d3.selectAll(".foreground-arc").style("opacity", 0.15)
+                .style("fill", function (d_inner) {
+                    if (stepId === 'intro-step' || stepId === 'all-rings') return d_inner.color;
+                    return d_inner === d ? d3.color("#D6AC62").darker(0.6) : d_inner.color;
+                });
+
+            d3.selectAll(".overflow-arc").style("opacity", 0)
+                .style("fill", function (d_inner) {
+                    if (stepId === 'intro-step' || stepId === 'all-rings') return d_inner.color;
+                    return d_inner === d ? d3.color("#D6AC62").brighter(0.3) : d_inner.color;
+                });
+
+            const index = complexData.rings.indexOf(d);
+            d3.select(`#ring-index-${index}`).style("opacity", 1);
+            d3.select(`#overflow-index-${index}`).style("opacity", 1);
+        })
+        .on("mouseout", function () {
+            // Re-evaluate current step to restore highlighting properly
+            const currentStep = document.querySelector('.step.active');
+            if (currentStep) {
+                updateHighlights(currentStep.id);
+            }
+        });
+
+    // Entry animations are now handled strictly by the scroll highlighter!
+    if (callback) {
+        callback();
+    }
+}
+
+// --- SCROLL DRIVEN ISOLATION HIGHLIGHTER ---
+function updateHighlights(stepId) {
+    if (!complexData) return;
+
+    const highlightMap = {
+        'ring-study': 0,
+        'ring-screen': 1,
+        'ring-sleep': 2,
+        'ring-bedtime': 3,
+        'ring-exercise': 4
+    };
+
+    const targetIndex = highlightMap[stepId];
+    const wrapper = document.querySelector('.scrollytelling-wrapper');
+    const visualCenter = d3.select(".sticky-visual-center");
+
+    // Layout Switch: Shift canvas to left and add background tint if isolating a ring!
+    if (stepId === 'intro-step' || stepId === 'all-rings') {
+        wrapper.classList.remove('split-mode');
+        visualCenter.style("background-color", "transparent");
+    } else if (targetIndex !== undefined) {
+        wrapper.classList.add('split-mode');
+        const ringColor = d3.color("#D6AC62"); // Standardized isolated color
+        ringColor.opacity = 0.12; // Apple-like subtle vibrant background tint on the left half
+        visualCenter.style("background-color", ringColor);
+    }
+
+    // Update Center text and background track opacities
+    if (stepId === 'intro-step') {
+        d3.select("#center-metrics").style("opacity", 0);
+        d3.selectAll(".track-bg").style("opacity", 0.05);
+    } else if (stepId === 'all-rings') {
+        d3.select("#center-metrics").style("opacity", 0);
+        d3.selectAll(".track-bg").style("opacity", 0.4);
+    } else if (targetIndex !== undefined) {
+        const d = complexData.rings[targetIndex];
+        const isStudy = d.activity === "Study Hours";
+        const suffix = isStudy ? "average" : (d.activity === "Screen Time" ? "recommended" : "goal");
+        const unit = isStudy ? "hrs" : "hrs";
+
+        d3.select("#center-value").text(`${d.hours}${isStudy ? 'hrs' : 'hrs'}`);
+        d3.select("#center-goal").text(`/ ${d.goal}${unit} ${suffix}`);
+        d3.select("#center-activity").text(d.activity);
+        d3.select("#center-metrics").style("opacity", 1);
+        d3.selectAll(".track-bg").style("opacity", 0.15);
+    } else {
+        d3.selectAll(".track-bg").style("opacity", 0.15);
+    }
+
+    d3.selectAll(".foreground-arc").interrupt().transition()
+        .duration(1200)
+        .ease(d3.easeCubicOut)
+        .attrTween("d", function (d, i) {
+            const totalFinalAngle = (d.hours / d.goal) * 2 * Math.PI;
+
+            let targetAngle = 0;
+            if (stepId === 'all-rings') {
+                targetAngle = totalFinalAngle;
+            } else if (i === targetIndex) {
+                targetAngle = totalFinalAngle;
+            }
+
+            if (typeof d.currentAngle === 'undefined') {
+                d.currentAngle = 0;
+            }
+
+            if (i === targetIndex && targetAngle > 0) {
+                d.currentAngle = 0;
+            }
+
+            const interpolate = d3.interpolate(d.currentAngle, targetAngle);
+
+            const localArc = d3.arc()
+                .innerRadius(innerBaseRadius + i * (ringThickness + ringGap))
+                .outerRadius(innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+                .startAngle(0)
+                .cornerRadius(8);
+
+            return function (t) {
+                d.currentAngle = interpolate(t);
+                // Main arc caps at 100%
+                localArc.endAngle(Math.min(d.currentAngle, 2 * Math.PI));
+                return localArc();
+            };
+        })
+        .style("fill", function (d, i) {
+            if (stepId === 'intro-step' || stepId === 'all-rings') return d.color;
+            return i === targetIndex ? d3.color("#D6AC62").darker(0.6) : d.color;
+        })
+        .style("opacity", function (d, i) {
+            if (stepId === 'intro-step') return 0;
+            if (stepId === 'all-rings') return 1;
+            return i === targetIndex ? 1 : 0.15;
+        });
+
+    d3.selectAll(".overflow-arc").interrupt().transition()
+        .duration(1200)
+        .ease(d3.easeCubicOut)
+        .attrTween("d", function (d, i) {
+            const totalFinalAngle = (d.hours / d.goal) * 2 * Math.PI;
+
+            let targetAngle = 0;
+            if (stepId === 'all-rings') {
+                targetAngle = totalFinalAngle;
+            } else if (i === targetIndex) {
+                targetAngle = totalFinalAngle;
+            }
+
+            if (typeof d.overflowAngle === 'undefined') d.overflowAngle = 0;
+            if (i === targetIndex && targetAngle > 0) d.overflowAngle = 0;
+
+            const interpolate = d3.interpolate(d.overflowAngle, targetAngle);
+
+            const localArc = d3.arc()
+                .innerRadius(innerBaseRadius + i * (ringThickness + ringGap))
+                .outerRadius(innerBaseRadius + ringThickness + i * (ringThickness + ringGap))
+                .startAngle(0)
+                .cornerRadius(8);
+
+            return function (t) {
+                d.overflowAngle = interpolate(t);
+                if (d.overflowAngle <= 2 * Math.PI) return ""; // Hide completely if not exceeding 100%
+                localArc.endAngle(d.overflowAngle - 2 * Math.PI);
+                return localArc();
+            };
+        })
+        .style("fill", function (d, i) {
+            if (stepId === 'intro-step' || stepId === 'all-rings') return d.color;
+            return i === targetIndex ? d3.color("#D6AC62").brighter(0.3) : d.color;
+        })
+        .style("opacity", function (d, i) {
+            if (stepId === 'intro-step') return 0;
+            if (stepId === 'all-rings') return 1;
+            return i === targetIndex ? 1 : 0; // Hide unselected overflows
+        });
+}
+
+// --- Intersection Observer ---
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            document.querySelectorAll('.step').forEach(element => element.classList.remove('active'));
+            entry.target.classList.add('active');
+            updateHighlights(entry.target.id);
+        }
+    });
+}, { root: null, threshold: 0.6 });
+
+// --- Async Data Load Initialization ---
+d3.json("student_activity_rings.json").then(data => {
+    complexData = data;
+
+    // Draw immediately, then run the initial highlight configuration once complete
+    drawActivityRings(() => {
+        updateHighlights('intro-step');
+    });
+
+    // Bind scroll updates safely
+    document.querySelectorAll('.step').forEach(section => scrollObserver.observe(section));
+}).catch(error => {
+    console.error("Error loading JSON parameters:", error);
+});
