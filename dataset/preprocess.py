@@ -68,7 +68,7 @@ output_payload = {
 }
 
 # SAVE DIRECTLY TO THE ROOT DIRECTORY
-with open('student_activity_rings.json', 'w') as f:
+with open('radial_bar_chart/student_activity_rings.json', 'w') as f:
     json.dump(output_payload, f, indent=4)
 
 print("Data integration complete! Saved to student_activity_rings.json")
