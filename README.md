@@ -1,2 +1,7 @@
-# uni-sleep-analytics
-This is a class project from UC Davis students in CS/CSE/EE/Design Major
+# Factors Affect Sleep  
+An interactive, client-side data visualization platform that cross-examines five distinct research datasets to isolate how lifestyle habits and environmental traits affect student sleep structures, and maps how these metrics cascade into academic performance metrics (GPA, concentration, and attendance).Built with HTML5, CSS3 Custom Variables, and D3.js (v7), this dashboard functions completely inside the browser out-of-the-box by reading pre-calculated data points mapped directly into correlation_matrices.js.
+## Visual Features   
+- **Dataset Matrix Landscape Heatmaps:** Toggles seamlessly between 5 separate study repositories via a dropdown element. Matrices are fully responsive and auto-scale block dimensions dynamically based on variable length.   
+- **Algile Tracking Tooltip Injections:** Hovering over matrix tiles dynamically updates a cursor-following minimal text node displaying clean translations (Variable X × Variable Y: r = Value).   
+- **SVG Vector Color Scale Legend:** Embeds an adaptive color bar container right underneath the active heatmap canvas, using D3 scales to smoothly render a quantitative tick range from $-1.0$ to $+1.0$ alongside a dynamic indicator subtitle mapping the current dataset's top association pair.   
+- **Top 10 Lifestyle Factors Chart:** Houses a filtered, horizontal lollipop bar plot isolating exclusively the 10 macro drivers directly targeting sleep architecture. Click any item bar to inject its localized downstream performance cascade narrative.

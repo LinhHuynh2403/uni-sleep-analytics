@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Architecture & Academic Impact Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Sleep Architecture & Academic Performance Analytics</h1>
+            <p>Cross-examining multi-dataset matrix correlations to isolate lifestyle elements transforming student performance metrics.</p>
+        </div>
+    </header>
+
+    <main class="viewport-container">
+        <section class="summary-card">
+            <h2>The Causal Cascade Observed</h2>
+            <p>
+                Statistical modeling across these combined datasets highlights a distinct chain of events: 
+                underlying lifestyle factors (such as screen time, high stress, and late sleep midpoints) 
+                directly degrade sleep patterns. This sleep disruption cascades into academic performance, 
+                causing measurable drops in term GPAs, decreased focus during lectures, and higher rates of absenteeism.
+            </p>
+            <div class="quick-metrics-grid">
+                <div class="metric-block critical-neg">
+                    <span class="value-node">-0.99</span>
+                    <span class="label-node">Screen Time to Sleep Hours ($r$)</span>
+                </div>
+                <div class="metric-block optimal-pos">
+                    <span class="value-node">+0.99</span>
+                    <span class="label-node">Physical Activity to Sleep Hours ($r$)</span>
+                </div>
+                <div class="metric-block critical-neg">
+                    <span class="value-node">-0.83</span>
+                    <span class="label-node">Stress Level to Sleep Hours ($r$)</span>
+                </div>
+                <div class="metric-block optimal-pos">
+                    <span class="value-node">+0.24</span>
+                    <span class="label-node">Total Sleep Time to Term GPA ($r$)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace-grid">
+            <div class="panel matrix-wrapper">
+                <div class="panel-heading">
+                    <h2>1. Dataset Matrix Landscapes</h2>
+                    <div class="control-box">
+                        <label for="dataset-dropdown">Target Study: </label>
+                        <select id="dataset-dropdown">
+                            <option value="dataset1">Dataset 1: Student Insomnia & Survey Outcomes</option>
+                            <option value="dataset2" selected>Dataset 2: CMU Wearable Sensor Sleep Study</option>
+                            <option value="dataset3">Dataset 3: Student Sleep Patterns & Hours</option>
+                            <option value="dataset4">Dataset 4: Bedtime Routine & Habits Survey</option>
+                            <option value="dataset5">Dataset 5: Mental Health & Social Media Metrics</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="panel-narrative">Hover over individual matrix tiles to analyze specific variable relationships via floating cursor text indicators.</p>
+                
+                <div id="heatmap-render-target"></div>
+                
+                <div id="matrix-legend-target"></div>
+            </div>
+        </section>
+
+        <section class="panel chart-wrapper">
+            <h2>2. Top 10 Lifestyle Factors Directly Affecting Sleep</h2>
+            <p class="panel-narrative">Click on any horizontal bar below to trace how that specific environmental input or behavioral trait impacts baseline rest parameters.</p>
+            <div class="split-chart-layout">
+                <div id="barchart-render-target"></div>
+                <div class="narrative-viewer">
+                    <h3>Cascade Impact Breakdown</h3>
+                    <div id="factor-narrative-target">
+                        <p class="fallback-style">Click on a parameter bar in the visualization layout to load its clinical downstream narrative.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="correlation_matrices.js"></script>
+    <script src="heatmap.js"></script>
+</body>
+</html>
