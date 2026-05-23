@@ -1,0 +1,157 @@
+:root {
+    --bg-color: #0b0f19;
+    --card-bg: rgba(20, 25, 35, 0.95);
+    --border-color: #1e293b;
+    --accent-color: #ff3366;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    /* Vibrant colors for bars based on year */
+    --color-1: #3b82f6; /* Blue */
+    --color-2: #0ea5e9; /* Light Blue */
+    --color-3: #10b981; /* Emerald */
+    --color-4: #84cc16; /* Lime */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    width: 100%;
+    padding: 40px;
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+.dashboard-header {
+    flex: 0 0 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-content h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.header-content .subtitle {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+.context-box {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.context-box h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.context-box p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1.05rem;
+    margin-bottom: 0;
+}
+
+.context-box strong {
+    color: var(--accent-color);
+}
+
+.visual-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+#d3-container {
+    width: 100%;
+    height: 100%;
+}
+
+/* SVG Chart styling */
+.domain, .tick line {
+    stroke: #334155;
+}
+
+.tick text {
+    fill: var(--text-secondary);
+    font-size: 11px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.axis-label {
+    fill: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.subplot-title {
+    fill: var(--text-primary);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.reference-line {
+    stroke: var(--accent-color);
+    stroke-width: 2px;
+    stroke-dasharray: 5,5;
+}
+
+.annotation-text {
+    fill: var(--accent-color);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.bar {
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.bar:hover {
+    opacity: 1;
+}
+
+/* Make it responsive */
+@media (max-width: 1024px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+    
+    .dashboard-header {
+        flex: 0 0 auto;
+    }
+}
