@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+  }
+
+  .container {
+    max-width: 700px;    
+    margin: 0 auto;       
+    padding: 60px 20px;  
+    line-height: 1.6;
+  }
+
+  h1, h2{
+    text-align: center;
+  }
+
+  h3{
+    text-align: left;
+  }
+  
+  h3.authors {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+    font-size: 15px;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  img {
+    display: block;
+    margin: 20px auto;
+  }
