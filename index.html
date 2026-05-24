@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Analysis</title>
+</head>
+<body>
+    <h1>Sleep Analysis</h1>
+    <h2>Lack of sleep and its impact on student's health</h2>
+    <h3>By Group 12: Linh Huynh, William Pham,  Pachia Yang, Parwaan Virk,  Kylie Lallak</h3>
+
+    <p>Everyone knows that sleep is essential, but how much sleep do college students really get? College students have to juggle class, projects, internships, part-time jobs, take care of themselves, and try to have a social life. Unfortunately, college students have to make sacrifices to keep up with their busy lives, and that often means cutting out a good night's sleep. This project uses a dataset of 500 college students to explore what student sleep habits are, what parts of student life impact sleep, and what the potential consequences of the college students' sleepless nights? 
+</p>
+    <p>From the dataset, we will explore what are the habits of students who tend to sleep late and, despite knowing the negative consequences of sleep deprivation to their health and academic outcomes,  still maintain their bad habits.</p>
+
+    <h3>Our Story</h3>
+    <p>
+        We aim to tell the story of university students, and how the demanding life of being a student negatively impacts sleep, and how that lack of sleep in turn takes a toll on students' academic outcomes and negative impacts on their health. 
+    </p>
+
+    <h3>Dataset</h3>
+    <p><a href="https://www.kaggle.com/datasets/arsalanjamal002/student-sleep-patterns&sa=D&source=docs&ust=1779605215858815&usg=AOvVaw331XeU9p_gqTg_lNthTPug">“The Student Sleep Patterns"</a> dataset from Kaggle outlines university students by <strong>age, gender, university year, sleep duration, study hours, screen time, caffeine intake, physical activity, and sleep quality.</strong> We see from the raw data that students range from ages 18 to 25, where 37% are male, 33% female, and 30% other. In total, there are 26% of students who are 3rd years, 26% 2nd years, and 47% other.
+    </p>
+
+    <p>
+       <a href="https://www.kaggle.com/datasets/sonalshinde123/social-media-mental-health-indicators-dataset">“Social Media Mental Health Indicators Dataset”</a> is a dataset from Kaggle that explores how screen time directly impacts the number of sleep hours students get by age and gender. Information on what Platform students use, along with the date, or if it was a positive or negative interaction online, is also recorded.  
+    </p>
+
+    <p>
+        <a href="https://www.kaggle.com/datasets/dvparthavi/sleep-habits/data">“Sleep Habits”</a> is a dataset from Kaggle that breaks down by <strong>age, gender, location, quality of sleep, naps, bedtime hours, medical conditions, difficulty sleeping, and activities</strong> before bed. It visualizes what sleep habits students have that can influence their amount of sleep and understand their -routine across different locations. The highest medical conditions that are listed are insomnia for 28% and restless leg syndrome for 23%.
+    </p>
+
+    <p>
+        <a href="https://data.mendeley.com/datasets/5mvrx4v62z/3">“Student Insomnia and Educational Outcomes Dataset”</a>: This dataset quantifies the relationship between student sleep health and academic outcomes, demonstrating how factors like <strong>pre-sleep electronic use, caffeine intake, and insomnia correlate with daytime fatigue, heightened academic stress, and declining GPA.</strong>
+    </p>
+
+    <h3>
+        Main Visualization Idea
+    </h3>
+
+    <p>The user experience begins with a scroll-driven interface, initially contrasting the percentage of well-rested students against those in a sleep deficit. Following this, the <strong>Radial Bar Chart</strong> emerges; as viewers descend the page, the interactive clock face illustrates the rhythmic "shape" of the university night, converting abstract timestamps into a tangible "late-night energy" that reveals actual resting patterns.</p>
+
+    <p>The <strong>Sankey Diagram></strong> then takes center stage as the "main character," inviting the audience to manually calibrate their own habits, such as daily sleep averages and caffeine consumption. This sequential, scroll-based format ensures participants first grasp the magnitude of the sleep crisis before navigating the intricate consequences, specifically the "pathway to failure" that links inadequate rest to intensified stress and deteriorating academic performance. The audience can literally see the "Excellent Sleep" group flowing mostly toward "Excellent GPA," while the "Poor Sleep" group branches off into "High Stress" and "Average/Below Average Performance." </p>
+
+    <h3>Narrative Structure</h3>
+    <p>We choose to present our story as a <strong>Martini Glass</strong> structure because it initiates with a focused, guided narrative that directs the viewer through precise data points regarding student sleep cycles and disruptors like excessive screen time. This framework eventually expands, granting the audience autonomy to engage with the interactive Sankey Diagram to discover their unique trajectory toward success or failure. It strikes an effective balance between a structured educational account of sleep deprivation's fallout, including academic strain and biological repercussions, and the flexibility for users to analyze the data independently.</p>
+    <p>First, we explain the factors that affect the sleep behaviors: study schedule, work schedule, extra curricular activities by using the <strong>Radial Bar Chart</strong>. We use this to visualize the context of how current students are sleeping to better understand what students are engaged with on a daily basis.</p>
+    <p>Second, we use the <strong>Bar Chart</strong> to show the overall sleep trends of students: their average sleep hours, and sleep quality for different years (freshman, sophomore, junior and senior). This is a good transition from the previous visualization as it provides more specific data of college students by grade level and can provide insights on sleep patterns as a whole.</p>
+   
+    <p>Then we choose the <strong>Heatmap</strong> to highlight how different factors across all categories in our datasets such as stress levels, caffeine intake, screen time, sleeping disorders, etc., affect the sleep hours. Through this, we can show why a subset of the attributes mentioned above is selected for our next visualization.</p>
+    <p>Finally, we choose the <strong>Sankey Diagram</strong> as we mentioned in part D.</p>
+    <img src="./images/sankey.png" alt="Sankey Diagram" width="600">
+</body>
+<footer>
+    <h3>Sources</h3>
+    <ul>
+        <li><a href="https://www.kaggle.com/datasets/dvparthavi/sleep-habits/data">Sleep Habits dataset</a></li>
+        <li><a href="https://www.kaggle.com/datasets/arsalanjamal002/student-sleep-patterns">Student Sleep Patterns dataset</a></li>
+        <li><a href="https://www.kaggle.com/datasets/sonalshinde123/social-media-mental-health-indicators-dataset">Social Media Mental Health Indicators dataset</a></li>
+        <li><a href="https://data.mendeley.com/datasets/5mvrx4v62z/3">Student Insomnia and Educational Outcomes Datasets</a></li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12116485/#abstract1">National Library of Medication</a></li>
+    </ul>
+</footer>
+</html>
