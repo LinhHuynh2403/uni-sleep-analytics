@@ -170,7 +170,7 @@ function updateHighlights(stepId) {
         visualCenter.style("background-color", "transparent");
     } else if (targetIndex !== undefined) {
         wrapper.classList.add('split-mode');
-        const ringColor = d3.color("#D6AC62"); // Standardized isolated color
+        const ringColor = d3.color("#7037cbff"); // Standardized isolated color
         ringColor.opacity = 0.12; // Apple-like subtle vibrant background tint on the left half
         visualCenter.style("background-color", ringColor);
     }
@@ -306,35 +306,35 @@ complexData = {
             "activity": "Study Hours",
             "hours": 6.0,
             "goal": 4.0,
-            "color": "#382D1A",
+            "color": "#AF880F",
             "story": "Students average 6.0 hours of daily study. Driven by intense 'extremely high stress' workloads, academic demands consistently compress other life rings."
         },
         {
             "activity": "Screen Time",
             "hours": 2.5,
             "goal": 1.5,
-            "color": "#614E2D",
+            "color": "#E1B223",
             "story": "Accounting for 2.5 hours. The dataset reveals device interaction before bed is 'often (5-6 times a week)', fueling insomnia loops."
         },
         {
             "activity": "Sleep Focus",
             "hours": 6.5,
             "goal": 8.0,
-            "color": "#8A6E3F",
+            "color": "#FFDC72",
             "story": "With an average of only 6.5 hours, this ring fails to close, directly causing a cascading impact on recent 'Poor' academic performance benchmarks."
         },
         {
             "activity": "Pre-Bedtime Routine",
             "hours": 1.5,
             "goal": 2.0,
-            "color": "#B38F52",
+            "color": "#F2C94C",
             "story": "A 1.5-hour evening block characterized by checking phones, streaming, or consuming caffeine to battle midnight deadlines."
         },
         {
             "activity": "Physical Exercise",
             "hours": 1.0,
             "goal": 1.0,
-            "color": "#D6AC62",
+            "color": "#FFE79D",
             "story": "Averaging a slim 1.0 hours. Physical activity outlets are the first routines dropped when study and screen times spike."
         }
     ]

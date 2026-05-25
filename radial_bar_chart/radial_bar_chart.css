@@ -1,7 +1,7 @@
 :root {
-    --bg-color: #000000;
+    --bg-color: #1a1032;
     --card-bg: rgba(20, 20, 25, 0.95);
-    --border-color: #26262b;
+    --border-color: #715DB7;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
 }
 
 .sticky-visual-center {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100vw;
@@ -47,6 +47,7 @@ svg {
     position: relative;
     z-index: 2;
     width: 100%;
+    margin-top: -100vh;
 }
 
 .step {
@@ -81,7 +82,7 @@ svg {
 
 /* Apple-inspired translucent blur content box */
 .content-box {
-    background: rgba(10, 10, 12, 0.7);
+    background: 3E2496(85, 85, 165, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     padding: 35px 45px;
