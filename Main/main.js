@@ -24,11 +24,11 @@ var colColors = ["#f0c040", "#9b7fea", "#7bb8ea", "#e88dc4"];
 
 
 function drawSankey() {
-    d3.select("svg").selectAll("*").remove();
+    d3.select("#sankey-svg").selectAll("*").remove();
 
     var w = window.innerWidth;
     var h = window.innerHeight;
-    var svg = d3.select("svg");
+    var svg = d3.select("#sankey-svg");
 
     // title
     svg.append("text")
@@ -62,7 +62,7 @@ function drawSankey() {
     html += '<div style="display:flex;align-items:center;gap:8px;">';
     html += '<span style="font-size:10px;color:#7b6b99;text-transform:uppercase;letter-spacing:0.05em;">Study Load</span>';
     html += '<div style="display:flex;gap:3px;">';
-    ["Light", "Moderate", "Heavy"].forEach(function(lab) {
+    ["Light", "Moderate", "Heavy"].forEach(function (lab) {
         var active = activeFilters.study === lab;
         var s = active
             ? "background:#2d1f6e;border:1px solid #a07cff;color:#c4b0ff;"
@@ -95,10 +95,10 @@ function drawSankey() {
     fo.append("xhtml:div").html(html);
 
 
-    d3.csv("../dataset/student_sleep_patterns.csv").then(function(raw) {
+    d3.csv("../dataset/student_sleep_patterns.csv").then(function (raw) {
 
         // parse + bin everything
-        raw.forEach(function(d) {
+        raw.forEach(function (d) {
             d.sleepDuration = +d.Sleep_Duration;
             d.studyHrs = +d.Study_Hours;
             d.screenTime = +d.Screen_Time;
@@ -139,7 +139,7 @@ function drawSankey() {
         });
 
         // apply filters
-        var filtered = raw.filter(function(d) {
+        var filtered = raw.filter(function (d) {
             if (activeFilters.study !== null && d.studyBin !== activeFilters.study) return false;
             if (activeFilters.activity !== null && d.actBin !== activeFilters.activity) return false;
             return true;
@@ -188,10 +188,10 @@ function drawSankey() {
 
         // which column each node is in
         var colMap = {};
-        caffNodes.forEach(function(n) { colMap[n] = 0; });
-        sleepNodes.forEach(function(n) { colMap[n] = 1; });
-        qualNodes.forEach(function(n) { colMap[n] = 2; });
-        scrNodes.forEach(function(n) { colMap[n] = 3; });
+        caffNodes.forEach(function (n) { colMap[n] = 0; });
+        sleepNodes.forEach(function (n) { colMap[n] = 1; });
+        qualNodes.forEach(function (n) { colMap[n] = 2; });
+        scrNodes.forEach(function (n) { colMap[n] = 3; });
 
         var nodes = [];
         for (var ni = 0; ni < allNames.length; ni++) {
@@ -204,13 +204,13 @@ function drawSankey() {
 
         // count flows between columns
         var linkMap = {};
-        filtered.forEach(function(d) {
+        filtered.forEach(function (d) {
             var pairs = [
                 [d.caffBin, d.sleepBin],
                 [d.sleepBin, d.qualBin],
                 [d.qualBin, d.screenBin]
             ];
-            pairs.forEach(function(p) {
+            pairs.forEach(function (p) {
                 var k = p[0] + "||" + p[1];
                 if (!linkMap[k]) linkMap[k] = { source: p[0], target: p[1], value: 0 };
                 linkMap[k].value++;
@@ -218,7 +218,7 @@ function drawSankey() {
         });
 
         var links = [];
-        Object.keys(linkMap).forEach(function(k) {
+        Object.keys(linkMap).forEach(function (k) {
             var e = linkMap[k];
             if (e.value > 0) {
                 links.push({
@@ -241,18 +241,18 @@ function drawSankey() {
 
         // keep nodes in our order
         var order = {};
-        allNames.forEach(function(n, i) { order[n] = i; });
+        allNames.forEach(function (n, i) { order[n] = i; });
 
         var layout = d3.sankey()
             .nodeWidth(16)
             .nodePadding(14)
             .nodeAlign(d3.sankeyLeft)
-            .nodeSort(function(a, b) { return order[a.name] - order[b.name]; })
+            .nodeSort(function (a, b) { return order[a.name] - order[b.name]; })
             .extent([[0, 0], [sWidth, sHeight]]);
 
         var data = layout({
-            nodes: nodes.map(function(d) { return Object.assign({}, d); }),
-            links: links.map(function(d) { return Object.assign({}, d); })
+            nodes: nodes.map(function (d) { return Object.assign({}, d); }),
+            links: links.map(function (d) { return Object.assign({}, d); })
         });
 
         // draw the links
@@ -263,30 +263,30 @@ function drawSankey() {
             .append("path")
             .attr("class", "link")
             .attr("d", d3.sankeyLinkHorizontal())
-            .attr("stroke-width", function(d) { return Math.max(1.5, d.width); })
-            .attr("stroke", function(d) { return colColors[colMap[d.source.name]]; })
+            .attr("stroke-width", function (d) { return Math.max(1.5, d.width); })
+            .attr("stroke", function (d) { return colColors[colMap[d.source.name]]; })
             .attr("stroke-opacity", 0.3)
             .attr("fill", "none")
             .style("cursor", "pointer");
 
         // link hover
-        linkEls.on("mouseover", function(d) {
-                d3.select(this).attr("stroke-opacity", 0.7);
-                var pct = ((d.value / count) * 100).toFixed(1);
-                var tip = "<strong>" + d.value + " students</strong> (" + pct + "%)<br>";
-                tip += "<span style='color:" + colColors[colMap[d.source.name]] + "'>" + d.source.name + "</span>";
-                tip += " → ";
-                tip += "<span style='color:" + colColors[colMap[d.target.name]] + "'>" + d.target.name + "</span>";
-                var tt = document.getElementById("tooltip");
-                tt.innerHTML = tip;
-                tt.style.opacity = 1;
-            })
-            .on("mousemove", function() {
+        linkEls.on("mouseover", function (d) {
+            d3.select(this).attr("stroke-opacity", 0.7);
+            var pct = ((d.value / count) * 100).toFixed(1);
+            var tip = "<strong>" + d.value + " students</strong> (" + pct + "%)<br>";
+            tip += "<span style='color:" + colColors[colMap[d.source.name]] + "'>" + d.source.name + "</span>";
+            tip += " → ";
+            tip += "<span style='color:" + colColors[colMap[d.target.name]] + "'>" + d.target.name + "</span>";
+            var tt = document.getElementById("tooltip");
+            tt.innerHTML = tip;
+            tt.style.opacity = 1;
+        })
+            .on("mousemove", function () {
                 var tt = document.getElementById("tooltip");
                 tt.style.left = (d3.event.pageX + 15) + "px";
                 tt.style.top = (d3.event.pageY - 10) + "px";
             })
-            .on("mouseout", function(d) {
+            .on("mouseout", function (d) {
                 if (highlightedNode !== null) {
                     var connected = d.source.name === highlightedNode || d.target.name === highlightedNode;
                     d3.select(this).attr("stroke-opacity", connected ? 0.65 : 0.05);
@@ -304,18 +304,18 @@ function drawSankey() {
             .enter()
             .append("rect")
             .attr("class", "node")
-            .attr("x", function(d) { return d.x0; })
-            .attr("y", function(d) { return d.y0; })
-            .attr("width", function(d) { return d.x1 - d.x0; })
-            .attr("height", function(d) { return Math.max(2, d.y1 - d.y0); })
-            .attr("fill", function(d) { return colColors[colMap[d.name]]; })
+            .attr("x", function (d) { return d.x0; })
+            .attr("y", function (d) { return d.y0; })
+            .attr("width", function (d) { return d.x1 - d.x0; })
+            .attr("height", function (d) { return Math.max(2, d.y1 - d.y0); })
+            .attr("fill", function (d) { return colColors[colMap[d.name]]; })
             .attr("stroke", "#1a1032")
             .attr("stroke-width", 1)
             .attr("rx", 3)
             .style("cursor", "pointer");
 
         // click node to highlight
-        nodeEls.on("click", function(d) {
+        nodeEls.on("click", function (d) {
             if (highlightedNode === d.name) {
                 highlightedNode = null;
                 linkEls.attr("stroke-opacity", 0.3);
@@ -323,7 +323,7 @@ function drawSankey() {
             } else {
                 highlightedNode = d.name;
                 linkEls.attr("stroke-opacity", 0.05);
-                linkEls.each(function(lnk) {
+                linkEls.each(function (lnk) {
                     if (lnk.source.name === d.name || lnk.target.name === d.name) {
                         d3.select(this).attr("stroke-opacity", 0.65);
                     }
@@ -341,19 +341,19 @@ function drawSankey() {
             }
         });
 
-        nodeEls.on("mouseover", function(d) {
-                d3.select(this).attr("fill-opacity", 0.8);
-                var pct = ((d.value / count) * 100).toFixed(1);
-                var tt = document.getElementById("tooltip");
-                tt.innerHTML = "<strong>" + d.name + "</strong><br>" + d.value + " students (" + pct + "%)";
-                tt.style.opacity = 1;
-            })
-            .on("mousemove", function() {
+        nodeEls.on("mouseover", function (d) {
+            d3.select(this).attr("fill-opacity", 0.8);
+            var pct = ((d.value / count) * 100).toFixed(1);
+            var tt = document.getElementById("tooltip");
+            tt.innerHTML = "<strong>" + d.name + "</strong><br>" + d.value + " students (" + pct + "%)";
+            tt.style.opacity = 1;
+        })
+            .on("mousemove", function () {
                 var tt = document.getElementById("tooltip");
                 tt.style.left = (d3.event.pageX + 15) + "px";
                 tt.style.top = (d3.event.pageY - 10) + "px";
             })
-            .on("mouseout", function() {
+            .on("mouseout", function () {
                 d3.select(this).attr("fill-opacity", 1);
                 document.getElementById("tooltip").style.opacity = 0;
             });
@@ -365,23 +365,23 @@ function drawSankey() {
             .enter()
             .append("text")
             .attr("class", "lbl")
-            .attr("x", function(d) {
+            .attr("x", function (d) {
                 return colMap[d.name] === 0 ? d.x0 - 8 : d.x1 + 8;
             })
-            .attr("y", function(d) { return (d.y0 + d.y1) / 2; })
-            .attr("text-anchor", function(d) {
+            .attr("y", function (d) { return (d.y0 + d.y1) / 2; })
+            .attr("text-anchor", function (d) {
                 return colMap[d.name] === 0 ? "end" : "start";
             })
             .attr("dominant-baseline", "middle")
             .attr("fill", colors.labelText)
             .attr("font-size", "11px")
             .attr("font-family", "sans-serif")
-            .text(function(d) { return d.name + " (" + d.value + ")"; });
+            .text(function (d) { return d.name + " (" + d.value + ")"; });
 
         // column headers
         var headers = ["Caffeine Intake", "Sleep Duration", "Sleep Quality", "Screen Time"];
         var colX = [null, null, null, null];
-        data.nodes.forEach(function(d) {
+        data.nodes.forEach(function (d) {
             var c = colMap[d.name];
             if (colX[c] === null) colX[c] = (d.x0 + d.x1) / 2;
         });
@@ -407,7 +407,7 @@ function drawSankey() {
             var curveY = baseY + 18;
 
             svg.append("path")
-                .attr("d", "M " + startX + " " + baseY + " Q " + (w/2) + " " + curveY + " " + endX + " " + baseY)
+                .attr("d", "M " + startX + " " + baseY + " Q " + (w / 2) + " " + curveY + " " + endX + " " + baseY)
                 .attr("fill", "none")
                 .attr("stroke", colors.hintText)
                 .attr("stroke-width", 1)
@@ -418,8 +418,8 @@ function drawSankey() {
             svg.append("polygon")
                 .attr("points",
                     endX + "," + baseY + " " +
-                    (endX+8) + "," + (baseY-4) + " " +
-                    (endX+8) + "," + (baseY+4))
+                    (endX + 8) + "," + (baseY - 4) + " " +
+                    (endX + 8) + "," + (baseY + 4))
                 .attr("fill", colors.hintText)
                 .attr("opacity", 0.5);
 
@@ -447,23 +447,23 @@ function drawSankey() {
         // narrative text at the bottom
         function getMode(arr, fn) {
             var tmp = {};
-            arr.forEach(function(d) {
+            arr.forEach(function (d) {
                 var v = fn(d);
                 if (!tmp[v]) tmp[v] = 0;
                 tmp[v]++;
             });
             var best = null;
             var bestN = 0;
-            Object.keys(tmp).forEach(function(v) {
+            Object.keys(tmp).forEach(function (v) {
                 if (tmp[v] > bestN) { bestN = tmp[v]; best = v; }
             });
             return { value: best, count: bestN };
         }
 
-        var mCaff = getMode(filtered, function(d) { return d.caffBin; });
-        var mSleep = getMode(filtered, function(d) { return d.sleepBin; });
-        var mQual = getMode(filtered, function(d) { return d.qualBin; });
-        var mScreen = getMode(filtered, function(d) { return d.screenBin; });
+        var mCaff = getMode(filtered, function (d) { return d.caffBin; });
+        var mSleep = getMode(filtered, function (d) { return d.sleepBin; });
+        var mQual = getMode(filtered, function (d) { return d.qualBin; });
+        var mScreen = getMode(filtered, function (d) { return d.screenBin; });
 
         var badSleep = mSleep.value === "< 5 hrs" || mSleep.value === "5-6 hrs";
         var badQual = mQual.value === "Poor" || mQual.value === "Fair";
@@ -494,7 +494,7 @@ function drawSankey() {
             .attr("font-family", "sans-serif")
             .text(narr);
 
-    }).catch(function(err) {
+    }).catch(function (err) {
         console.log("csv load error:", err);
         svg.append("text")
             .attr("x", w / 2).attr("y", h / 2)
