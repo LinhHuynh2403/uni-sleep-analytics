@@ -104,7 +104,8 @@ function drawActivityRings(callback) {
 
     // Hover Interactive States for both ring types
     svg.selectAll(".foreground-arc, .overflow-arc")
-        .on("mouseover", function (event, d) {
+        .on("mouseover", function (a, b) {
+            const d = (a && a.activity) ? a : b;
             const isStudy = d.activity === "Study Hours";
             const suffix = isStudy ? "average" : (d.activity === "Screen Time" ? "recommended" : "goal");
             const unit = isStudy ? "hrs" : "h";
@@ -295,17 +296,54 @@ const scrollObserver = new IntersectionObserver((entries) => {
     });
 }, { root: null, threshold: 0.6 });
 
-// --- Async Data Load Initialization ---
-d3.json("student_activity_rings.json").then(data => {
-    complexData = data;
+// --- Data Load Initialization ---
+complexData = {
+    "intro": {
+        "deficit_pct": 58.2
+    },
+    "rings": [
+        {
+            "activity": "Study Hours",
+            "hours": 6.0,
+            "goal": 4.0,
+            "color": "#382D1A",
+            "story": "Students average 6.0 hours of daily study. Driven by intense 'extremely high stress' workloads, academic demands consistently compress other life rings."
+        },
+        {
+            "activity": "Screen Time",
+            "hours": 2.5,
+            "goal": 1.5,
+            "color": "#614E2D",
+            "story": "Accounting for 2.5 hours. The dataset reveals device interaction before bed is 'often (5-6 times a week)', fueling insomnia loops."
+        },
+        {
+            "activity": "Sleep Focus",
+            "hours": 6.5,
+            "goal": 8.0,
+            "color": "#8A6E3F",
+            "story": "With an average of only 6.5 hours, this ring fails to close, directly causing a cascading impact on recent 'Poor' academic performance benchmarks."
+        },
+        {
+            "activity": "Pre-Bedtime Routine",
+            "hours": 1.5,
+            "goal": 2.0,
+            "color": "#B38F52",
+            "story": "A 1.5-hour evening block characterized by checking phones, streaming, or consuming caffeine to battle midnight deadlines."
+        },
+        {
+            "activity": "Physical Exercise",
+            "hours": 1.0,
+            "goal": 1.0,
+            "color": "#D6AC62",
+            "story": "Averaging a slim 1.0 hours. Physical activity outlets are the first routines dropped when study and screen times spike."
+        }
+    ]
+};
 
-    // Draw immediately, then run the initial highlight configuration once complete
-    drawActivityRings(() => {
-        updateHighlights('intro-step');
-    });
-
-    // Bind scroll updates safely
-    document.querySelectorAll('.step').forEach(section => scrollObserver.observe(section));
-}).catch(error => {
-    console.error("Error loading JSON parameters:", error);
+// Draw immediately, then run the initial highlight configuration once complete
+drawActivityRings(() => {
+    updateHighlights('intro-step');
 });
+
+// Bind scroll updates safely
+document.querySelectorAll('.step').forEach(section => scrollObserver.observe(section));
