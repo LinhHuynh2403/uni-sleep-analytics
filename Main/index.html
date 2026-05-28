@@ -161,9 +161,75 @@
 	</div>
 
 	<!-- heatmap -->
-	<div style="padding:40px;text-align:center; height: 100vh;">
-		<h1 style="color:#e8dff5;font-size:28px;"> graph 3</h1>
-		<p style="color:#7b6b99;"> bah blah blah </p>
+	<link rel="stylesheet" href="../heatmap/heatmap.css"> 
+	<div class="viewport-container" style="padding: 40px 20px;">
+		
+		<section class="summary-card">
+			<h2>The Causal Cascade Observed</h2>
+			<p style="color: #cbd5e1; margin-bottom: 10px;">
+				Statistical modeling across these combined datasets highlights a distinct chain of events: 
+				underlying lifestyle factors (such as screen time, high stress, and late sleep midpoints) 
+				directly degrade sleep patterns. This sleep disruption cascades into academic performance, 
+				causing measurable drops in term GPAs, decreased focus during lectures, and higher rates of absenteeism.
+			</p>
+			<div class="quick-metrics-grid">
+				<div class="metric-block critical-neg">
+					<span class="value-node">-0.99</span>
+					<span class="label-node">Screen Time to Sleep Hours <em>(r)</em></span>
+				</div>
+				<div class="metric-block optimal-pos">
+					<span class="value-node">+0.99</span>
+					<span class="label-node">Physical Activity to Sleep Hours <em>(r)</em></span>
+				</div>
+				<div class="metric-block critical-neg">
+					<span class="value-node">-0.83</span>
+					<span class="label-node">Stress Level to Sleep Hours <em>(r)</em></span>
+				</div>
+				<div class="metric-block optimal-pos">
+					<span class="value-node">+0.24</span>
+					<span class="label-node">Total Sleep Time to Term GPA <em>(r)</em></span>
+				</div>
+			</div>
+		</section>
+
+		<section class="workspace-grid">
+			<div class="panel matrix-wrapper">
+				<div class="panel-heading">
+					<h2>1. Dataset Matrix Landscapes</h2>
+					<div class="control-box">
+						<label for="dataset-dropdown">Target Study: </label>
+						<select id="dataset-dropdown">
+							<option value="dataset1">Dataset 1: Student Insomnia & Survey Outcomes</option>
+							<option value="dataset2" selected>Dataset 2: CMU Wearable Sensor Sleep Study</option>
+							<option value="dataset3">Dataset 3: Student Sleep Patterns & Hours</option>
+							<option value="dataset4">Dataset 4: Bedtime Routine & Habits Survey</option>
+							<option value="dataset5">Dataset 5: Mental Health & Social Media Metrics</option>
+						</select>
+					</div>
+				</div>
+				<p class="panel-narrative">Hover over individual matrix tiles to analyze specific variable relationships via floating cursor text indicators.</p>
+				
+				<div id="heatmap-render-target"></div>
+			</div>
+		</section>
+
+		<section class="panel chart-wrapper">
+			<h2>2. Top 10 Lifestyle Factors Directly Affecting Sleep</h2>
+			<p class="panel-narrative">Click on any horizontal bar below to trace how that specific environmental input or behavioral trait impacts baseline rest parameters.</p>
+			<div class="split-chart-layout">
+				<div id="barchart-render-target"></div>
+				<div class="narrative-viewer">
+					<h3>Cascade Impact Breakdown</h3>
+					<div id="factor-narrative-target">
+						<p class="fallback-style">Click on a parameter bar in the visualization layout to load its clinical downstream narrative.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+		<script src="https://d3js.org/d3.v7.min.js"></script> 
+		<script src="../heatmap/correlation_matrices.js"></script>
+		<script src="../heatmap/heatmap.js"></script>
 	</div>
 
 	<div id="sankey-container" style="width:100%;height:100vh;">

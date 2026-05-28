@@ -1,14 +1,15 @@
 :root {
-    --canvas-bg: #f8fafc;
-    --card-surface: #ffffff;
-    --text-dark: #0f172a;
-    --text-slate: #64748b;
-    --accent-tint: #4f46e5;
-    --accent-glow: #eef2ff;
-    --border-line: #cbd5e1;
-    --green-emerald: #10b981;
-    --red-rose: #f43f5e;
-    --body-font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Updated for the index.html dark theme color scheme */
+    --canvas-bg: #1a1032;         /* Matches index.html's body background */
+    --card-surface: #241942;      /* A slightly lighter purple layer for containers */
+    --text-dark: #e8dff5;         /* Crisp lilac text for deep dark readability */
+    --text-slate: #7b6b99;        /* Suted label text */
+    --accent-tint: #a078ff;        /* Electric purple neon accent text */
+    --accent-glow: rgba(160, 120, 255, 0.1);
+    --border-line: rgba(160, 120, 255, 0.2);
+    --green-emerald: #10b981;     /* Keep for positive correlation flags */
+    --red-rose: #f43f5e;          /* Keep for negative correlation flags */
+    --body-font: sans-serif;
 }
 
 * {
@@ -24,36 +25,6 @@ body {
     line-height: 1.5;
 }
 
-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    color: #ffffff;
-    padding: 40px 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: 6px;
-}
-
-header p {
-    color: #94a3b8;
-    font-size: 1.05rem;
-}
-
-.viewport-container {
-    max-width: 1240px;
-    margin: 30px auto;
-    padding: 0 20px;
-}
-
 /* Strategic Overview Component Layout */
 .summary-card {
     background-color: var(--card-surface);
@@ -61,13 +32,13 @@ header p {
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .summary-card h2, .panel h2 {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text-dark);
     margin-bottom: 8px;
 }
 
@@ -81,7 +52,7 @@ header p {
 .metric-block {
     padding: 16px;
     border-radius: 8px;
-    background-color: #f8fafc;
+    background-color: rgba(30, 18, 60, 0.5);
     border-left: 5px solid var(--border-line);
 }
 
@@ -93,8 +64,8 @@ header p {
     font-size: 1.8rem;
     font-weight: 800;
 }
-.critical-neg .value-node { color: #9f1239; }
-.optimal-pos .value-node { color: #065f46; }
+.critical-neg .value-node { color: #ff6b8b; }
+.optimal-pos .value-node { color: #34d399; }
 
 .label-node {
     font-size: 0.85rem;
@@ -115,7 +86,7 @@ header p {
     border: 1px solid var(--border-line);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .panel-heading {
@@ -124,7 +95,7 @@ header p {
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-line);
     padding-bottom: 12px;
     margin-bottom: 12px;
 }
@@ -132,6 +103,7 @@ header p {
 .control-box label {
     font-weight: 700;
     font-size: 0.9rem;
+    color: var(--text-dark);
 }
 
 .control-box select {
@@ -140,7 +112,8 @@ header p {
     border: 1px solid var(--border-line);
     font-family: inherit;
     font-weight: 600;
-    background-color: #fff;
+    background-color: #1e123c;
+    color: var(--text-dark);
     cursor: pointer;
 }
 
@@ -150,15 +123,31 @@ header p {
     margin-bottom: 20px;
 }
 
+/* Update the heatmap container workspace to prevent label clipping */
 #heatmap-render-target {
     width: 100%;
     overflow-x: auto;
+    padding-top: 10px;
 }
 
-.axis-label text, .legend-axis text {
-    font-size: 10.5px;
+/* Ensure the layout axis path matches your dark theme theme aesthetics */
+.axis-label path, .axis-label line {
+    stroke: var(--border-line);
+}
+
+/* Tooltip micro-styling config for D3 mouse-tracking indicators */
+.minimal-heatmap-tooltip {
+    position: absolute;
+    background-color: rgba(30, 18, 60, 0.95);
+    color: #e8dff5;
+    padding: 6px 10px;
+    border: 1px solid rgba(160, 120, 255, 0.3);
+    border-radius: 4px;
+    font-size: 12px;
     font-weight: 600;
-    fill: #334155;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
 }
 
 .legend-axis line, .legend-axis path {
@@ -202,7 +191,7 @@ header p {
 }
 
 .narrative-viewer {
-    background-color: #f8fafc;
+    background-color: #1e123c;
     border: 1px solid var(--border-line);
     border-radius: 8px;
     padding: 20px;
@@ -224,14 +213,5 @@ header p {
     margin-bottom: 14px;
 }
 
-.active-factor-badge.negative { background-color: #ffe4e6; color: #9f1239; }
-.active-factor-badge.positive { background-color: #d1fae5; color: #065f46; }
-
-footer {
-    text-align: center;
-    color: var(--text-slate);
-    font-size: 0.85rem;
-    padding: 40px 20px;
-    border-top: 1px solid var(--border-line);
-    margin-top: 40px;
-}
+.active-factor-badge.negative { background-color: rgba(244, 63, 94, 0.2); color: #ff6b8b; }
+.active-factor-badge.positive { background-color: rgba(16, 185, 129, 0.2); color: #34d399; }
