@@ -162,11 +162,11 @@
 
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../heatmap/heatmap.css"> 
-	<div class="viewport-container" style="padding: 40px 20px; min-height: 100vh;">
+	<div class="viewport-container" style="padding: 40px 20px;">
 		
-		<section class="summary-card" style="color: #0f172a; margin-bottom: 40px;">
-			<h2 style="color: #1e293b;">The Causal Cascade Observed</h2>
-			<p>
+		<section class="summary-card">
+			<h2>The Causal Cascade Observed</h2>
+			<p style="color: #cbd5e1; margin-bottom: 10px;">
 				Statistical modeling across these combined datasets highlights a distinct chain of events: 
 				underlying lifestyle factors (such as screen time, high stress, and late sleep midpoints) 
 				directly degrade sleep patterns. This sleep disruption cascades into academic performance, 
@@ -175,25 +175,25 @@
 			<div class="quick-metrics-grid">
 				<div class="metric-block critical-neg">
 					<span class="value-node">-0.99</span>
-					<span class="label-node">Screen Time to Sleep Hours ($r$)</span>
+					<span class="label-node">Screen Time to Sleep Hours <em>(r)</em></span>
 				</div>
 				<div class="metric-block optimal-pos">
 					<span class="value-node">+0.99</span>
-					<span class="label-node">Physical Activity to Sleep Hours ($r$)</span>
+					<span class="label-node">Physical Activity to Sleep Hours <em>(r)</em></span>
 				</div>
 				<div class="metric-block critical-neg">
 					<span class="value-node">-0.83</span>
-					<span class="label-node">Stress Level to Sleep Hours ($r$)</span>
+					<span class="label-node">Stress Level to Sleep Hours <em>(r)</em></span>
 				</div>
 				<div class="metric-block optimal-pos">
 					<span class="value-node">+0.24</span>
-					<span class="label-node">Total Sleep Time to Term GPA ($r$)</span>
+					<span class="label-node">Total Sleep Time to Term GPA <em>(r)</em></span>
 				</div>
 			</div>
 		</section>
 
 		<section class="workspace-grid">
-			<div class="panel matrix-wrapper" style="color: #0f172a;">
+			<div class="panel matrix-wrapper">
 				<div class="panel-heading">
 					<h2>1. Dataset Matrix Landscapes</h2>
 					<div class="control-box">
@@ -210,23 +210,23 @@
 				<p class="panel-narrative">Hover over individual matrix tiles to analyze specific variable relationships via floating cursor text indicators.</p>
 				
 				<div id="heatmap-render-target"></div>
-				<div id="matrix-legend-target"></div>
 			</div>
 		</section>
 
-		<section class="panel chart-wrapper" style="color: #0f172a; margin-top: 40px;">
+		<section class="panel chart-wrapper">
 			<h2>2. Top 10 Lifestyle Factors Directly Affecting Sleep</h2>
 			<p class="panel-narrative">Click on any horizontal bar below to trace how that specific environmental input or behavioral trait impacts baseline rest parameters.</p>
 			<div class="split-chart-layout">
 				<div id="barchart-render-target"></div>
 				<div class="narrative-viewer">
-					<h3 class="active-factor-title" style="margin-bottom:10px;">Cascade Impact Breakdown</h3>
+					<h3>Cascade Impact Breakdown</h3>
 					<div id="factor-narrative-target">
 						<p class="fallback-style">Click on a parameter bar in the visualization layout to load its clinical downstream narrative.</p>
 					</div>
 				</div>
 			</div>
 		</section>
+	</div>
 		<script src="https://d3js.org/d3.v7.min.js"></script> 
 		<script src="../heatmap/correlation_matrices.js"></script>
 		<script src="../heatmap/heatmap.js"></script>
