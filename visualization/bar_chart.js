@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Set up dimensions and margins for the entire SVG
+    // Set up dimensions and margins for the single central SVG
     const width = 800;
-    const height = 600;
-    const margin = {top: 40, right: 30, bottom: 60, left: 50};
+    const height = 650;
+    const margin = {top: 60, right: 40, bottom: 80, left: 70};
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
     
     // Create the main SVG container
     const svg = d3.select("#d3-container")
@@ -13,152 +15,189 @@ document.addEventListener("DOMContentLoaded", () => {
       .style("width", "100%")
       .style("height", "100%");
       
+    const chartGroup = svg.append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+      
     // Load the dataset from data.js
     const data = d3.csvParse(rawCsvData);
     
     // Clean and prepare the data
-        data.forEach(d => {
-            d.Sleep_Duration = +d.Sleep_Duration;
+    data.forEach(d => {
+        d.Sleep_Duration = +d.Sleep_Duration;
+    });
+
+    // Define color scale based on steps
+    const colorScale = {
+        "intro": "#94a3b8", // Neutral slate for all students
+        "1st Year": "var(--color-1)",
+        "2nd Year": "var(--color-2)",
+        "3rd Year": "var(--color-3)",
+        "4th Year": "var(--color-4)"
+    };
+    
+    // Group data by year for easy access
+    const dataByYear = d3.group(data, d => d.University_Year);
+    
+    // Add an "intro" group that contains all data
+    dataByYear.set("intro", data);
+
+    // Define X scale (hours of sleep)
+    const x = d3.scaleLinear()
+        .domain([3, 11])
+        .range([0, innerWidth]);
+
+    // Histogram generator (15 bins)
+    const histogram = d3.bin()
+        .value(d => d.Sleep_Duration)
+        .domain(x.domain())
+        .thresholds(x.ticks(15));
+        
+    // Pre-calculate bins for all steps to find the global max Y
+    const binsByStep = {};
+    let yMax = 0;
+    
+    ["intro", "1st Year", "2nd Year", "3rd Year", "4th Year"].forEach(step => {
+        const stepData = dataByYear.get(step) || [];
+        const bins = histogram(stepData);
+        binsByStep[step] = bins;
+        yMax = Math.max(yMax, d3.max(bins, d => d.length));
+    });
+
+    // Define Y scale
+    const y = d3.scaleLinear()
+        .domain([0, yMax])
+        .range([innerHeight, 0]);
+
+    // Draw Axes
+    const xAxis = d3.axisBottom(x).ticks(8);
+    chartGroup.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0,${innerHeight})`)
+        .call(xAxis)
+        .selectAll("path, line")
+        .attr("class", "domain");
+
+    const yAxis = d3.axisLeft(y).ticks(6);
+    chartGroup.append("g")
+        .attr("class", "y-axis")
+        .call(yAxis)
+        .selectAll("path, line")
+        .attr("class", "domain");
+
+    // Axis Labels
+    chartGroup.append("text")
+        .attr("class", "axis-label")
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight + 50)
+        .attr("text-anchor", "middle")
+        .text("Hours of Sleep");
+
+    chartGroup.append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -50)
+        .attr("x", -innerHeight / 2)
+        .attr("text-anchor", "middle")
+        .text("Number of Students");
+        
+    // Dynamic Chart Title
+    const chartTitle = chartGroup.append("text")
+        .attr("class", "chart-title")
+        .attr("x", innerWidth / 2)
+        .attr("y", -20)
+        .attr("text-anchor", "middle")
+        .text("All University Students");
+
+    // 7h Reference Line (Static)
+    chartGroup.append("line")
+        .attr("class", "reference-line")
+        .attr("x1", x(7))
+        .attr("x2", x(7))
+        .attr("y1", 0)
+        .attr("y2", innerHeight);
+        
+    // Dynamic <7h Annotation
+    const annotationText = chartGroup.append("text")
+        .attr("class", "annotation-text")
+        .attr("x", x(6.8))
+        .attr("y", 20)
+        .attr("text-anchor", "end");
+
+    // Bar drawing logic
+    function updateChart(stepName) {
+        if (!binsByStep[stepName]) return;
+        
+        const bins = binsByStep[stepName];
+        const stepData = dataByYear.get(stepName);
+        
+        // Update Title
+        const titleText = stepName === "intro" ? "All University Students" : stepName;
+        chartTitle.text(titleText);
+        
+        // Update Annotation
+        const below7 = stepData.filter(d => d.Sleep_Duration < 7).length;
+        const total = stepData.length;
+        const pct = ((below7 / total) * 100).toFixed(1);
+        annotationText.text(`${pct}% < 7h`)
+            .style("fill", stepName === "intro" ? "var(--accent-color)" : colorScale[stepName]);
+            
+        // Data join
+        const bars = chartGroup.selectAll(".bar")
+            .data(bins);
+            
+        // Enter + Update
+        bars.enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(d.x0) + 1)
+            .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
+            .attr("y", innerHeight) // Start from bottom
+            .attr("height", 0)
+            .merge(bars)
+            .transition()
+            .duration(800)
+            .ease(d3.easeCubicOut)
+            .attr("x", d => x(d.x0) + 1)
+            .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
+            .attr("y", d => y(d.length))
+            .attr("height", d => innerHeight - y(d.length))
+            .style("fill", colorScale[stepName]);
+            
+        // Exit
+        bars.exit()
+            .transition()
+            .duration(800)
+            .attr("y", innerHeight)
+            .attr("height", 0)
+            .remove();
+    }
+
+    // Initialize with "intro"
+    updateChart("intro");
+
+    // Scroll Interactivity via IntersectionObserver
+    const steps = document.querySelectorAll(".step");
+    
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Remove active class from all
+                steps.forEach(s => s.classList.remove("active"));
+                
+                // Add active class to current
+                const stepElement = entry.target;
+                stepElement.classList.add("active");
+                
+                // Update chart
+                const stepName = stepElement.getAttribute("data-step");
+                updateChart(stepName);
+            }
         });
-
-        // Define the order of years and map them to colors
-        const yearOrder = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
-        const colorScale = d3.scaleOrdinal()
-            .domain(yearOrder)
-            .range(["var(--color-1)", "var(--color-2)", "var(--color-3)", "var(--color-4)"]);
-
-        // Create a grid layout (2x2)
-        const cols = 2;
-        const rows = 2;
-        
-        // Calculate dimensions for each subplot
-        const subWidth = (width - margin.left - margin.right) / cols;
-        const subHeight = (height - margin.top - margin.bottom) / rows;
-        
-        // Define common X scale (hours of sleep)
-        const xDomain = d3.extent(data, d => d.Sleep_Duration);
-        const x = d3.scaleLinear()
-            .domain([3, 11]) // Give a bit of padding around min/max which is roughly 4-9
-            .range([0, subWidth - 30]); // padding between subplots
-
-        // Histogram generator (15 bins)
-        const histogram = d3.bin()
-            .value(d => d.Sleep_Duration)
-            .domain(x.domain())
-            .thresholds(x.ticks(15));
-            
-        // Group data by year
-        const dataByYear = d3.group(data, d => d.University_Year);
-        
-        // Determine the maximum Y value across all groups for consistent Y scale
-        let yMax = 0;
-        const binsByYear = {};
-        
-        yearOrder.forEach(year => {
-            if (dataByYear.has(year)) {
-                const yearData = dataByYear.get(year);
-                const bins = histogram(yearData);
-                binsByYear[year] = bins;
-                yMax = Math.max(yMax, d3.max(bins, d => d.length));
-            }
-        });
-
-        const y = d3.scaleLinear()
-            .domain([0, yMax])
-            .range([subHeight - 40, 0]);
-
-        // Iterate and draw each subplot
-        yearOrder.forEach((year, index) => {
-            const col = index % cols;
-            const row = Math.floor(index / cols);
-            
-            // Calculate translation for this subplot
-            const xOffset = margin.left + (col * subWidth) + (col * 15);
-            const yOffset = margin.top + (row * subHeight) + (row * 20);
-            
-            const g = svg.append("g")
-                .attr("transform", `translate(${xOffset},${yOffset})`);
-                
-            // Draw axes
-            const xAxis = d3.axisBottom(x).ticks(5);
-            g.append("g")
-                .attr("transform", `translate(0,${subHeight - 40})`)
-                .call(xAxis)
-                .selectAll("path, line")
-                .attr("class", "domain");
-
-            // Only add Y axis to left-most plots
-            if (col === 0) {
-                const yAxis = d3.axisLeft(y).ticks(5);
-                g.append("g")
-                    .call(yAxis)
-                    .selectAll("path, line")
-                    .attr("class", "domain");
-                
-                // Y-axis label
-                g.append("text")
-                    .attr("class", "axis-label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", -35)
-                    .attr("x", -(subHeight - 40) / 2)
-                    .attr("text-anchor", "middle")
-                    .text("Number of Students");
-            }
-
-            // X-axis label (only on bottom row)
-            if (row === 1) {
-                g.append("text")
-                    .attr("class", "axis-label")
-                    .attr("x", (subWidth - 30) / 2)
-                    .attr("y", subHeight)
-                    .attr("text-anchor", "middle")
-                    .text("Hours of Sleep");
-            }
-
-            // Subplot Title
-            g.append("text")
-                .attr("class", "subplot-title")
-                .attr("x", (subWidth - 30) / 2)
-                .attr("y", -10)
-                .attr("text-anchor", "middle")
-                .text(year);
-
-            // Draw bars
-            if (binsByYear[year]) {
-                const bins = binsByYear[year];
-                g.selectAll("rect")
-                    .data(bins)
-                    .enter()
-                    .append("rect")
-                    .attr("class", "bar")
-                    .attr("x", 1)
-                    .attr("transform", d => `translate(${x(d.x0)},${y(d.length)})`)
-                    .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
-                    .attr("height", d => subHeight - 40 - y(d.length))
-                    .style("fill", colorScale(year));
-            }
-            
-            // Add 7h Reference Line
-            g.append("line")
-                .attr("class", "reference-line")
-                .attr("x1", x(7))
-                .attr("x2", x(7))
-                .attr("y1", 0)
-                .attr("y2", subHeight - 40);
-                
-            // Add <7h Annotation
-            if (dataByYear.has(year)) {
-                const yearData = dataByYear.get(year);
-                const below7 = yearData.filter(d => d.Sleep_Duration < 7).length;
-                const total = yearData.length;
-                const pct = ((below7 / total) * 100).toFixed(1);
-                
-                g.append("text")
-                    .attr("class", "annotation-text")
-                    .attr("x", x(6.8))
-                    .attr("y", 10)
-                    .attr("text-anchor", "end")
-                    .text(`${pct}% < 7h`);
-            }
-        });
+    }, {
+        root: null,
+        rootMargin: "-45% 0px -45% 0px", // Trigger when element is near the vertical center
+        threshold: 0
+    });
+    
+    steps.forEach(step => observer.observe(step));
 });

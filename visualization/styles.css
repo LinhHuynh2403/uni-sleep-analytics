@@ -1,7 +1,7 @@
 :root {
     --bg-color: #0b0f19;
-    --card-bg: rgba(20, 25, 35, 0.95);
-    --border-color: #1e293b;
+    --card-bg: rgba(20, 25, 35, 0.7);
+    --border-color: rgba(255, 255, 255, 0.05);
     --accent-color: #ff3366;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
@@ -19,139 +19,175 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.dashboard-wrapper {
-    display: flex;
-    flex-direction: row;
-    max-width: 1400px;
+/* Scrollytelling Setup Layout */
+.scrollytelling-wrapper {
+    position: relative;
     width: 100%;
-    padding: 40px;
-    gap: 40px;
-    box-sizing: border-box;
 }
 
-.dashboard-header {
-    flex: 0 0 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.header-content h1 {
-    font-size: 3.2rem;
-    font-weight: 800;
-    margin-top: 0;
-    margin-bottom: 10px;
-    line-height: 1.1;
-    letter-spacing: -1px;
-}
-
-.header-content .subtitle {
-    font-size: 1.5rem;
-    color: var(--text-secondary);
-    margin-bottom: 40px;
-    font-weight: 300;
-}
-
-.context-box {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    padding: 30px;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.context-box h2 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    color: var(--text-primary);
-}
-
-.context-box p {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    font-size: 1.05rem;
-    margin-bottom: 0;
-}
-
-.context-box strong {
-    color: var(--accent-color);
-}
-
-.visual-container {
-    flex: 1;
+.sticky-visual-center {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--card-bg);
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    padding: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    z-index: 1;
+    pointer-events: none;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
 #d3-container {
     width: 100%;
     height: 100%;
+    max-width: 800px;
+    max-height: 700px;
+}
+
+/* Foreground Narrative Steps */
+.story-layers {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-bottom: 50vh; /* padding at the end */
+}
+
+.step {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    pointer-events: none;
+    
+    /* Fade effect based on scroll */
+    opacity: 0.15;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
+    
+    align-items: flex-start;
+    text-align: left;
+    width: 45vw; /* Left side */
+}
+
+.step.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Apple-inspired translucent blur content box */
+.content-box {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 40px 50px;
+    border-radius: 24px;
+    max-width: 550px;
+    pointer-events: auto;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    margin-left: 5vw;
+}
+
+.content-box h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+.content-box p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.content-box strong {
+    color: var(--accent-color);
 }
 
 /* SVG Chart styling */
+svg {
+    pointer-events: auto;
+}
+
 .domain, .tick line {
     stroke: #334155;
 }
 
 .tick text {
     fill: var(--text-secondary);
-    font-size: 11px;
+    font-size: 13px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .axis-label {
     fill: var(--text-secondary);
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
 }
 
-.subplot-title {
+.chart-title {
     fill: var(--text-primary);
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
 }
 
 .reference-line {
     stroke: var(--accent-color);
     stroke-width: 2px;
-    stroke-dasharray: 5,5;
+    stroke-dasharray: 6,6;
 }
 
 .annotation-text {
     fill: var(--accent-color);
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 800;
 }
 
 .bar {
-    opacity: 0.8;
+    opacity: 0.9;
     transition: opacity 0.2s;
 }
 
 .bar:hover {
     opacity: 1;
+    filter: brightness(1.2);
 }
 
-/* Make it responsive */
-@media (max-width: 1024px) {
-    .dashboard-wrapper {
-        flex-direction: column;
+/* Mobile responsiveness */
+@media (max-width: 900px) {
+    .scrollytelling-wrapper.split-mode .sticky-visual-center {
+        width: 100vw;
+        height: 50vh;
+        top: 0;
+        right: 0;
+        padding: 20px;
     }
     
-    .dashboard-header {
-        flex: 0 0 auto;
+    .story-layers {
+        margin-top: 50vh;
+    }
+    
+    .step {
+        width: 100vw;
+        padding: 20px;
+        align-items: center;
+    }
+    
+    .content-box {
+        margin-left: 0;
+        padding: 30px;
+        background: rgba(10, 15, 25, 0.85); /* Darker for readability over chart */
     }
 }
