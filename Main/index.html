@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<title>Student Sleep Data</title>
+	<style>
+		html {
+			scroll-behavior: smooth;
+		}
+
+		/* We allow the iframe to match the height of its scrollytelling steps */
+		.visual-frame {
+			width: 100%;
+			height: 700vh;
+			/* 7 steps total, each 100vh */
+			border: none;
+			display: block;
+			background: transparent;
+			overflow: hidden;
+		}
+	</style>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<link rel="stylesheet" href="../radial_bar_chart/radial_bar_chart.css">
+</head>
+
+<body style="margin:0;background:#1a1032;color:#e8dff5;font-family:sans-serif;">
+
+	<div style="padding:40px;text-align:center; height: 10vh; box-sizing: border-box;">
+		<h1 style="color:#e8dff5;font-size:28px;">The Exhausted Campus</h1>
+		<p style="color:#7b6b99;">An interactive cross-dataset mapping of lifestyle elements transforming student rest.
+		</p>
+	</div>
+
+	<!-- radial graph -->
+	<div class="scrollytelling-wrapper">
+		<div class="sticky-visual-center" id="canvas-target"></div>
+
+		<div class="story-layers">
+
+			<section class="step centered-step active" id="intro-step">
+				<div class="content-box">
+					<h2>The Deficit</h2>
+					<div class="huge-stat">57.2%</div>
+					<p>of university students are surviving on less than 7 hours of sleep a night. College is often
+						celebrated as
+						a time of academic growth and social discovery, but beneath the surface lies a quiet epidemic of
+						exhaustion.
+						The demanding daily rings of a student's life are squeezing out the biological minimums required
+						for healthy
+						rest.</p>
+				</div>
+			</section>
+
+			<section class="step centered-step" id="all-rings">
+				<div class="content-box">
+					<h2>24-Hour Cycle</h2>
+					<p>Here is the full picture of a student's day. Let's break it down layer by layer.</p>
+				</div>
+			</section>
+
+			<section class="step split-step" id="ring-study">
+				<div class="content-box">
+					<h2>Study Hours</h2>
+					<p>
+						Academics claim the crown. While national research suggests undergraduates study an average of
+						4.0 hours a
+						day, our dataset reveals this cohort pushes a massive <strong>6.0 hours of study daily</strong>.
+						Fueled by persistent, high-stress workloads, this above-average demand squeezes the rest of the
+						day—transforming
+						what should be a healthy evening wind-down into a chaotic, late-night balancing act where sleep
+						is the first
+						sacrifice.
+					</p>
+				</div>
+			</section>
+
+			<section class="step split-step" id="ring-screen">
+				<div class="content-box">
+					<h2>Screen Time</h2>
+					<p>Directly following study obligations, screens capture a significant <strong>2.5 hours</strong> of
+						a
+						student's
+						day. While medical guidelines recommend capping recreational screen time to <strong>1.5
+							hours</strong> to
+						protect
+						sleep quality, our data reveals that device interaction right before bed is an
+						<em>almost every-night habit</em> for the vast majority of cohorts. This constant exposure to
+						blue light
+						late into
+						the night blocks melatonin production and delays sleep onset, artificially prolonging
+						wakefulness long after
+						the
+						physical workload has ended.
+					</p>
+				</div>
+			</section>
+
+			<section class="step split-step" id="ring-sleep">
+				<div class="content-box">
+					<h2>Sleep Focus</h2>
+					<p>This is where the system bottlenecks. While health organizations universally mandate an
+						<strong>7.0-hour to
+							9.0-hour
+							goal</strong>
+						for optimal cognitive baseline health, the severe gravitational pull of study requirements and
+						screen
+						engagement
+						shrinks the student sleep window down to a narrow average of just <strong>6.5 hours</strong>.
+						This leaves
+						this crucial
+						ring permanently unclosed, triggering a rolling biological deficit that students carry with them
+						into the
+						next day.
+					</p>
+				</div>
+			</section>
+
+			<section class="step split-step" id="ring-bedtime">
+				<div class="content-box">
+					<h2>Pre-Bedtime Routine</h2>
+					<p>A student's <strong>1.5-hour transitional evening routine</strong> is rarely peaceful. According
+						to our
+						survey datasets,
+						this block is consistently corrupted by midnight caffeine consumption, stress-induced pacing,
+						and lingering
+						assignment anxiety.
+						Instead of serving as a proper wind-down window to ease into rest, this period functions as
+						high-friction
+						"late-night energy"—a
+						main driver for why <strong>28% of surveyed students struggle with clinical insomnia
+							symptoms</strong>.</p>
+				</div>
+			</section>
+
+			<section class="step split-step" id="ring-exercise">
+				<div class="content-box">
+					<h2>Physical Exercise</h2>
+					<p>At an average of just <strong>1.0 hours</strong>, physical recovery and active wellness outlets
+						are the
+						very first
+						sacrifices students make when deadlines pile up. As the academic workload and screen tracking
+						rings expand
+						out of balance,
+						this final ring shrinks away. This creates a lifestyle completely lacking in physical
+						stress-relief
+						channels, compounding
+						the mental health and anxiety strains felt throughout the semester.</p>
+				</div>
+			</section>
+
+		</div>
+	</div>
+	<script src="../radial_bar_chart/radial_bar_chart.js"></script>
+
+	<!-- bar chart -->
+	<div style="padding:40px;text-align:center; height: 100vh;">
+		<h1 style="color:#e8dff5;font-size:28px;"> graph 2</h1>
+		<p style="color:#7b6b99;"> bah blah blah </p>
+	</div>
+
+	<!-- heatmap -->
+	<div style="padding:40px;text-align:center; height: 100vh;">
+		<h1 style="color:#e8dff5;font-size:28px;"> graph 3</h1>
+		<p style="color:#7b6b99;"> bah blah blah </p>
+	</div>
+
+	<div id="sankey-container" style="width:100%;height:100vh;">
+		<svg id="sankey-svg" width="100%" height="100%">
+		</svg>
+	</div>
+
+	<div style="padding:40px;text-align:center;">
+		<h1 style="color:#e8dff5;font-size:28px;"> summary</h1>
+		<p style="color:#7b6b99;"> bah blah blah </p>
+	</div>
+
+	<div id="tooltip" style="
+		position:fixed;
+		background:rgba(30,18,60,0.95);
+		border:1px solid rgba(160,120,255,0.3);
+		border-radius:6px;
+		padding:8px 12px;
+		font-size:11px;
+		color:#d4c8f0;
+		pointer-events:none;
+		opacity:0;
+		max-width:260px;
+		line-height:1.5;
+		font-family:sans-serif;
+		box-shadow:0 4px 16px rgba(0,0,0,0.5);
+		transition: opacity 0.15s ease;
+		z-index:100;
+	"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+	<script src="main.js"></script>
+
+
+</body>
+
+</html>
