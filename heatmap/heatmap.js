@@ -104,7 +104,7 @@ function initMatrixRenderer(datasetKey) {
     const cols = orderedVariables; 
 
     // Safe padded zones (allocating right margin headroom to lock vertical legend inside SVG boundaries)
-    const paddingOffset = { top: 120, right: 190, bottom: 40, left: 200 };
+    const paddingOffset = { top: 110, right: 190, bottom: 40, left: 200 };
     
     const matrixInnerWidth = rows.length * 40;
     const matrixInnerHeight = cols.length * 40;
@@ -179,7 +179,7 @@ function initMatrixRenderer(datasetKey) {
         .style("text-anchor", "start")
         .attr("dx", "8px")
         .attr("dy", "-6px")
-        .attr("transform", "rotate(-45)");
+        .attr("transform", "rotate(-30)");
 
     canvasSvg.append("g")
         .call(d3.axisLeft(yRange).tickFormat(d => labelMapping[d] || d))

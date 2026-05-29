@@ -112,15 +112,9 @@ body {
     border: 1px solid var(--border-line);
     font-family: inherit;
     font-weight: 600;
-    background-color: #1e123c;
+    background-color: #463769;
     color: var(--text-dark);
     cursor: pointer;
-}
-
-.panel-narrative {
-    font-size: 0.9rem;
-    color: var(--text-slate);
-    margin-bottom: 20px;
 }
 
 /* Update the heatmap container workspace to prevent label clipping */
