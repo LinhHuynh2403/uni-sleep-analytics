@@ -154,8 +154,52 @@
 	</div>
 	<script src="../radial_bar_chart/radial_bar_chart.js"></script>
 
-	<!-- bar chart -->
-	<iframe class="visual-frame" src="../visualization/index.html" style="height: 500vh;" scrolling="no"></iframe>
+	<!-- bar chart (Namespaced for safety) -->
+	<div class="bc-scrollytelling-wrapper split-mode">
+		<div class="bc-sticky-visual-center">
+		  <div id="bc-d3-container"></div>
+		</div>
+	
+		<div class="bc-story-layers">
+		  <section class="bc-step active" data-step="intro">
+			<div class="bc-content-box">
+			  <h2>The Sleep Debt Epidemic</h2>
+			  <p>This highlights the core issue: across all university years, most students aren't getting enough rest, regularly falling below the <strong>7-hour healthy sleep threshold</strong>. By looking at this "sleep debt" first, we can better understand how student lifestyles impact their overall health.</p>
+			</div>
+		  </section>
+	
+		  <section class="bc-step" data-step="1st Year">
+			<div class="bc-content-box">
+			  <h2>1st Year: The Transition</h2>
+			  <p>Freshmen experience a massive lifestyle shift. Away from home for the first time, erratic schedules and late-night socializing push the majority of students into a severe sleep deficit. The data shows that right out of the gate, healthy sleep habits are already crumbling.</p>
+			</div>
+		  </section>
+	
+		  <section class="bc-step" data-step="2nd Year">
+			<div class="bc-content-box">
+			  <h2>2nd Year: The Sophomore Slump</h2>
+			  <p>As academic pressures intensify, students trade sleep for study hours. The distribution slightly shifts, but a significant portion of the cohort remains dangerously below the 7-hour mark, cementing bad habits that will follow them to graduation.</p>
+			</div>
+		  </section>
+	
+		  <section class="bc-step" data-step="3rd Year">
+			<div class="bc-content-box">
+			  <h2>3rd Year: Peak Burnout</h2>
+			  <p>Juniors face major-specific upper-division courses and internship hunting. Stress levels peak, and sleep durations become heavily erratic. We see a wider spread in the data, but the majority are still failing to close the recovery loop.</p>
+			</div>
+		  </section>
+	
+		  <section class="bc-step" data-step="4th Year">
+			<div class="bc-content-box">
+			  <h2>4th Year: The Chronic Deficit</h2>
+			  <p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these soon-to-be graduates exhausted before they even enter the workforce.</p>
+			</div>
+		  </section>
+		</div>
+	  </div>
+	  <script src="../visualization/data.js"></script>
+	  <script src="../visualization/bar_chart.js"></script>
+
 
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../heatmap/heatmap.css"> 
