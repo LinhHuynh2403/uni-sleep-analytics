@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const innerHeight = height - margin.top - margin.bottom;
     
     // Create the main SVG container
-    const svg = d3.select("#d3-container")
+    const svg = d3.select("#bc-d3-container")
       .append("svg")
       .attr("viewBox", `0 0 ${width} ${height}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateChart("intro");
 
     // Scroll Interactivity via IntersectionObserver
-    const steps = document.querySelectorAll(".step");
+    const steps = document.querySelectorAll(".bc-step");
     
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
