@@ -1,0 +1,193 @@
+:root {
+    --bg-color: #0b0f19;
+    --card-bg: rgba(20, 25, 35, 0.7);
+    --border-color: rgba(255, 255, 255, 0.05);
+    --accent-color: #ff3366;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    /* Vibrant colors for bars based on year */
+    --color-1: #3b82f6; /* Blue */
+    --color-2: #0ea5e9; /* Light Blue */
+    --color-3: #10b981; /* Emerald */
+    --color-4: #84cc16; /* Lime */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Scrollytelling Setup Layout */
+.scrollytelling-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.sticky-visual-center {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 55vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    pointer-events: none;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#d3-container {
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    max-height: 700px;
+}
+
+/* Foreground Narrative Steps */
+.story-layers {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-bottom: 50vh; /* padding at the end */
+}
+
+.step {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    pointer-events: none;
+    
+    /* Fade effect based on scroll */
+    opacity: 0.15;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
+    
+    align-items: flex-start;
+    text-align: left;
+    width: 45vw; /* Left side */
+}
+
+.step.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Apple-inspired translucent blur content box */
+.content-box {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 40px 50px;
+    border-radius: 24px;
+    max-width: 550px;
+    pointer-events: auto;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    margin-left: 5vw;
+}
+
+.content-box h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+.content-box p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.content-box strong {
+    color: var(--accent-color);
+}
+
+/* SVG Chart styling */
+svg {
+    pointer-events: auto;
+}
+
+.domain, .tick line {
+    stroke: #334155;
+}
+
+.tick text {
+    fill: var(--text-secondary);
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.axis-label {
+    fill: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.chart-title {
+    fill: var(--text-primary);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.reference-line {
+    stroke: var(--accent-color);
+    stroke-width: 2px;
+    stroke-dasharray: 6,6;
+}
+
+.annotation-text {
+    fill: var(--accent-color);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.bar {
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+.bar:hover {
+    opacity: 1;
+    filter: brightness(1.2);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 900px) {
+    .scrollytelling-wrapper.split-mode .sticky-visual-center {
+        width: 100vw;
+        height: 50vh;
+        top: 0;
+        right: 0;
+        padding: 20px;
+    }
+    
+    .story-layers {
+        margin-top: 50vh;
+    }
+    
+    .step {
+        width: 100vw;
+        padding: 20px;
+        align-items: center;
+    }
+    
+    .content-box {
+        margin-left: 0;
+        padding: 30px;
+        background: rgba(10, 15, 25, 0.85); /* Darker for readability over chart */
+    }
+}
