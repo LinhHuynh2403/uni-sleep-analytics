@@ -26,12 +26,13 @@ body {
 .bc-scrollytelling-wrapper {
     position: relative;
     width: 100%;
+    display: flex;
+    flex-direction: row-reverse; /* Chart on right, text on left */
 }
 
 .bc-sticky-visual-center {
-    position: fixed;
+    position: sticky;
     top: 0;
-    right: 0;
     width: 55vw;
     height: 100vh;
     display: flex;
@@ -54,7 +55,7 @@ body {
 .bc-story-layers {
     position: relative;
     z-index: 2;
-    width: 100%;
+    width: 45vw; /* Match the remaining width */
     padding-bottom: 50vh; /* padding at the end */
 }
 
@@ -74,7 +75,7 @@ body {
     
     align-items: flex-start;
     text-align: left;
-    width: 45vw; /* Left side */
+    width: 100%; /* Take full width of bc-story-layers */
 }
 
 .bc-step.active {
