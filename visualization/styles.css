@@ -22,18 +22,18 @@ body {
     overflow-x: hidden;
 }
 
-/* Scrollytelling Setup Layout */
 .bc-scrollytelling-wrapper {
     position: relative;
     width: 100%;
     display: flex;
     flex-direction: row-reverse; /* Chart on right, text on left */
+    justify-content: space-between;
 }
 
 .bc-sticky-visual-center {
     position: sticky;
     top: 0;
-    width: 55vw;
+    width: 50vw;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -42,6 +42,7 @@ body {
     pointer-events: none;
     padding: 40px;
     box-sizing: border-box;
+    align-self: flex-start; /* CRITICAL for position: sticky inside flexbox! */
 }
 
 #bc-d3-container {
@@ -60,7 +61,8 @@ body {
 }
 
 .bc-step {
-    min-height: 100vh;
+    min-height: 120vh; /* Increased from 100vh for a bigger gap */
+    margin-bottom: 30vh; /* Additional gap between text boxes */
     display: flex;
     flex-direction: column;
     justify-content: center;
