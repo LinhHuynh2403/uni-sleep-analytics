@@ -154,53 +154,152 @@
 	</div>
 	<script src="../radial_bar_chart/radial_bar_chart.js"></script>
 
-	<!-- bar chart (Namespaced for safety) -->
-	<div class="bc-scrollytelling-wrapper split-mode">
-		<div class="bc-sticky-visual-center">
+	<!-- bar chart (Namespaced for safety!) -->
+	<style>
+		:root {
+			--color-1: #3b82f6;
+			--color-2: #0ea5e9;
+			--color-3: #10b981;
+			--color-4: #84cc16;
+			--accent-color: #ff3366;
+		}
+		
+		.bc-container {
+			display: flex;
+			flex-direction: row-reverse;
+			width: 100%;
+			position: relative;
+			justify-content: space-between;
+			background: transparent;
+		}
+
+		.bc-right-panel {
+			position: sticky;
+			top: 0;
+			width: 50vw;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			align-self: flex-start; /* This instantly fixes the vertical stacking bug */
+			z-index: 10;
+		}
+
+		.bc-left-panel {
+			width: 45vw;
+			padding-bottom: 50vh;
+			z-index: 11;
+			position: relative;
+		}
+
+		.bc-narrative-step {
+			min-height: 120vh;
+			margin-bottom: 30vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding: 40px;
+			opacity: 0.15;
+			transition: opacity 0.5s ease, transform 0.5s ease;
+			transform: translateY(20px);
+		}
+
+		.bc-narrative-step.active {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.bc-box {
+			background: rgba(20, 25, 35, 0.7);
+			backdrop-filter: blur(20px);
+			-webkit-backdrop-filter: blur(20px);
+			padding: 40px 50px;
+			border-radius: 24px;
+			border: 1px solid rgba(255, 255, 255, 0.05);
+			box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+		}
+
+		.bc-box h2 {
+			font-size: 2.4rem;
+			font-weight: 800;
+			margin-top: 0;
+			margin-bottom: 20px;
+			color: #f8fafc;
+		}
+
+		.bc-box p {
+			font-size: 1.15rem;
+			line-height: 1.6;
+			color: #94a3b8;
+		}
+
+		.bc-box strong {
+			color: var(--accent-color);
+		}
+
+		#bc-d3-container {
+			width: 100%;
+			height: 100%;
+			max-width: 800px;
+			max-height: 700px;
+		}
+
+		/* SVG Chart styling */
+		.domain, .tick line { stroke: #334155; }
+		.tick text { fill: #94a3b8; font-size: 13px; font-family: sans-serif; }
+		.axis-label { fill: #94a3b8; font-size: 16px; font-weight: 600; }
+		.chart-title { fill: #f8fafc; font-size: 24px; font-weight: 800; }
+		.reference-line { stroke: var(--accent-color); stroke-width: 2px; stroke-dasharray: 6,6; }
+		.annotation-text { font-size: 16px; font-weight: 800; }
+		.bar { opacity: 0.9; transition: opacity 0.2s; }
+		.bar:hover { opacity: 1; filter: brightness(1.2); }
+	</style>
+
+	<div class="bc-container">
+		<div class="bc-right-panel">
 		  <div id="bc-d3-container"></div>
 		</div>
 	
-		<div class="bc-story-layers">
-		  <section class="bc-step active" data-step="intro">
-			<div class="bc-content-box">
+		<div class="bc-left-panel">
+		  <div class="bc-step bc-narrative-step active" data-step="intro">
+			<div class="bc-box">
 			  <h2>The Sleep Debt Epidemic</h2>
 			  <p>This highlights the core issue: across all university years, most students aren't getting enough rest, regularly falling below the <strong>7-hour healthy sleep threshold</strong>. By looking at this "sleep debt" first, we can better understand how student lifestyles impact their overall health.</p>
 			</div>
-		  </section>
+		  </div>
 	
-		  <section class="bc-step" data-step="1st Year">
-			<div class="bc-content-box">
+		  <div class="bc-step bc-narrative-step" data-step="1st Year">
+			<div class="bc-box">
 			  <h2>1st Year: The Transition</h2>
 			  <p>Freshmen experience a massive lifestyle shift. Away from home for the first time, erratic schedules and late-night socializing push the majority of students into a severe sleep deficit. The data shows that right out of the gate, healthy sleep habits are already crumbling.</p>
 			</div>
-		  </section>
+		  </div>
 	
-		  <section class="bc-step" data-step="2nd Year">
-			<div class="bc-content-box">
+		  <div class="bc-step bc-narrative-step" data-step="2nd Year">
+			<div class="bc-box">
 			  <h2>2nd Year: The Sophomore Slump</h2>
 			  <p>As academic pressures intensify, students trade sleep for study hours. The distribution slightly shifts, but a significant portion of the cohort remains dangerously below the 7-hour mark, cementing bad habits that will follow them to graduation.</p>
 			</div>
-		  </section>
+		  </div>
 	
-		  <section class="bc-step" data-step="3rd Year">
-			<div class="bc-content-box">
+		  <div class="bc-step bc-narrative-step" data-step="3rd Year">
+			<div class="bc-box">
 			  <h2>3rd Year: Peak Burnout</h2>
 			  <p>Juniors face major-specific upper-division courses and internship hunting. Stress levels peak, and sleep durations become heavily erratic. We see a wider spread in the data, but the majority are still failing to close the recovery loop.</p>
 			</div>
-		  </section>
+		  </div>
 	
-		  <section class="bc-step" data-step="4th Year">
-			<div class="bc-content-box">
+		  <div class="bc-step bc-narrative-step" data-step="4th Year">
+			<div class="bc-box">
 			  <h2>4th Year: The Chronic Deficit</h2>
 			  <p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these soon-to-be graduates exhausted before they even enter the workforce.</p>
 			</div>
-		  </section>
+		  </div>
 		</div>
 	  </div>
 	  <script src="../visualization/data.js"></script>
 	  <script src="../visualization/bar_chart.js"></script>
-
-
+	
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../heatmap/heatmap.css"> 
 	<div class="viewport-container" style="padding: 40px 20px;">
