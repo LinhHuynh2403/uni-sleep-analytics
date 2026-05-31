@@ -23,15 +23,16 @@ body {
 }
 
 /* Scrollytelling Setup Layout */
-.scrollytelling-wrapper {
+.bc-scrollytelling-wrapper {
     position: relative;
     width: 100%;
+    display: flex;
+    flex-direction: row-reverse; /* Chart on right, text on left */
 }
 
-.sticky-visual-center {
-    position: fixed;
+.bc-sticky-visual-center {
+    position: sticky;
     top: 0;
-    right: 0;
     width: 55vw;
     height: 100vh;
     display: flex;
@@ -43,7 +44,7 @@ body {
     box-sizing: border-box;
 }
 
-#d3-container {
+#bc-d3-container {
     width: 100%;
     height: 100%;
     max-width: 800px;
@@ -51,14 +52,14 @@ body {
 }
 
 /* Foreground Narrative Steps */
-.story-layers {
+.bc-story-layers {
     position: relative;
     z-index: 2;
-    width: 100%;
+    width: 45vw; /* Match the remaining width */
     padding-bottom: 50vh; /* padding at the end */
 }
 
-.step {
+.bc-step {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -74,16 +75,16 @@ body {
     
     align-items: flex-start;
     text-align: left;
-    width: 45vw; /* Left side */
+    width: 100%; /* Take full width of bc-story-layers */
 }
 
-.step.active {
+.bc-step.active {
     opacity: 1;
     transform: translateY(0);
 }
 
 /* Apple-inspired translucent blur content box */
-.content-box {
+.bc-content-box {
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -96,7 +97,7 @@ body {
     margin-left: 5vw;
 }
 
-.content-box h2 {
+.bc-content-box h2 {
     font-size: 2.4rem;
     font-weight: 800;
     margin-top: 0;
@@ -105,14 +106,14 @@ body {
     line-height: 1.1;
 }
 
-.content-box p {
+.bc-content-box p {
     font-size: 1.15rem;
     line-height: 1.6;
     color: var(--text-secondary);
     margin: 0;
 }
 
-.content-box strong {
+.bc-content-box strong {
     color: var(--accent-color);
 }
 
@@ -167,7 +168,7 @@ svg {
 
 /* Mobile responsiveness */
 @media (max-width: 900px) {
-    .scrollytelling-wrapper.split-mode .sticky-visual-center {
+    .bc-scrollytelling-wrapper.split-mode .bc-sticky-visual-center {
         width: 100vw;
         height: 50vh;
         top: 0;
@@ -175,17 +176,17 @@ svg {
         padding: 20px;
     }
     
-    .story-layers {
+    .bc-story-layers {
         margin-top: 50vh;
     }
     
-    .step {
+    .bc-step {
         width: 100vw;
         padding: 20px;
         align-items: center;
     }
     
-    .content-box {
+    .bc-content-box {
         margin-left: 0;
         padding: 30px;
         background: rgba(10, 15, 25, 0.85); /* Darker for readability over chart */

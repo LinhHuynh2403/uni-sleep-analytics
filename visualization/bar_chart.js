@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const innerHeight = height - margin.top - margin.bottom;
     
     // Create the main SVG container
-    const svg = d3.select("#d3-container")
+    const svg = d3.select("#bc-d3-container")
       .append("svg")
       .attr("viewBox", `0 0 ${width} ${height}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
@@ -35,8 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "4th Year": "var(--color-4)"
     };
     
-    // Group data by year for easy access
-    const dataByYear = d3.group(data, d => d.University_Year);
+    // Group data by year for easy access (D3 v5 compatible using d3.nest)
+    const dataByYearMap = d3.nest()
+        .key(d => d.University_Year)
+        .entries(data);
+        
+    // Convert to a map for easier lookup
+    const dataByYear = new Map(dataByYearMap.map(d => [d.key, d.values]));
     
     // Add an "intro" group that contains all data
     dataByYear.set("intro", data);
@@ -46,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .domain([3, 11])
         .range([0, innerWidth]);
 
-    // Histogram generator (15 bins)
-    const histogram = d3.bin()
+    // Histogram generator (D3 v5 compatible using d3.histogram)
+    const histogram = (d3.histogram || d3.bin)()
         .value(d => d.Sleep_Duration)
         .domain(x.domain())
         .thresholds(x.ticks(15));
@@ -176,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateChart("intro");
 
     // Scroll Interactivity via IntersectionObserver
-    const steps = document.querySelectorAll(".step");
+    const steps = document.querySelectorAll(".bc-step");
     
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
