@@ -128,6 +128,26 @@ document.addEventListener("DOMContentLoaded", () => {
         .attr("y", 20)
         .attr("text-anchor", "end");
 
+    // Create Tooltip
+    let tooltip = d3.select("#bc-tooltip");
+    if (tooltip.empty()) {
+        tooltip = d3.select("body").append("div")
+            .attr("id", "bc-tooltip")
+            .style("position", "fixed")
+            .style("background", "rgba(20, 25, 35, 0.95)")
+            .style("border", "1px solid rgba(255, 255, 255, 0.1)")
+            .style("border-radius", "8px")
+            .style("padding", "10px 15px")
+            .style("color", "#f8fafc")
+            .style("font-family", "sans-serif")
+            .style("font-size", "14px")
+            .style("pointer-events", "none")
+            .style("opacity", 0)
+            .style("z-index", 9999)
+            .style("box-shadow", "0 10px 25px rgba(0,0,0,0.5)")
+            .style("transition", "opacity 0.1s ease");
+    }
+
     // Bar drawing logic
     function updateChart(stepName) {
         if (!binsByStep[stepName]) return;
@@ -151,15 +171,39 @@ document.addEventListener("DOMContentLoaded", () => {
             .data(bins);
             
         // Enter + Update
-        bars.enter()
+        const barsEnter = bars.enter()
             .append("rect")
             .attr("class", "bar")
             .attr("x", d => x(d.x0) + 1)
             .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
             .attr("y", innerHeight) // Start from bottom
             .attr("height", 0)
-            .merge(bars)
-            .transition()
+            .style("fill", colorScale[stepName]);
+            
+        const barsMerge = barsEnter.merge(bars);
+        
+        // Setup Hover Effects (Compatible with both D3 v5 and v7)
+        barsMerge.on("mouseover", function(a, b) {
+            const e = b !== undefined ? a : d3.event; // Event
+            const d = b !== undefined ? b : a;        // Data
+            
+            tooltip.style("opacity", 1)
+                .html(`<strong>${d.x0} - ${d.x1} Hours</strong><br/><span style="color:var(--accent-color)">${d.length} Students</span>`);
+                
+            d3.select(this).style("filter", "brightness(1.3)");
+        })
+        .on("mousemove", function(a, b) {
+            const e = b !== undefined ? a : d3.event;
+            tooltip.style("left", (e.clientX + 15) + "px")
+                   .style("top", (e.clientY - 30) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.style("opacity", 0);
+            d3.select(this).style("filter", "none");
+        });
+
+        // Transition animation
+        barsMerge.transition()
             .duration(800)
             .ease(d3.easeCubicOut)
             .attr("x", d => x(d.x0) + 1)
