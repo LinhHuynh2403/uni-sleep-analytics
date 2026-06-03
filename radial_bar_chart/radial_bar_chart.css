@@ -90,6 +90,12 @@ svg {
     max-width: 550px;
     pointer-events: auto;
     border: 1px solid rgba(255, 255, 255, 0.04);
+    transform: translateY(40px);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.step.active .content-box {
+    transform: translateY(0);
 }
 
 h2 {

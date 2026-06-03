@@ -1,7 +1,8 @@
 let complexData = null;
 
 // Centerpiece Dimensions
-const width = 600, height = 550;
+// Increase these width/height values to make the chart appear SMALLER on screen
+const width = 1000, height = 750;
 const svg = d3.select("#canvas-target")
     .append("svg")
     .attr("width", "100%")
@@ -68,20 +69,20 @@ function drawActivityRings(callback) {
     // Add Summary Labels (Hidden by default)
     ringGroups.append("text")
         .attr("class", "summary-label")
-        .attr("y", 65)
+        .attr("y", 105)
         .style("text-anchor", "middle")
         .style("fill", d => d.color)
-        .style("font-size", "0.75rem")
+        .style("font-size", "0.85rem")
         .style("font-weight", "600")
         .style("opacity", 0)
         .text(d => d.activity);
 
     ringGroups.append("text")
         .attr("class", "summary-value")
-        .attr("y", 85)
+        .attr("y", 130)
         .style("text-anchor", "middle")
         .style("fill", "#ffffff")
-        .style("font-size", "0.95rem")
+        .style("font-size", "1.1rem")
         .style("font-weight", "800")
         .style("opacity", 0)
         .text(d => d.hours + "h");
@@ -219,7 +220,7 @@ function updateHighlights(stepId) {
         .ease(d3.easeCubicOut)
         .attr("transform", function (d, i) {
             if (stepId === 'summary-step') {
-                return `translate(${(i - 2) * 115}, 0)`;
+                return `translate(${(i - 2) * 190}, 0)`;
             }
             return `translate(0, 0)`;
         });
@@ -235,8 +236,8 @@ function updateHighlights(stepId) {
         .ease(d3.easeCubicOut)
         .style("opacity", stepId === 'intro-step' ? 0.05 : (stepId === 'all-rings' || stepId === 'summary-step' ? 0.4 : 0.15))
         .attrTween("d", function (d, i) {
-            const tInner = (stepId === 'summary-step') ? 35 : innerBaseRadius + i * (ringThickness + ringGap);
-            const tOuter = (stepId === 'summary-step') ? 50 : innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
+            const tInner = (stepId === 'summary-step') ? 55 : innerBaseRadius + i * (ringThickness + ringGap);
+            const tOuter = (stepId === 'summary-step') ? 80 : innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
 
             if (typeof this._currentInner === 'undefined') this._currentInner = innerBaseRadius + i * (ringThickness + ringGap);
             if (typeof this._currentOuter === 'undefined') this._currentOuter = innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
@@ -272,8 +273,8 @@ function updateHighlights(stepId) {
             if (typeof d.currentAngle === 'undefined') d.currentAngle = 0;
             if (i === targetIndex && targetAngle > 0) d.currentAngle = 0;
 
-            const tInner = (stepId === 'summary-step') ? 35 : innerBaseRadius + i * (ringThickness + ringGap);
-            const tOuter = (stepId === 'summary-step') ? 50 : innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
+            const tInner = (stepId === 'summary-step') ? 55 : innerBaseRadius + i * (ringThickness + ringGap);
+            const tOuter = (stepId === 'summary-step') ? 80 : innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
 
             if (typeof this._currentInner === 'undefined') this._currentInner = innerBaseRadius + i * (ringThickness + ringGap);
             if (typeof this._currentOuter === 'undefined') this._currentOuter = innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
@@ -324,8 +325,8 @@ function updateHighlights(stepId) {
             if (typeof d.overflowAngle === 'undefined') d.overflowAngle = 0;
             if (i === targetIndex && targetAngle > 0) d.overflowAngle = 0;
 
-            const tInner = (stepId === 'summary-step') ? 35 : innerBaseRadius + i * (ringThickness + ringGap);
-            const tOuter = (stepId === 'summary-step') ? 50 : innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
+            const tInner = (stepId === 'summary-step') ? 55 : innerBaseRadius + i * (ringThickness + ringGap);
+            const tOuter = (stepId === 'summary-step') ? 80 : innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
 
             if (typeof this._currentInner === 'undefined') this._currentInner = innerBaseRadius + i * (ringThickness + ringGap);
             if (typeof this._currentOuter === 'undefined') this._currentOuter = innerBaseRadius + ringThickness + i * (ringThickness + ringGap);
