@@ -43,6 +43,18 @@ This project dynamically unifies **four distinct survey and sensor tracking data
 
 ---
 
+## 📂 Project Structure
+
+This project follows a clean, asset-based architecture:
+
+* **`Main/`** — Contains the core `index.html` scrollytelling document.
+* **`dataset/`** — Dedicated to raw data files (e.g., `.csv`, `.json`).
+* **`styles/`** — Global and component-specific stylesheets (`radial_bar_chart.css`, `heatmap.css`).
+* **`visualization/`** — All D3.js visualization scripts and data logic (`radial_bar_chart.js`, `bar_chart.js`, `heatmap.js`, `correlation_matrices.js`, `data.js`).
+* **`preprocess.py` & `build_data.py`** — Root-level Python utility scripts for data cleaning and pipeline preparation.
+
+---
+
 ## 🚀 How to Run the Website Locally
 
 Since this visualization relies on modular architecture and imports local tracking datasets using modern script bindings, running the file directly via `file://` protocols in your browser may cause **CORS (Cross-Origin Resource Sharing) blockages**. 
