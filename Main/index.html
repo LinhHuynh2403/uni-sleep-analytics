@@ -23,6 +23,7 @@
 	</style>
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<link rel="stylesheet" href="../radial_bar_chart/radial_bar_chart.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body style="margin:0;background:#1a1032;color:#e8dff5;font-family:sans-serif;">
@@ -150,8 +151,7 @@
 				</div>
 			</section>
 
-			<section class="step centered-step" id="summary-step"
-				style="justify-content: flex-end; padding-bottom: 15vh;">
+			<section class="step centered-step" id="summary-step">
 				<div class="content-box">
 					<h2>The Complete Picture</h2>
 					<p>When viewed together, the cascading effect of these lifestyle factors becomes undeniable. The
@@ -164,6 +164,66 @@
 	</div>
 	<script src="../radial_bar_chart/radial_bar_chart.js"></script>
 
+	<!-- Narrative Transition Spacer -->
+	<div
+		style="height: 30vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 40px; margin-bottom: 10vh; margin-top: 20vh;">
+		<div>
+			<h3
+				style="color: #a093b5; font-size: 1.5rem; font-weight: 400; letter-spacing: 0.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+				This 24-hour imbalance isn't just a single day's problem. Let's zoom out to see how this rolling sleep
+				deficit accumulates across four years of a student's university life...
+			</h3>
+			<a href="#bar-chart-section" style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            width: 50px;
+            height: 50px;
+            background: rgba(121, 100, 213, 0.15);
+            color: #e8dff5;
+            border: 1px solid rgba(121, 100, 213, 0.5);
+            border-radius: 50%; /* Makes it a perfect circle */
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            animation: bounce 2s infinite; /* Adds a subtle bounce */
+        " onmouseover="this.style.background='rgba(121, 100, 213, 0.3)';"
+				onmouseout="this.style.background='rgba(121, 100, 213, 0.15)';">
+				<i class="fa-solid fa-chevron-down"></i>
+			</a>
+		</div>
+	</div>
+
+	<style>
+		html {
+			scroll-behavior: smooth;
+			/* Crucial: This makes the page glide down instead of jumping instantly */
+		}
+
+		@keyframes bounce {
+
+			0%,
+			20%,
+			50%,
+			80%,
+			100% {
+				transform: translateY(0);
+			}
+
+			40% {
+				transform: translateY(-10px);
+			}
+
+			60% {
+				transform: translateY(-5px);
+			}
+		}
+	</style>
+	</div>
+	</div>
+
 	<!-- bar chart (Namespaced for safety!) -->
 	<style>
 		:root {
@@ -171,137 +231,136 @@
 			--color-2: #0ea5e9;
 			--color-3: #10b981;
 			--color-4: #84cc16;
-			--accent-color: #ff3366;
-		}
+			--accent-color: #7964d5;
 
-		.bc-container {
-			display: flex;
-			flex-direction: row-reverse;
-			width: 100%;
-			position: relative;
-			justify-content: space-between;
-			background: transparent;
-		}
+			.bc-container {
+				display: flex;
+				flex-direction: row-reverse;
+				width: 100%;
+				position: relative;
+				justify-content: space-between;
+				background: transparent;
+			}
 
-		.bc-right-panel {
-			position: sticky;
-			top: 0;
-			width: 50vw;
-			height: 100vh;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			align-self: flex-start;
-			/* This instantly fixes the vertical stacking bug */
-			z-index: 10;
-		}
+			.bc-right-panel {
+				position: sticky;
+				top: 0;
+				width: 50vw;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				align-self: flex-start;
+				/* This instantly fixes the vertical stacking bug */
+				z-index: 10;
+			}
 
-		.bc-left-panel {
-			width: 45vw;
-			padding-bottom: 50vh;
-			z-index: 11;
-			position: relative;
-		}
+			.bc-left-panel {
+				width: 45vw;
+				padding-bottom: 50vh;
+				z-index: 11;
+				position: relative;
+			}
 
-		.bc-narrative-step {
-			min-height: 120vh;
-			margin-bottom: 30vh;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			padding: 40px;
-			opacity: 0.15;
-			transition: opacity 0.5s ease, transform 0.5s ease;
-			transform: translateY(20px);
-		}
+			.bc-narrative-step {
+				min-height: 120vh;
+				margin-bottom: 30vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: 40px;
+				opacity: 0.15;
+				transition: opacity 0.5s ease, transform 0.5s ease;
+				transform: translateY(20px);
+			}
 
-		.bc-narrative-step.active {
-			opacity: 1;
-			transform: translateY(0);
-		}
+			.bc-narrative-step.active {
+				opacity: 1;
+				transform: translateY(0);
+			}
 
-		.bc-box {
-			background: rgba(20, 25, 35, 0.7);
-			backdrop-filter: blur(20px);
-			-webkit-backdrop-filter: blur(20px);
-			padding: 40px 50px;
-			border-radius: 24px;
-			border: 1px solid rgba(255, 255, 255, 0.05);
-			box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-		}
+			.bc-box {
+				background: rgba(20, 25, 35, 0.7);
+				backdrop-filter: blur(20px);
+				-webkit-backdrop-filter: blur(20px);
+				padding: 40px 50px;
+				border-radius: 24px;
+				border: 1px solid rgba(255, 255, 255, 0.05);
+				box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+			}
 
-		.bc-box h2 {
-			font-size: 2.4rem;
-			font-weight: 800;
-			margin-top: 0;
-			margin-bottom: 20px;
-			color: #f8fafc;
-		}
+			.bc-box h2 {
+				font-size: 2.4rem;
+				font-weight: 800;
+				margin-top: 0;
+				margin-bottom: 20px;
+				color: #f8fafc;
+			}
 
-		.bc-box p {
-			font-size: 1.15rem;
-			line-height: 1.6;
-			color: #94a3b8;
-		}
+			.bc-box p {
+				font-size: 1.15rem;
+				line-height: 1.6;
+				color: #94a3b8;
+			}
 
-		.bc-box strong {
-			color: var(--accent-color);
-		}
+			.bc-box strong {
+				color: var(--accent-color);
+			}
 
-		#bc-d3-container {
-			width: 100%;
-			height: 100%;
-			max-width: 800px;
-			max-height: 700px;
-		}
+			#bc-d3-container {
+				width: 100%;
+				height: 100%;
+				max-width: 800px;
+				max-height: 700px;
+			}
 
-		/* SVG Chart styling */
-		.domain,
-		.tick line {
-			stroke: #334155;
-		}
+			/* SVG Chart styling */
+			.domain,
+			.tick line {
+				stroke: #334155;
+			}
 
-		.tick text {
-			fill: #94a3b8;
-			font-size: 13px;
-			font-family: sans-serif;
-		}
+			.tick text {
+				fill: #94a3b8;
+				font-size: 13px;
+				font-family: sans-serif;
+			}
 
-		.axis-label {
-			fill: #94a3b8;
-			font-size: 16px;
-			font-weight: 600;
-		}
+			.axis-label {
+				fill: #94a3b8;
+				font-size: 16px;
+				font-weight: 600;
+			}
 
-		.chart-title {
-			fill: #f8fafc;
-			font-size: 24px;
-			font-weight: 800;
-		}
+			.chart-title {
+				fill: #f8fafc;
+				font-size: 24px;
+				font-weight: 800;
+			}
 
-		.reference-line {
-			stroke: var(--accent-color);
-			stroke-width: 2px;
-			stroke-dasharray: 6, 6;
-		}
+			.reference-line {
+				stroke: var(--accent-color);
+				stroke-width: 2px;
+				stroke-dasharray: 6, 6;
+			}
 
-		.annotation-text {
-			font-size: 16px;
-			font-weight: 800;
-		}
+			.annotation-text {
+				font-size: 16px;
+				font-weight: 800;
+			}
 
-		.bar {
-			opacity: 0.9;
-			transition: opacity 0.2s;
-		}
+			.bar {
+				opacity: 0.9;
+				transition: opacity 0.2s;
+			}
 
-		.bar:hover {
-			opacity: 1;
-			filter: brightness(1.2);
-		}
+			.bar:hover {
+				opacity: 1;
+				filter: brightness(1.2);
+			}
 	</style>
 
-	<div class="bc-container">
+	<div class="bc-container" id="bar-chart-section">
 		<div class="bc-right-panel">
 			<div id="bc-d3-container"></div>
 		</div>
@@ -357,9 +416,42 @@
 	<script src="../visualization/data.js"></script>
 	<script src="../visualization/bar_chart.js"></script>
 
+	<!-- Narrative Transition Spacer to Heatmap -->
+	<div
+		style="height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 40px; margin-bottom: 10vh; margin-top: 20vh;">
+		<div>
+			<h3
+				style="color: #a093b5; font-size: 1.5rem; font-weight: 400; letter-spacing: 0.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+				Now that we see the 4-year accumulation of sleep debt, let's look deeper into the raw data. How strongly
+				do all these lifestyle variables actually correlate with each other?
+			</h3>
+
+			<a href="#heatmap-section" style="
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				margin-top: 40px;
+				width: 50px;
+				height: 50px;
+				background: rgba(121, 100, 213, 0.15);
+				color: #e8dff5;
+				border: 1px solid rgba(121, 100, 213, 0.5);
+				border-radius: 50%;
+				font-size: 1.5rem;
+				text-decoration: none;
+				transition: all 0.2s ease;
+				cursor: pointer;
+				animation: bounce 2s infinite;
+			" onmouseover="this.style.background='rgba(121, 100, 213, 0.3)';"
+				onmouseout="this.style.background='rgba(121, 100, 213, 0.15)';">
+				<i class="fa-solid fa-chevron-down"></i>
+			</a>
+		</div>
+	</div>
+
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../heatmap/heatmap.css">
-	<div class="viewport-container" style="padding: 40px 20px;">
+	<div class="viewport-container" id="heatmap-section" style="padding: 40px 20px;">
 
 		<section class="workspace-grid">
 			<div class="panel matrix-wrapper">
