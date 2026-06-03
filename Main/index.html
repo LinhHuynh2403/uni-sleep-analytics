@@ -150,6 +150,16 @@
 				</div>
 			</section>
 
+			<section class="step centered-step" id="summary-step"
+				style="justify-content: flex-end; padding-bottom: 15vh;">
+				<div class="content-box">
+					<h2>The Complete Picture</h2>
+					<p>When viewed together, the cascading effect of these lifestyle factors becomes undeniable. The
+						sleep deficit is not an isolated issue, but the result of an unbalanced 24-hour cycle where
+						academic pressures and digital habits constantly erode the foundations of rest and recovery.</p>
+				</div>
+			</section>
+
 		</div>
 	</div>
 	<script src="../radial_bar_chart/radial_bar_chart.js"></script>
@@ -163,7 +173,7 @@
 			--color-4: #84cc16;
 			--accent-color: #ff3366;
 		}
-		
+
 		.bc-container {
 			display: flex;
 			flex-direction: row-reverse;
@@ -181,7 +191,8 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			align-self: flex-start; /* This instantly fixes the vertical stacking bug */
+			align-self: flex-start;
+			/* This instantly fixes the vertical stacking bug */
 			z-index: 10;
 		}
 
@@ -245,63 +256,109 @@
 		}
 
 		/* SVG Chart styling */
-		.domain, .tick line { stroke: #334155; }
-		.tick text { fill: #94a3b8; font-size: 13px; font-family: sans-serif; }
-		.axis-label { fill: #94a3b8; font-size: 16px; font-weight: 600; }
-		.chart-title { fill: #f8fafc; font-size: 24px; font-weight: 800; }
-		.reference-line { stroke: var(--accent-color); stroke-width: 2px; stroke-dasharray: 6,6; }
-		.annotation-text { font-size: 16px; font-weight: 800; }
-		.bar { opacity: 0.9; transition: opacity 0.2s; }
-		.bar:hover { opacity: 1; filter: brightness(1.2); }
+		.domain,
+		.tick line {
+			stroke: #334155;
+		}
+
+		.tick text {
+			fill: #94a3b8;
+			font-size: 13px;
+			font-family: sans-serif;
+		}
+
+		.axis-label {
+			fill: #94a3b8;
+			font-size: 16px;
+			font-weight: 600;
+		}
+
+		.chart-title {
+			fill: #f8fafc;
+			font-size: 24px;
+			font-weight: 800;
+		}
+
+		.reference-line {
+			stroke: var(--accent-color);
+			stroke-width: 2px;
+			stroke-dasharray: 6, 6;
+		}
+
+		.annotation-text {
+			font-size: 16px;
+			font-weight: 800;
+		}
+
+		.bar {
+			opacity: 0.9;
+			transition: opacity 0.2s;
+		}
+
+		.bar:hover {
+			opacity: 1;
+			filter: brightness(1.2);
+		}
 	</style>
 
 	<div class="bc-container">
 		<div class="bc-right-panel">
-		  <div id="bc-d3-container"></div>
+			<div id="bc-d3-container"></div>
 		</div>
-	
+
 		<div class="bc-left-panel">
-		  <div class="bc-step bc-narrative-step active" data-step="intro">
-			<div class="bc-box">
-			  <h2>The Sleep Debt Epidemic</h2>
-			  <p>This highlights the core issue: across all university years, most students aren't getting enough rest, regularly falling below the <strong>7-hour healthy sleep threshold</strong>. By looking at this "sleep debt" first, we can better understand how student lifestyles impact their overall health.</p>
+			<div class="bc-step bc-narrative-step active" data-step="intro">
+				<div class="bc-box">
+					<h2>The Sleep Debt Epidemic</h2>
+					<p>This highlights the core issue: across all university years, most students aren't getting enough
+						rest, regularly falling below the <strong>7-hour healthy sleep threshold</strong>. By looking at
+						this "sleep debt" first, we can better understand how student lifestyles impact their overall
+						health.</p>
+				</div>
 			</div>
-		  </div>
-	
-		  <div class="bc-step bc-narrative-step" data-step="1st Year">
-			<div class="bc-box">
-			  <h2>1st Year: The Transition</h2>
-			  <p>Freshmen experience a massive lifestyle shift. Away from home for the first time, erratic schedules and late-night socializing push the majority of students into a severe sleep deficit. The data shows that right out of the gate, healthy sleep habits are already crumbling.</p>
+
+			<div class="bc-step bc-narrative-step" data-step="1st Year">
+				<div class="bc-box">
+					<h2>1st Year: The Transition</h2>
+					<p>Freshmen experience a massive lifestyle shift. Away from home for the first time, erratic
+						schedules and late-night socializing push the majority of students into a severe sleep deficit.
+						The data shows that right out of the gate, healthy sleep habits are already crumbling.</p>
+				</div>
 			</div>
-		  </div>
-	
-		  <div class="bc-step bc-narrative-step" data-step="2nd Year">
-			<div class="bc-box">
-			  <h2>2nd Year: The Sophomore Slump</h2>
-			  <p>As academic pressures intensify, students trade sleep for study hours. The distribution slightly shifts, but a significant portion of the cohort remains dangerously below the 7-hour mark, cementing bad habits that will follow them to graduation.</p>
+
+			<div class="bc-step bc-narrative-step" data-step="2nd Year">
+				<div class="bc-box">
+					<h2>2nd Year: The Sophomore Slump</h2>
+					<p>As academic pressures intensify, students trade sleep for study hours. The distribution slightly
+						shifts, but a significant portion of the cohort remains dangerously below the 7-hour mark,
+						cementing bad habits that will follow them to graduation.</p>
+				</div>
 			</div>
-		  </div>
-	
-		  <div class="bc-step bc-narrative-step" data-step="3rd Year">
-			<div class="bc-box">
-			  <h2>3rd Year: Peak Burnout</h2>
-			  <p>Juniors face major-specific upper-division courses and internship hunting. Stress levels peak, and sleep durations become heavily erratic. We see a wider spread in the data, but the majority are still failing to close the recovery loop.</p>
+
+			<div class="bc-step bc-narrative-step" data-step="3rd Year">
+				<div class="bc-box">
+					<h2>3rd Year: Peak Burnout</h2>
+					<p>Juniors face major-specific upper-division courses and internship hunting. Stress levels peak,
+						and sleep durations become heavily erratic. We see a wider spread in the data, but the majority
+						are still failing to close the recovery loop.</p>
+				</div>
 			</div>
-		  </div>
-	
-		  <div class="bc-step bc-narrative-step" data-step="4th Year">
-			<div class="bc-box">
-			  <h2>4th Year: The Chronic Deficit</h2>
-			  <p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these soon-to-be graduates exhausted before they even enter the workforce.</p>
+
+			<div class="bc-step bc-narrative-step" data-step="4th Year">
+				<div class="bc-box">
+					<h2>4th Year: The Chronic Deficit</h2>
+					<p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students
+						fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these
+						soon-to-be graduates exhausted before they even enter the workforce.</p>
+				</div>
 			</div>
-		  </div>
 		</div>
-	  </div>
-	  <script src="../visualization/data.js"></script>
-	  <script src="../visualization/bar_chart.js"></script>
-	
+	</div>
+	<script src="../visualization/data.js"></script>
+	<script src="../visualization/bar_chart.js"></script>
+
 	<!-- heatmap -->
-	<link rel="stylesheet" href="../heatmap/heatmap.css"> 
+	<link rel="stylesheet" href="../heatmap/heatmap.css">
 	<div class="viewport-container" style="padding: 40px 20px;">
 
 		<section class="workspace-grid">
@@ -318,7 +375,7 @@
 							<option value="dataset5">Dataset 5: Mental Health & Social Media Metrics</option>
 						</select>
 					</div>
-				</div>				
+				</div>
 				<div id="heatmap-render-target"></div>
 			</div>
 		</section>
@@ -330,15 +387,16 @@
 				<div class="narrative-viewer">
 					<h3>Cascade Impact Breakdown</h3>
 					<div id="factor-narrative-target">
-						<p class="fallback-style">Click on a parameter bar in the visualization layout to load its clinical downstream narrative.</p>
+						<p class="fallback-style">Click on a parameter bar in the visualization layout to load its
+							clinical downstream narrative.</p>
 					</div>
 				</div>
 			</div>
 		</section>
 	</div>
-		<script src="https://d3js.org/d3.v7.min.js"></script> 
-		<script src="../heatmap/correlation_matrices.js"></script>
-		<script src="../heatmap/heatmap.js"></script>
+	<script src="https://d3js.org/d3.v7.min.js"></script>
+	<script src="../heatmap/correlation_matrices.js"></script>
+	<script src="../heatmap/heatmap.js"></script>
 	</div>
 
 	<div id="sankey-container" style="width:100%;height:100vh;">
