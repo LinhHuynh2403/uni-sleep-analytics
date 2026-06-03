@@ -372,7 +372,11 @@ const scrollObserver = new IntersectionObserver((entries) => {
             updateHighlights(entry.target.id);
         }
     });
-}, { root: null, threshold: 0.6 });
+}, {
+    root: null,
+    rootMargin: "-40% 0px -40% 0px",
+    threshold: 0
+});
 
 // --- Data Load Initialization ---
 complexData = {

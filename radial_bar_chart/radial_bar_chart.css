@@ -58,14 +58,16 @@ svg {
     padding: 40px;
     box-sizing: border-box;
     pointer-events: none;
-    opacity: 0.15;
-    transition: opacity 0.5s ease;
+    margin-bottom: 20vh;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    /* Faster opacity fade */
 }
 
 .centered-step {
     align-items: center;
     text-align: center;
     width: 100%;
+    padding-bottom: 45vh;
 }
 
 .split-step {
@@ -168,4 +170,9 @@ path.foreground-arc {
 
 path.foreground-arc:hover {
     filter: brightness(1.3);
+}
+
+#summary-step {
+    padding-top: 60vh;
+    padding-bottom: 80vh;
 }
