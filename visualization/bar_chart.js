@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Set up dimensions and margins for the single central SVG
     const width = 800;
-    const height = 650;
+    const height = 720;  // taller to give summary grid more room
     const margin = {top: 60, right: 40, bottom: 80, left: 70};
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -138,14 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
         .attr("text-anchor", "end");
 
     // ======== SUMMARY CHART GRID SETUP ========
-    // 2x2 layout
+    // 2x2 layout — give each cell generous padding so labels fit
     const gridCols = 2;
     const gridRows = 2;
-    const cellWidth = innerWidth / gridCols;
-    const cellHeight = innerHeight / gridRows;
-    const cellMargin = 30; // space between cells
-    const innerCellWidth = cellWidth - cellMargin;
-    const innerCellHeight = cellHeight - cellMargin;
+    // Per-cell margins (inside each small chart)
+    const cellPad = { top: 30, right: 10, bottom: 52, left: 52 };
+    const totalCellWidth  = innerWidth  / gridCols;
+    const totalCellHeight = innerHeight / gridRows;
+    const innerCellWidth  = totalCellWidth  - cellPad.left - cellPad.right;
+    const innerCellHeight = totalCellHeight - cellPad.top  - cellPad.bottom;
 
     // Small scales
     const smallX = d3.scaleLinear()
@@ -167,30 +168,53 @@ document.addEventListener("DOMContentLoaded", () => {
         const row = Math.floor(i / gridCols);
         const col = i % gridCols;
         
+        // Offset by each cell's left/top padding
         const g = summaryChartGroup.append("g")
-            .attr("transform", `translate(${col * cellWidth + cellMargin/2}, ${row * cellHeight + cellMargin/2})`);
+            .attr("transform", `translate(${col * totalCellWidth + cellPad.left}, ${row * totalCellHeight + cellPad.top})`);
             
-        // Axes
+        // X Axis
         g.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${innerCellHeight})`)
             .call(smallXAxis)
             .selectAll("path, line")
             .attr("class", "domain");
+
+        // X Axis Label
+        g.append("text")
+            .attr("x", innerCellWidth / 2)
+            .attr("y", innerCellHeight + 40)
+            .attr("text-anchor", "middle")
+            .style("fill", "#94a3b8")
+            .style("font-size", "12px")
+            .style("font-weight", "600")
+            .text("Hours of Sleep");
             
+        // Y Axis
         g.append("g")
             .attr("class", "y-axis")
             .call(smallYAxis)
             .selectAll("path, line")
             .attr("class", "domain");
+
+        // Y Axis Label
+        g.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -innerCellHeight / 2)
+            .attr("y", -40)
+            .attr("text-anchor", "middle")
+            .style("fill", "#94a3b8")
+            .style("font-size", "12px")
+            .style("font-weight", "600")
+            .text("# Students");
             
         // Title
         g.append("text")
             .attr("x", innerCellWidth / 2)
-            .attr("y", -10)
+            .attr("y", -12)
             .attr("text-anchor", "middle")
             .style("fill", "#f8fafc")
-            .style("font-size", "14px")
+            .style("font-size", "15px")
             .style("font-weight", "bold")
             .text(year);
             
