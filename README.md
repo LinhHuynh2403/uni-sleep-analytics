@@ -89,7 +89,7 @@ If you have Python installed on your computer, you can launch a local server ins
 This project was developed for the **ECS 163 Information Visualization** course at UC Davis.
 
 Created by:
-* **Linh Huynh**
+* **Linh Huynh**: Worked on Radial Bar Chart
 * **William Pham**
 * **Pachia Yang**
 * **Parwaan Virk**
