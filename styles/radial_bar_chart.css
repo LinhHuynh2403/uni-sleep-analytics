@@ -71,11 +71,39 @@ svg {
 }
 
 .split-step {
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     margin-left: 50%;
     width: 50%;
-    padding-left: 5%;
+    padding-left: 0;
+}
+
+.split-step .content-box {
+    text-align: left;
+    max-width: 620px;     
+    width: 92%;
+    margin: 0 auto;
+    padding: 40px 48px;
+}
+
+.split-step .content-box h2 {
+    text-align: center;
+    font-size: 2.8rem;     
+    font-weight: 700;
+    margin-bottom: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: #e8dff5;
+}
+
+.split-step .content-box p {
+    font-size: 1.2rem;       
+    line-height: 2.1;        
+    color: #c8bfe0;         
+    margin: 0;
+    word-spacing: 1px;
+    letter-spacing: 0.2px;   
 }
 
 .step.active {
