@@ -531,40 +531,50 @@
 
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../styles/heatmap.css">
-	<div class="viewport-container" id="heatmap-section" style="padding: 40px 20px;">
+		<header class="dashboard-header">
+			<h1>The Exhausted Campus</h1>
+			<p>Scroll down to explore how lifestyle affects sleep, and how sleep affects grades.</p>
+    	</header>
 
-		<section class="workspace-grid">
-			<div class="panel matrix-wrapper">
-				<div class="panel-heading">
-					<h2>1. Dataset Matrix Landscapes</h2>
-					<div class="control-box">
-						<label for="dataset-dropdown">Target Study: </label>
-						<select id="dataset-dropdown">
-							<option value="dataset1">Dataset 1: Student Insomnia & Survey Outcomes</option>
-							<option value="dataset2" selected>Dataset 2: CMU Wearable Sensor Sleep Study</option>
-							<option value="dataset3">Dataset 3: Student Sleep Patterns & Hours</option>
-							<option value="dataset4">Dataset 4: Bedtime Routine & Habits Survey</option>
-							<option value="dataset5">Dataset 5: Mental Health & Social Media Metrics</option>
-						</select>
-					</div>
-				</div>
-				<div id="heatmap-render-target"></div>
-			</div>
-		</section>
+    <div class="scrolly-container">
+        <div class="scroll-steps">
+            <div class="scroll-step" data-target="layer-lifestyle">
+                <h2>1. Lifestyle Impacts on Sleep</h2>
+                <p> There are many factors that affect sleeps, with those tightly related by both mental and physical health 
+					factors. 
 
-		<section class="panel chart-wrapper">
-			<h2>2. Top 10 Lifestyle Factors Directly Affecting Sleep</h2>
-			<div class="split-chart-layout">
-				<div id="barchart-render-target"></div>
-				<div class="narrative-viewer">
-					<h3>Cascade Impact Breakdown</h3>
-					<div id="factor-narrative-target">
-						<p class="fallback-style">Click on a parameter bar in the visualization layout to load its
-							clinical downstream narrative.</p>
-					</div>
-				</div>
-			</div>
-		</section>
+				</p>
+            </div>
+            
+            <div class="scroll-spacer"></div>
+
+            <div class="scroll-step" data-target="layer-academic">
+                <h2>2. Sleep Impacts on Grades</h2>
+                <p></p>
+            </div>
+            
+            <div class="scroll-spacer"></div>
+        </div>
+
+        <div class="sticky-visuals">
+            <div class="heatmap-stack">
+                <div id="layer-lifestyle" class="heatmap-layer active-layer">
+                    <div id="heatmap1-target" class="heatmap-canvas"></div>
+                </div>
+                <div id="layer-academic" class="heatmap-layer">
+                    <div id="heatmap2-target" class="heatmap-canvas"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sticky-panel">
+            <div class="narrative-viewer">
+                <h3>Cascade Impact Breakdown</h3>
+                <div id="factor-narrative-target">
+                    <p class="fallback-style">Click on a cell in the matrix to learn more about the relationship.</p>
+                </div>
+            </div>
+        </div>
 	</div>
 	<script src="https://d3js.org/d3.v7.min.js"></script>
 	<script src="../visualization/correlation_matrices.js"></script>
