@@ -212,9 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
     container.style("position", "relative");
 
     // Grab panel DOM nodes for dynamic resizing
-    const rightPanel = document.querySelector(".bc-right-panel");
-    const leftPanel  = document.querySelector(".bc-left-panel");
+    const rightPanel  = document.querySelector(".bc-right-panel");
+    const leftPanel   = document.querySelector(".bc-left-panel");
     const d3Container = document.getElementById("bc-d3-container");
+
+    // Remove the CSS size caps so the single chart fills the full right panel
+    d3Container.style.maxWidth  = "none";
+    d3Container.style.maxHeight = "none";
 
     // =============================================
     // LAYER SWITCHING
@@ -236,8 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rightPanel.style.width       = "50vw";
         rightPanel.style.padding     = "0";
         leftPanel.style.width        = "45vw";
-        d3Container.style.maxWidth   = "800px";
-        d3Container.style.maxHeight  = "700px";
+        // keep max-width/max-height as "none" so single chart stays full-size
     }
 
     function updateChart(stepName) {
