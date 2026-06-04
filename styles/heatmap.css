@@ -1,211 +1,133 @@
 :root {
-    /* Updated for the index.html dark theme color scheme */
-    --canvas-bg: #1a1032;         /* Matches index.html's body background */
-    --card-surface: #241942;      /* A slightly lighter purple layer for containers */
-    --text-dark: #e8dff5;         /* Crisp lilac text for deep dark readability */
-    --text-slate: #7b6b99;        /* Suted label text */
-    --accent-tint: #a078ff;        /* Electric purple neon accent text */
-    --accent-glow: rgba(160, 120, 255, 0.1);
+    --canvas-bg: #1a1032;         
+    --card-surface: #241942;      
+    --text-dark: #e8dff5;         
+    --text-slate: #7b6b99;        
+    --accent-tint: #a078ff;        
     --border-line: rgba(160, 120, 255, 0.2);
-    --green-emerald: #10b981;     /* Keep for positive correlation flags */
-    --red-rose: #f43f5e;          /* Keep for negative correlation flags */
-    --body-font: sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    --body-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
     background-color: var(--canvas-bg);
     color: var(--text-dark);
     font-family: var(--body-font);
-    line-height: 1.5;
+    margin: 0;
+    line-height: 1.6;
 }
 
-/* Strategic Overview Component Layout */
-.summary-card {
-    background-color: var(--card-surface);
-    border: 1px solid var(--border-line);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-}
-
-.summary-card h2, .panel h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 8px;
-}
-
-.quick-metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-}
-
-.metric-block {
-    padding: 16px;
-    border-radius: 8px;
-    background-color: rgba(30, 18, 60, 0.5);
-    border-left: 5px solid var(--border-line);
-}
-
-.metric-block.critical-neg { border-left-color: var(--red-rose); }
-.metric-block.optimal-pos { border-left-color: var(--green-emerald); }
-
-.value-node {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: 800;
-}
-.critical-neg .value-node { color: #ff6b8b; }
-.optimal-pos .value-node { color: #34d399; }
-
-.label-node {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-slate);
-}
-
-/* Dashboard Panel Alignment */
-.workspace-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.panel {
-    background-color: var(--card-surface);
-    border: 1px solid var(--border-line);
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-}
-
-.panel-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    border-bottom: 1px solid var(--border-line);
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-}
-
-.control-box label {
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--text-dark);
-}
-
-.control-box select {
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border-line);
-    font-family: inherit;
-    font-weight: 600;
-    background-color: #463769;
-    color: var(--text-dark);
-    cursor: pointer;
-}
-
-/* Update the heatmap container workspace to prevent label clipping */
-#heatmap-render-target {
-    width: 100%;
-    overflow-x: auto;
-    padding-top: 10px;
-}
-
-/* Ensure the layout axis path matches your dark theme theme aesthetics */
-.axis-label path, .axis-label line {
-    stroke: var(--border-line);
-}
-
-/* Tooltip micro-styling config for D3 mouse-tracking indicators */
-.minimal-heatmap-tooltip {
-    position: absolute;
-    background-color: rgba(30, 18, 60, 0.95);
-    color: #e8dff5;
-    padding: 6px 10px;
-    border: 1px solid rgba(160, 120, 255, 0.3);
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    pointer-events: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    z-index: 10000;
-}
-
-.legend-axis line, .legend-axis path {
-    stroke: var(--border-line);
-}
-
-.legend-title {
-    font-size: 11px;
-    font-weight: 700;
-    fill: var(--text-slate);
-}
-
-.fallback-style {
-    color: var(--text-slate);
+.dashboard-header {
     text-align: center;
-    font-style: italic;
-    font-size: 0.9rem;
+    padding: 80px 20px 40px;
+    background: radial-gradient(circle at top center, rgba(121, 100, 213, 0.12) 0%, rgba(26, 16, 50, 0) 70%);
 }
 
-/* Color Legend Spacing Wrapper */
-#matrix-legend-target {
-    margin-top: 24px;
-    max-width: 540px;
+.dashboard-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+
+.scrolly-container {
+    display: flex;
+    position: relative;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    gap: 30px;
+    align-items: flex-start;
 }
 
-/* Split Factor Chart Components Layouts */
-.split-chart-layout {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 24px;
-    margin-top: 12px;
+/* Scroll Triggers Column */
+.scroll-steps {
+    flex: 1;
+    padding-top: 5vh;
 }
 
-@media (max-width: 768px) {
-    .split-chart-layout { grid-template-columns: 1fr; }
-}
-
-#barchart-render-target {
+.scroll-step {
+    min-height: 30vh;
+    padding: 30px;
+    background: rgba(36, 25, 66, 0.8);
+    border: 1px solid var(--border-line);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 0.2; 
+    transform: scale(0.98);
+    max-width: 700px;
     width: 100%;
-    overflow-x: auto;
+    margin-left: -100px; 
+}
+
+.scroll-step h2{
+    text-align: left;
+}
+
+.scroll-step.active-step {
+    opacity: 1;
+    transform: scale(1);
+    border-color: var(--accent-tint);
+}
+
+.scroll-spacer { height: 60vh; }
+
+/* Heatmap Column */
+.sticky-visuals {
+    flex: 1.8;
+    position: sticky;
+    top: 100px; 
+    height: 85vh; /* Responsive height ensures the graph never gets squished */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This guarantees vertical centering */
+}
+
+.heatmap-canvas { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+}
+
+/* Narrative Panel Column */
+.sticky-panel {
+    flex: 1;
+    position: sticky;
+    top: 80px;
+    height: 85vh;  /* Matches the graph's height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* This pushes the box perfectly to the vertical middle */
 }
 
 .narrative-viewer {
     background-color: #1e123c;
     border: 1px solid var(--border-line);
     border-radius: 8px;
-    padding: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.active-factor-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--accent-tint);
-    margin-bottom: 6px;
+.narrative-viewer h3 {
+    font-size: 1.1rem;
+    color: var(--text-slate);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-line);
+    padding-bottom: 10px;
 }
+
+.fallback-style { color: var(--text-slate); font-style: italic; }
+.active-factor-title { font-size: 1.4rem; font-weight: 700; color: var(--accent-tint); margin-bottom: 10px; }
 
 .active-factor-badge {
     display: inline-block;
-    padding: 4px 8px;
-    font-size: 0.75rem;
+    padding: 6px 12px;
+    font-size: 0.85rem;
     font-weight: 700;
     border-radius: 4px;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
 }
 
-.active-factor-badge.negative { background-color: rgba(244, 63, 94, 0.2); color: #ff6b8b; }
-.active-factor-badge.positive { background-color: rgba(16, 185, 129, 0.2); color: #34d399; }
+.active-factor-badge.negative { background-color: rgba(244, 63, 94, 0.15); color: #ff6b8b; border: 1px solid rgba(244, 63, 94, 0.3); }
+.active-factor-badge.positive { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.active-factor-badge.neutral  { background-color: rgba(123, 107, 153, 0.15); color: #cbd5e1; border: 1px solid rgba(123, 107, 153, 0.3); }
+
+.axis-label text { fill: var(--text-slate); font-family: var(--body-font); font-weight: 600; }
+.axis-label path, .axis-label line { stroke: var(--border-line); }

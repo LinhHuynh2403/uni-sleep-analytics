@@ -149,7 +149,7 @@
 
 			<section class="step split-step" id="ring-study">
 				<div class="content-box">
-					<h2>Study Hours</h2>
+					<h2><i class="fa-solid fa-book"></i> Study Hours</h2>
 					<p>
 						Academics claim the crown. While national research suggests undergraduates study an average of
 						4.0 hours a
@@ -165,7 +165,7 @@
 
 			<section class="step split-step" id="ring-screen">
 				<div class="content-box">
-					<h2>Screen Time</h2>
+					<h2><i class="fa-solid fa-clock"></i> Screen Time</h2>
 					<p>Directly following study obligations, screens capture a significant <strong>2.5 hours</strong> of
 						a
 						student's
@@ -186,7 +186,7 @@
 
 			<section class="step split-step" id="ring-sleep">
 				<div class="content-box">
-					<h2>Sleep Focus</h2>
+					<h2><i class="fa-solid fa-bed"></i> Sleep Focus</h2>
 					<p>This is where the system bottlenecks. While health organizations universally mandate an
 						<strong>7.0-hour to
 							9.0-hour
@@ -206,7 +206,7 @@
 
 			<section class="step split-step" id="ring-bedtime">
 				<div class="content-box">
-					<h2>Pre-Bedtime Routine</h2>
+					<h2><i class="fa-solid fa-list"></i> Pre-Bedtime Routine</h2>
 					<p>A student's <strong>1.5-hour transitional evening routine</strong> is rarely peaceful. According
 						to our
 						survey datasets,
@@ -223,7 +223,7 @@
 
 			<section class="step split-step" id="ring-exercise">
 				<div class="content-box">
-					<h2>Physical Exercise</h2>
+					<h2><i class="fa-solid fa-person-running"></i> Physical Exercise</h2>
 					<p>At an average of just <strong>1.0 hours</strong>, physical recovery and active wellness outlets
 						are the
 						very first
@@ -255,7 +255,7 @@
 		style="height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 40px; margin-bottom: 40vh; margin-top: 20vh;">
 		<div>
 			<h3
-				style="color: #a093b5; font-size: 1.8rem; font-weight: 400; letter-spacing: 0.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+				style="color: #a093b5; font-size: 2rem; font-weight: 400; letter-spacing: 0.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
 				This 24-hour imbalance isn't just a single day's problem. Let's zoom out to see how this rolling sleep
 				deficit accumulates across four years of a student's university life...
 			</h3>
@@ -289,12 +289,19 @@
 		}
 
 		@keyframes bounce {
-			0%, 20%, 50%, 80%, 100% {
+
+			0%,
+			20%,
+			50%,
+			80%,
+			100% {
 				transform: translateY(0);
 			}
+
 			40% {
 				transform: translateY(-10px);
 			}
+
 			60% {
 				transform: translateY(-5px);
 			}
@@ -355,6 +362,19 @@
 		.bc-narrative-step.active {
 			opacity: 1;
 			transform: translateY(0);
+		}
+
+		.bc-narrative-step[data-step="summary"] {
+			display: flex;
+			justify-content: center;
+			padding: 40px 0;
+		}
+
+		.bc-narrative-step[data-step="summary"] .bc-box {
+			width: 95%;
+			max-width: 780px;
+			box-sizing: border-box;
+			margin-left: 100px;
 		}
 
 		.bc-box {
@@ -481,31 +501,35 @@
 				</div>
 			</div>
 
-		  <div class="bc-step bc-narrative-step" data-step="4th Year">
-			<div class="bc-box">
-			  <h2>4th Year: The Chronic Deficit</h2>
-			  <p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these soon-to-be graduates exhausted before they even enter the workforce.</p>
+			<div class="bc-step bc-narrative-step" data-step="4th Year">
+				<div class="bc-box">
+					<h2>4th Year: The Chronic Deficit</h2>
+					<p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students
+						fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these
+						soon-to-be graduates exhausted before they even enter the workforce.</p>
+				</div>
 			</div>
-		  </div>
 
-		  <!-- NEW SUMMARY STEP! -->
-		  <div class="bc-step bc-narrative-step" data-step="summary">
-			<div class="bc-box">
-			  <h2>The Big Picture</h2>
-			  <p>When we look at the journey side-by-side, the progression is clear. Healthy sleep habits erode quickly in the first year and never fully recover. The systemic demands of university life progressively force students into a perpetual cycle of exhaustion.</p>
+			<!-- NEW SUMMARY STEP! -->
+			<div class="bc-step bc-narrative-step" data-step="summary">
+				<div class="bc-box">
+					<h2>The Big Picture</h2>
+					<p>When we look at the journey side-by-side, the progression is clear. Healthy sleep habits erode
+						quickly in the first year and never fully recover. The systemic demands of university life
+						progressively force students into a perpetual cycle of exhaustion.</p>
+				</div>
 			</div>
-		  </div>
 		</div>
-	  </div>
-	  <script src="../visualization/data.js"></script>
-	  <script src="../visualization/bar_chart.js"></script>
+	</div>
+	<script src="../visualization/data.js"></script>
+	<script src="../visualization/bar_chart.js"></script>
 
 	<!-- Narrative Transition Spacer to Heatmap -->
 	<div
 		style="height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 40px; margin-bottom: 40vh; margin-top: 20vh;">
 		<div>
 			<h3
-				style="color: #a093b5; font-size: 1.8rem; font-weight: 400; letter-spacing: 0.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+				style="color: #a093b5; font-size: 2rem; font-weight: 400; letter-spacing: 0.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
 				Now that we see the 4-year accumulation of sleep debt, let's look deeper into the raw data. How strongly
 				do all these lifestyle variables actually correlate with each other?
 			</h3>
@@ -535,40 +559,54 @@
 
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../styles/heatmap.css">
-	<div class="viewport-container" id="heatmap-section" style="padding: 40px 20px;">
+	<div class="scrolly-container" id="heatmap-section">
 
-		<section class="workspace-grid">
-			<div class="panel matrix-wrapper">
-				<div class="panel-heading">
-					<h2>1. Dataset Matrix Landscapes</h2>
-					<div class="control-box">
-						<label for="dataset-dropdown">Target Study: </label>
-						<select id="dataset-dropdown">
-							<option value="dataset1">Dataset 1: Student Insomnia & Survey Outcomes</option>
-							<option value="dataset2" selected>Dataset 2: CMU Wearable Sensor Sleep Study</option>
-							<option value="dataset3">Dataset 3: Student Sleep Patterns & Hours</option>
-							<option value="dataset4">Dataset 4: Bedtime Routine & Habits Survey</option>
-							<option value="dataset5">Dataset 5: Mental Health & Social Media Metrics</option>
-						</select>
-					</div>
-				</div>
-				<div id="heatmap-render-target"></div>
+		<div class="scroll-steps">
+			<div class="scroll-step active-step" data-focus="all">
+				<h2> How Strong Does Lifestyle Affect Sleep and Grade?</h2>
+				<p>Here is the overview for the level of impact between different factors from the student's life to their sleep and grades.
+				</p>
 			</div>
-		</section>
 
-		<section class="panel chart-wrapper">
-			<h2>2. Top 10 Lifestyle Factors Directly Affecting Sleep</h2>
-			<div class="split-chart-layout">
-				<div id="barchart-render-target"></div>
-				<div class="narrative-viewer">
-					<h3>Cascade Impact Breakdown</h3>
-					<div id="factor-narrative-target">
-						<p class="fallback-style">Click on a parameter bar in the visualization layout to load its
-							clinical downstream narrative.</p>
-					</div>
+			<div class="scroll-spacer"></div>
+
+			<div class="scroll-step active-step" data-focus="lifestyle">
+				<h2>The Lifestyle Trap</h2>
+				<p>We first focus on the student's lifestyle. It's clear that severe screen time and high stress
+					levels bleed directly into reduced sleep and heightened anxiety.</p>
+			</div>
+
+			<div class="scroll-spacer"></div>
+
+			<div class="scroll-step" data-focus="academic">
+				<h2>Academic Fallout</h2>
+				<p> Thus, having poor sleep quality directly affect their academic performances. As sleep duration
+					drops and bedtimes become erratic, the GPAs by term and by cummulative take a strong hit.</p>
+			</div>
+
+			<div class="scroll-spacer"></div>
+
+			<div class="scroll-step" data-focus="bridge">
+				<h2>The Full Picture</h2>
+				<p> From here, we can see the clear trickle down effect: having high screen time causes immense
+					stress, which destroys sleep duration, which ultimately suppresses a student's GPA.</p>
+			</div>
+
+			<div class="scroll-spacer"></div>
+		</div>
+
+		<div class="sticky-visuals">
+			<div id="unified-heatmap-target" class="heatmap-canvas"></div>
+		</div>
+
+		<div class="sticky-panel">
+			<div class="narrative-viewer">
+				<h3>Correlation Value Explanation</h3>
+				<div id="factor-narrative-target">
+					<p class="fallback-style">Click on a cell in the heatmap for meaning of the cell. Click again to deselect.</p>
 				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 	<script src="https://d3js.org/d3.v7.min.js"></script>
 	<script src="../visualization/correlation_matrices.js"></script>
@@ -674,23 +712,23 @@
 	<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
 	<script src="main.js"></script>
 
-    <!-- Contributors Footer -->
-    <footer style="
+	<!-- Contributors Footer -->
+	<footer style="
         margin-top: 80px; 
         padding: 30px 20px; 
         border-top: 1px solid rgba(121, 100, 213, 0.15); 
         text-align: center;
         background: rgba(15, 10, 30, 0.4);
     ">
-        <div style="
+		<div style="
             max-width: 800px; 
             margin: 0 auto; 
             display: flex; 
             flex-direction: column; 
             gap: 8px;
         ">
-            <!-- Project Context Label -->
-            <p style="
+			<!-- Project Context Label -->
+			<p style="
                 margin: 0; 
                 font-size: 0.75rem; 
                 text-transform: uppercase; 
@@ -698,30 +736,32 @@
                 color: #7b6b99;
                 font-weight: 600;
             ">
-                ECS 163 Information Visualization Project
-            </p>
+				ECS 163 Information Visualization Project
+			</p>
 
-            <!-- Contributors List -->
-            <p style="
+			<!-- Contributors List -->
+			<p style="
                 margin: 0; 
                 font-size: 0.85rem; 
                 color: #a093b5; 
                 letter-spacing: 0.3px;
                 line-height: 1.5;
             ">
-                Created by <strong style="color: #bfaee3; font-weight: 500;">Linh Huynh, William Pham, Pachia Yang, Parwaan
-                    Virk, and Kylie Lallak</strong>
-            </p>
+				Created by <strong style="color: #bfaee3; font-weight: 500;">Linh Huynh, William Pham, Pachia Yang,
+					Parwaan
+					Virk, and Kylie Lallak</strong>
+			</p>
 
-            <!-- Subtle Copyright Notice -->
-            <p style="
+			<!-- Subtle Copyright Notice -->
+			<p style="
                 margin: 0; 
                 font-size: 0.7rem; 
                 color: #53476e;
             ">
-                &copy; 2026 The UC Davis Project Sleep Study. All data cited from Kaggle
-            </p>
-        </div>
-    </footer>
+				&copy; 2026 The UC Davis Project Sleep Study. All data cited from Kaggle
+			</p>
+		</div>
+	</footer>
 </body>
+
 </html>

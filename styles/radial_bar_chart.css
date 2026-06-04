@@ -112,7 +112,7 @@ svg {
 
 /* Apple-inspired translucent blur content box */
 .content-box {
-    background: 3E2496(85, 85, 165, 0.7);
+    background: rgba(26, 16, 50, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     padding: 35px 45px;
@@ -139,7 +139,7 @@ h2 {
 p {
     font-size: 1.15rem;
     line-height: 1.6;
-    color: #a1a1a6;
+    color: #e8dff5;
     margin: 0;
 }
 
