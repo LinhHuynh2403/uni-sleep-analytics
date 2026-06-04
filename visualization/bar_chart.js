@@ -211,16 +211,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // Make the container position:relative so absolute children stack properly
     container.style("position", "relative");
 
+    // Grab panel DOM nodes for dynamic resizing
+    const rightPanel = document.querySelector(".bc-right-panel");
+    const leftPanel  = document.querySelector(".bc-left-panel");
+    const d3Container = document.getElementById("bc-d3-container");
+
     // =============================================
     // LAYER SWITCHING
     // =============================================
+    function expandForSummary() {
+        rightPanel.style.transition  = "width 0.5s ease";
+        leftPanel.style.transition   = "width 0.5s ease";
+        rightPanel.style.width       = "72vw";
+        leftPanel.style.width        = "25vw";
+        d3Container.style.maxWidth   = "none";
+        d3Container.style.maxHeight  = "none";
+    }
+
+    function collapseFromSummary() {
+        rightPanel.style.transition  = "width 0.4s ease";
+        leftPanel.style.transition   = "width 0.4s ease";
+        rightPanel.style.width       = "50vw";
+        leftPanel.style.width        = "45vw";
+        d3Container.style.maxWidth   = "800px";
+        d3Container.style.maxHeight  = "700px";
+    }
+
     function updateChart(stepName) {
         if (stepName === "summary") {
+            expandForSummary();
             singleSvg.transition().duration(400).style("opacity", 0).style("pointer-events", "none");
             summarySvg.transition().delay(400).duration(400).style("opacity", 1).style("pointer-events", "all");
             return;
         }
 
+        collapseFromSummary();
         summarySvg.transition().duration(200).style("opacity", 0).style("pointer-events", "none");
         singleSvg.transition().delay(200).duration(400).style("opacity", 1).style("pointer-events", "all");
 
