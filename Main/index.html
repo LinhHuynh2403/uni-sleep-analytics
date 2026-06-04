@@ -303,8 +303,6 @@
 			}
 		}
 	</style>
-	</div>
-	</div>
 
 	<!-- bar chart (Namespaced for safety!) -->
 	<style>
@@ -398,7 +396,7 @@
 		}
 
 		/* SVG Chart styling NAMESPACED to avoid breaking other graphs */
-		#bc-d3-container .domain, 
+		#bc-d3-container .domain,
 		#bc-d3-container .tick line {
 			stroke: #334155;
 		}
@@ -492,7 +490,6 @@
 			  <p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these soon-to-be graduates exhausted before they even enter the workforce.</p>
 			</div>
 		  </div>
-
 		  <!-- NEW SUMMARY STEP! -->
 		  <div class="bc-step bc-narrative-step" data-step="summary">
 			<div class="bc-box">
@@ -504,6 +501,7 @@
 	  </div>
 	  <script src="../visualization/data.js"></script>
 	  <script src="../visualization/bar_chart.js"></script>
+
 	<!-- Narrative Transition Spacer to Heatmap -->
 	<div
 		style="height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 40px; margin-bottom: 40vh; margin-top: 20vh;">
@@ -577,7 +575,6 @@
 	<script src="https://d3js.org/d3.v7.min.js"></script>
 	<script src="../visualization/correlation_matrices.js"></script>
 	<script src="../visualization/heatmap.js"></script>
-	</div>
 
 	<!-- Narrative Transition Spacer to Sankey -->
 	<div
@@ -679,57 +676,54 @@
 	<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
 	<script src="main.js"></script>
 
-
-</body>
-
-</html>
-
-<!-- Contributors Footer -->
-<footer style="
-    margin-top: 80px; 
-    padding: 30px 20px; 
-    border-top: 1px solid rgba(121, 100, 213, 0.15); 
-    text-align: center;
-    background: rgba(15, 10, 30, 0.4);
-">
-	<div style="
-        max-width: 800px; 
-        margin: 0 auto; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 8px;
+    <!-- Contributors Footer -->
+    <footer style="
+        margin-top: 80px; 
+        padding: 30px 20px; 
+        border-top: 1px solid rgba(121, 100, 213, 0.15); 
+        text-align: center;
+        background: rgba(15, 10, 30, 0.4);
     ">
-		<!-- Project Context Label -->
-		<p style="
-            margin: 0; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            color: #7b6b99;
-            font-weight: 600;
+        <div style="
+            max-width: 800px; 
+            margin: 0 auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px;
         ">
-			ECS 163 Information Visualization Project
-		</p>
+            <!-- Project Context Label -->
+            <p style="
+                margin: 0; 
+                font-size: 0.75rem; 
+                text-transform: uppercase; 
+                letter-spacing: 1.5px; 
+                color: #7b6b99;
+                font-weight: 600;
+            ">
+                ECS 163 Information Visualization Project
+            </p>
 
-		<!-- Contributors List -->
-		<p style="
-            margin: 0; 
-            font-size: 0.85rem; 
-            color: #a093b5; 
-            letter-spacing: 0.3px;
-            line-height: 1.5;
-        ">
-			Created by <strong style="color: #bfaee3; font-weight: 500;">Linh Huynh, William Pham, Pachia Yang, Parwaan
-				Virk, and Kylie Lallak</strong>
-		</p>
+            <!-- Contributors List -->
+            <p style="
+                margin: 0; 
+                font-size: 0.85rem; 
+                color: #a093b5; 
+                letter-spacing: 0.3px;
+                line-height: 1.5;
+            ">
+                Created by <strong style="color: #bfaee3; font-weight: 500;">Linh Huynh, William Pham, Pachia Yang, Parwaan
+                    Virk, and Kylie Lallak</strong>
+            </p>
 
-		<!-- Subtle Copyright Notice -->
-		<p style="
-            margin: 0; 
-            font-size: 0.7rem; 
-            color: #53476e;
-        ">
-			&copy; 2026 The UC Davis Project Sleep Study. All data cited from Kaggle
-		</p>
-	</div>
-</footer>
+            <!-- Subtle Copyright Notice -->
+            <p style="
+                margin: 0; 
+                font-size: 0.7rem; 
+                color: #53476e;
+            ">
+                &copy; 2026 The UC Davis Project Sleep Study. All data cited from Kaggle
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
