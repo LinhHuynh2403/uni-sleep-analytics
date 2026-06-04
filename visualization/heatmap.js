@@ -13,18 +13,18 @@
         };
 
         const cmuCorrs = {
-            "Term GPA": {"Term GPA": 1.0, "Cum GPA": 0.638, "Sleep Duration": 0.201, "Daytime Naps": -0.153, "Sleep Midpoint": -0.194, "Bedtime Variance": -0.035},
-            "Cum GPA": {"Term GPA": 0.638, "Cum GPA": 1.0, "Sleep Duration": 0.110, "Daytime Naps": -0.143, "Sleep Midpoint": -0.191, "Bedtime Variance": -0.006},
-            "Sleep Duration": {"Term GPA": 0.201, "Cum GPA": 0.110, "Sleep Duration": 1.0, "Daytime Naps": -0.292, "Sleep Midpoint": -0.332, "Bedtime Variance": -0.137},
-            "Daytime Naps": {"Term GPA": -0.153, "Cum GPA": -0.143, "Sleep Duration": -0.292, "Daytime Naps": 1.0, "Sleep Midpoint": 0.088, "Bedtime Variance": 0.081},
-            "Sleep Midpoint": {"Term GPA": -0.194, "Cum GPA": -0.191, "Sleep Duration": -0.332, "Daytime Naps": 0.088, "Sleep Midpoint": 1.0, "Bedtime Variance": 0.410},
-            "Bedtime Variance": {"Term GPA": -0.035, "Cum GPA": -0.006, "Sleep Duration": -0.137, "Daytime Naps": 0.081, "Sleep Midpoint": 0.410, "Bedtime Variance": 1.0}
+            "Term GPA": {"Term GPA": 1.0, "Cummulative GPA": 0.638, "Sleep Duration": 0.201, "Daytime Naps": -0.153, "Sleep Midpoint": -0.194, "Bedtime Variance": -0.035},
+            "Cummulative GPA": {"Term GPA": 0.638, "Cummulative GPA": 1.0, "Sleep Duration": 0.110, "Daytime Naps": -0.143, "Sleep Midpoint": -0.191, "Bedtime Variance": -0.006},
+            "Sleep Duration": {"Term GPA": 0.201, "Cummulative GPA": 0.110, "Sleep Duration": 1.0, "Daytime Naps": -0.292, "Sleep Midpoint": -0.332, "Bedtime Variance": -0.137},
+            "Daytime Naps": {"Term GPA": -0.153, "Cummulative GPA": -0.143, "Sleep Duration": -0.292, "Daytime Naps": 1.0, "Sleep Midpoint": 0.088, "Bedtime Variance": 0.081},
+            "Sleep Midpoint": {"Term GPA": -0.194, "Cummulative GPA": -0.191, "Sleep Duration": -0.332, "Daytime Naps": 0.088, "Sleep Midpoint": 1.0, "Bedtime Variance": 0.410},
+            "Bedtime Variance": {"Term GPA": -0.035, "Cummulative GPA": -0.006, "Sleep Duration": -0.137, "Daytime Naps": 0.081, "Sleep Midpoint": 0.410, "Bedtime Variance": 1.0}
         };
 
         const allVariables = [
             "Screen Time", "Physical Activity", "Stress", "Mood", "Social Media", "Anxiety", 
             "Sleep Duration", 
-            "Daytime Naps", "Sleep Midpoint", "Bedtime Variance", "Term GPA", "Cum GPA"
+            "Daytime Naps", "Sleep Midpoint", "Bedtime Variance", "Term GPA", "Cummulative GPA"
         ];
 
         // 2. Pre-compute the full unified matrix
@@ -50,8 +50,8 @@
         const storyFocusSets = {
             "all": allVariables,
             "lifestyle": ["Screen Time", "Physical Activity", "Stress", "Mood", "Social Media", "Anxiety", "Sleep Duration"],
-            "academic": ["Sleep Duration", "Daytime Naps", "Sleep Midpoint", "Bedtime Variance", "Term GPA", "Cum GPA"],
-            "bridge": ["Screen Time", "Stress", "Sleep Duration", "Term GPA", "Cum GPA"]
+            "academic": ["Sleep Duration", "Daytime Naps", "Sleep Midpoint", "Bedtime Variance", "Term GPA", "Cummulative GPA"],
+            "bridge": ["Screen Time", "Stress", "Sleep Duration", "Term GPA", "Cummulative GPA"]
         };
 
         // 4. SVG Setup & Cleanup
@@ -190,8 +190,7 @@
             target.innerHTML = `
                 <div class="active-factor-title">${d.row} & ${d.col}</div>
                 <span class="active-factor-badge ${badgeClass}">${type} Association | r = ${d.value.toFixed(3)}</span>
-                <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 15px;"><strong>Data Context:</strong> Extracted directly from the <em>${d.dataset}</em> database.</p>
-                <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.6;"><strong>Impact on Profile:</strong> There is a ${strengthText} ${type.toLowerCase()} correlation here. This implies that as a student's <em>${d.row}</em> goes up, their <em>${d.col}</em> tends to predictably ${relationshipDirection}.</p>
+                <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.6;"><strong>Impact:</strong> There is a ${strengthText} ${type.toLowerCase()} correlation here. This implies that as a student's <em>${d.row}</em> goes up, their <em>${d.col}</em> tends to ${relationshipDirection}.</p>
             `;
         }
 

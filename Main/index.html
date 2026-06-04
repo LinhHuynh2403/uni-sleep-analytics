@@ -542,44 +542,36 @@
 
 	<!-- heatmap -->
 	<link rel="stylesheet" href="../styles/heatmap.css">
-	<header class="dashboard-header" id="heatmap-section">
-		<h1>The Exhausted Campus</h1>
-		<p>Scroll down to dynamically zoom through the interconnected layers of a student's life.</p>
-	</header>
-
-	<div class="scrolly-container">
+	<div class="scrolly-container" id="heatmap-section">
 
 		<div class="scroll-steps">
 			<div class="scroll-step active-step" data-focus="all">
-				<h2>1. The Disconnected Picture</h2>
-				<p>Here is the full matrix containing both datasets. Notice the dark gaps: these represent variables
-					from different studies. However, there is one metric that bridges both worlds perfectly:
-					<strong>Sleep Duration</strong>.
+				<h2> How Lifestyle Affect Sleep and Grade?</h2>
+				<p>Here is the overview of different factors from the student's life that affect their sleep and grades.
 				</p>
 			</div>
 
 			<div class="scroll-spacer"></div>
 
-			<div class="scroll-step" data-focus="lifestyle">
-				<h2>2. Zoom: The Lifestyle Trap</h2>
-				<p>We zoom in on the Mental Health cohort. You can clearly see how severe screen time and high stress
-					levels bleed directly into reduced sleep and heightened anxiety. Click any box to see the exact
-					relationship.</p>
+			<div class="scroll-step active-step" data-focus="lifestyle">
+				<h2>The Lifestyle Trap</h2>
+				<p>We first focus on the student's lifestyle. It's clear that severe screen time and high stress
+					levels bleed directly into reduced sleep and heightened anxiety.</p>
 			</div>
 
 			<div class="scroll-spacer"></div>
 
 			<div class="scroll-step" data-focus="academic">
-				<h2>3. Zoom: Academic Fallout</h2>
-				<p>Transitioning to the Wearable Sensor cohort. Here, we see the downstream effects. As sleep duration
-					drops and bedtimes become erratic, both Term and Cumulative GPAs take a hit.</p>
+				<h2>Academic Fallout</h2>
+				<p>Because of the poor sleep, we can see a clear downstream effect between sleep quality and their grades. As sleep duration
+					drops and bedtimes become erratic, the GPAs by term and by cummulative take a strong hit.</p>
 			</div>
 
 			<div class="scroll-spacer"></div>
 
 			<div class="scroll-step" data-focus="bridge">
-				<h2>4. The Pathway to Failure</h2>
-				<p>By isolating just the extremes, the narrative becomes undeniable. High screen time causes immense
+				<h2>The Full Picture</h2>
+				<p>Thus, high screen time causes immense
 					stress, which destroys sleep duration, which ultimately suppresses a student's GPA.</p>
 			</div>
 
@@ -592,10 +584,9 @@
 
 		<div class="sticky-panel">
 			<div class="narrative-viewer">
-				<h3>Correlation Narrative</h3>
+				<h3>Correlation Value Explanation</h3>
 				<div id="factor-narrative-target">
-					<p class="fallback-style">Click on a correlation cell in the heatmap to load its clinical downstream
-						narrative.</p>
+					<p class="fallback-style">Click on a cell in the heatmap for meaning of the cell. Click again to deselect.</p>
 				</div>
 			</div>
 		</div>

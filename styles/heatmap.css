@@ -84,6 +84,10 @@ body {
     flex: 1;
     position: sticky;
     top: 80px;
+    height: 85vh;  /* Matches the graph's height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* This pushes the box perfectly to the vertical middle */
 }
 
 .narrative-viewer {
