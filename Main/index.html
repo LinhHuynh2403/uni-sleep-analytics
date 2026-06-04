@@ -397,47 +397,47 @@
 			max-height: 700px;
 		}
 
-		/* SVG Chart styling */
-		.domain,
-		.tick line {
+		/* SVG Chart styling NAMESPACED to avoid breaking other graphs */
+		#bc-d3-container .domain, 
+		#bc-d3-container .tick line {
 			stroke: #334155;
 		}
 
-		.tick text {
+		#bc-d3-container .tick text {
 			fill: #94a3b8;
 			font-size: 13px;
 			font-family: sans-serif;
 		}
 
-		.axis-label {
+		#bc-d3-container .axis-label {
 			fill: #94a3b8;
 			font-size: 16px;
 			font-weight: 600;
 		}
 
-		.chart-title {
+		#bc-d3-container .chart-title {
 			fill: #f8fafc;
 			font-size: 24px;
 			font-weight: 800;
 		}
 
-		.reference-line {
+		#bc-d3-container .reference-line {
 			stroke: var(--accent-color);
 			stroke-width: 2px;
 			stroke-dasharray: 6, 6;
 		}
 
-		.annotation-text {
+		#bc-d3-container .annotation-text {
 			font-size: 16px;
 			font-weight: 800;
 		}
 
-		.bar {
+		#bc-d3-container .bar {
 			opacity: 0.9;
 			transition: opacity 0.2s;
 		}
 
-		.bar:hover {
+		#bc-d3-container .bar:hover {
 			opacity: 1;
 			filter: brightness(1.2);
 		}
@@ -492,6 +492,7 @@
 			  <p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students fall under the 7-hour threshold here. Four years of accumulated sleep debt leave these soon-to-be graduates exhausted before they even enter the workforce.</p>
 			</div>
 		  </div>
+
 		  <!-- NEW SUMMARY STEP! -->
 		  <div class="bc-step bc-narrative-step" data-step="summary">
 			<div class="bc-box">
@@ -503,7 +504,6 @@
 	  </div>
 	  <script src="../visualization/data.js"></script>
 	  <script src="../visualization/bar_chart.js"></script>
-
 	<!-- Narrative Transition Spacer to Heatmap -->
 	<div
 		style="height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 40px; margin-bottom: 40vh; margin-top: 20vh;">
