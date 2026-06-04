@@ -220,18 +220,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // LAYER SWITCHING
     // =============================================
     function expandForSummary() {
-        rightPanel.style.transition  = "width 0.5s ease";
+        rightPanel.style.transition  = "width 0.5s ease, padding 0.5s ease";
         leftPanel.style.transition   = "width 0.5s ease";
         rightPanel.style.width       = "72vw";
+        rightPanel.style.padding     = "30px 0";   // breathing room top & bottom
+        rightPanel.style.boxSizing   = "border-box";
         leftPanel.style.width        = "25vw";
         d3Container.style.maxWidth   = "none";
         d3Container.style.maxHeight  = "none";
     }
 
     function collapseFromSummary() {
-        rightPanel.style.transition  = "width 0.4s ease";
+        rightPanel.style.transition  = "width 0.4s ease, padding 0.4s ease";
         leftPanel.style.transition   = "width 0.4s ease";
         rightPanel.style.width       = "50vw";
+        rightPanel.style.padding     = "0";
         leftPanel.style.width        = "45vw";
         d3Container.style.maxWidth   = "800px";
         d3Container.style.maxHeight  = "700px";
