@@ -15,8 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .style("width", "100%")
       .style("height", "100%");
       
-    const chartGroup = svg.append("g")
+    const singleChartGroup = svg.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
+      
+    // Create summary layer
+    const summaryChartGroup = svg.append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`)
+      .style("opacity", 0)
+      .style("pointer-events", "none"); // Hidden by default
       
     // Load the dataset from data.js
     const data = d3.csvParse(rawCsvData);
@@ -73,9 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
         .domain([0, yMax])
         .range([innerHeight, 0]);
 
-    // Draw Axes
+    // ======== SINGLE CHART SETUP ========
     const xAxis = d3.axisBottom(x).ticks(8);
-    chartGroup.append("g")
+    singleChartGroup.append("g")
         .attr("class", "x-axis")
         .attr("transform", `translate(0,${innerHeight})`)
         .call(xAxis)
@@ -83,21 +89,21 @@ document.addEventListener("DOMContentLoaded", () => {
         .attr("class", "domain");
 
     const yAxis = d3.axisLeft(y).ticks(6);
-    chartGroup.append("g")
+    singleChartGroup.append("g")
         .attr("class", "y-axis")
         .call(yAxis)
         .selectAll("path, line")
         .attr("class", "domain");
 
     // Axis Labels
-    chartGroup.append("text")
+    singleChartGroup.append("text")
         .attr("class", "axis-label")
         .attr("x", innerWidth / 2)
         .attr("y", innerHeight + 50)
         .attr("text-anchor", "middle")
         .text("Hours of Sleep");
 
-    chartGroup.append("text")
+    singleChartGroup.append("text")
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("y", -50)
@@ -106,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .text("Number of Students");
         
     // Dynamic Chart Title
-    const chartTitle = chartGroup.append("text")
+    const chartTitle = singleChartGroup.append("text")
         .attr("class", "chart-title")
         .attr("x", innerWidth / 2)
         .attr("y", -20)
@@ -114,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .text("All University Students");
 
     // 7h Reference Line (Static)
-    chartGroup.append("line")
+    singleChartGroup.append("line")
         .attr("class", "reference-line")
         .attr("x1", x(7))
         .attr("x2", x(7))
@@ -122,13 +128,112 @@ document.addEventListener("DOMContentLoaded", () => {
         .attr("y2", innerHeight);
         
     // Dynamic <7h Annotation
-    const annotationText = chartGroup.append("text")
+    const annotationText = singleChartGroup.append("text")
         .attr("class", "annotation-text")
         .attr("x", x(6.8))
         .attr("y", 20)
         .attr("text-anchor", "end");
 
-    // Create Tooltip
+    // ======== SUMMARY CHART GRID SETUP ========
+    // 2x2 layout
+    const gridCols = 2;
+    const gridRows = 2;
+    const cellWidth = innerWidth / gridCols;
+    const cellHeight = innerHeight / gridRows;
+    const cellMargin = 30; // space between cells
+    const innerCellWidth = cellWidth - cellMargin;
+    const innerCellHeight = cellHeight - cellMargin;
+
+    // Small scales
+    const smallX = d3.scaleLinear()
+        .domain([3, 11])
+        .range([0, innerCellWidth]);
+    
+    // We can use the same global yMax for fair comparison across all 4 years
+    const smallY = d3.scaleLinear()
+        .domain([0, yMax])
+        .range([innerCellHeight, 0]);
+
+    const smallXAxis = d3.axisBottom(smallX).ticks(5);
+    const smallYAxis = d3.axisLeft(smallY).ticks(4);
+
+    const years = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+    
+    // Pre-draw the 4 small charts
+    years.forEach((year, i) => {
+        const row = Math.floor(i / gridCols);
+        const col = i % gridCols;
+        
+        const g = summaryChartGroup.append("g")
+            .attr("transform", `translate(${col * cellWidth + cellMargin/2}, ${row * cellHeight + cellMargin/2})`);
+            
+        // Axes
+        g.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0,${innerCellHeight})`)
+            .call(smallXAxis)
+            .selectAll("path, line")
+            .attr("class", "domain");
+            
+        g.append("g")
+            .attr("class", "y-axis")
+            .call(smallYAxis)
+            .selectAll("path, line")
+            .attr("class", "domain");
+            
+        // Title
+        g.append("text")
+            .attr("x", innerCellWidth / 2)
+            .attr("y", -10)
+            .attr("text-anchor", "middle")
+            .style("fill", "#f8fafc")
+            .style("font-size", "14px")
+            .style("font-weight", "bold")
+            .text(year);
+            
+        // Reference Line
+        g.append("line")
+            .attr("class", "reference-line")
+            .attr("x1", smallX(7))
+            .attr("x2", smallX(7))
+            .attr("y1", 0)
+            .attr("y2", innerCellHeight);
+            
+        // Draw bars
+        const bins = binsByStep[year];
+        const smallBars = g.selectAll(".bar")
+            .data(bins)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", d => smallX(d.x0) + 1)
+            .attr("width", d => Math.max(0, smallX(d.x1) - smallX(d.x0) - 1))
+            .attr("y", d => smallY(d.length))
+            .attr("height", d => innerCellHeight - smallY(d.length))
+            .style("fill", colorScale[year]);
+            
+        // Add hover to small charts too
+        smallBars.on("mouseover", function(a, b) {
+            const e = b !== undefined ? a : d3.event;
+            const d = b !== undefined ? b : a;
+            
+            tooltip.style("opacity", 1)
+                .html(`<strong>${year}</strong><br/><strong>${d.x0} - ${d.x1} Hours</strong><br/><span style="color:var(--accent-color)">${d.length} Students</span>`);
+                
+            d3.select(this).style("filter", "brightness(1.3)");
+        })
+        .on("mousemove", function(a, b) {
+            const e = b !== undefined ? a : d3.event;
+            tooltip.style("left", (e.clientX + 15) + "px")
+                   .style("top", (e.clientY - 30) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.style("opacity", 0);
+            d3.select(this).style("filter", "none");
+        });
+    });
+
+    // Create Tooltip (shared by both layers)
     let tooltip = d3.select("#bc-tooltip");
     if (tooltip.empty()) {
         tooltip = d3.select("body").append("div")
@@ -148,8 +253,18 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("transition", "opacity 0.1s ease");
     }
 
-    // Bar drawing logic
+    // Bar drawing logic (for single chart)
     function updateChart(stepName) {
+        // Handle layer switching
+        if (stepName === "summary") {
+            singleChartGroup.transition().duration(400).style("opacity", 0).style("pointer-events", "none");
+            summaryChartGroup.transition().delay(400).duration(400).style("opacity", 1).style("pointer-events", "all");
+            return;
+        } else {
+            summaryChartGroup.transition().duration(200).style("opacity", 0).style("pointer-events", "none");
+            singleChartGroup.transition().delay(200).duration(400).style("opacity", 1).style("pointer-events", "all");
+        }
+
         if (!binsByStep[stepName]) return;
         
         const bins = binsByStep[stepName];
@@ -167,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("fill", stepName === "intro" ? "var(--accent-color)" : colorScale[stepName]);
             
         // Data join
-        const bars = chartGroup.selectAll(".bar")
+        const bars = singleChartGroup.selectAll(".bar")
             .data(bins);
             
         // Enter + Update
