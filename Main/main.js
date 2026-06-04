@@ -23,6 +23,33 @@ var colors = {
 var colColors = ["#f0c040", "#9b7fea", "#7bb8ea", "#e88dc4"];
 
 
+// maps a bin name to a plain-English description based on its column
+// col: 0=caffeine, 1=sleep duration, 2=quality, 3=screen time
+function describeBin(col, bin) {
+    if (col === 0) {
+        if (bin === "No caffeine") return "no caffeine";
+        if (bin === "Low (1 cup)") return "1 cup of coffee";
+        if (bin === "Moderate (2-3)") return "2-3 cups of coffee";
+        if (bin === "High (4-5)") return "4-5 cups of coffee";
+    } else if (col === 1) {
+        if (bin === "7+ hrs") return "7+ hours of sleep";
+        if (bin === "6-7 hrs") return "6-7 hours of sleep";
+        if (bin === "5-6 hrs") return "5-6 hours of sleep";
+        if (bin === "< 5 hrs") return "under 5 hours of sleep";
+    } else if (col === 2) {
+        if (bin === "Excellent") return "excellent quality";
+        if (bin === "Good") return "good quality";
+        if (bin === "Fair") return "fair quality";
+        if (bin === "Poor") return "poor quality";
+    } else if (col === 3) {
+        if (bin === "Low (< 2h)") return "under 2 hours of screen time";
+        if (bin === "Med (2-3h)") return "2-3 hours of screen time";
+        if (bin === "High (3+h)") return "3+ hours of screen time";
+    }
+    return bin;
+}
+
+
 function drawSankey() {
     d3.select("#sankey-svg").selectAll("*").remove();
 
@@ -32,24 +59,25 @@ function drawSankey() {
 
     // title
     svg.append("text")
-        .attr("x", w / 2).attr("y", 28)
+        .attr("x", w / 2).attr("y", 38)
         .attr("text-anchor", "middle")
         .attr("fill", colors.titleText)
-        .attr("font-size", "20px")
+        .attr("font-size", "29px")
         .attr("font-weight", "bold")
         .attr("font-family", "sans-serif")
         .text("The Sleepless Cycle");
 
+    // thesis subtitle
     svg.append("text")
-        .attr("x", w / 2).attr("y", 48)
+        .attr("x", w / 2).attr("y", 64)
         .attr("text-anchor", "middle")
         .attr("fill", colors.mutedText)
-        .attr("font-size", "12px")
+        .attr("font-size", "17px")
         .attr("font-family", "sans-serif")
-        .text("How caffeine, sleep, and screens trap 500 students in a loop. Can study habits or exercise break it?");
+        .text("Most students never close the loop. Follow the flows — sleep lost is rarely sleep regained.");
 
-    var filterY = 58;
-    var filterH = 50;
+    var filterY = 76;
+    var filterH = 56;
 
     var fo = svg.append("foreignObject")
         .attr("x", 0).attr("y", filterY)
@@ -58,22 +86,22 @@ function drawSankey() {
     // build filter buttons as html
     var html = '<div style="display:flex;align-items:center;justify-content:center;gap:24px;padding:8px 20px;font-family:sans-serif;">';
 
-    // study load buttons
+    // study load filter (reframed as a question)
     html += '<div style="display:flex;align-items:center;gap:8px;">';
-    html += '<span style="font-size:10px;color:#7b6b99;text-transform:uppercase;letter-spacing:0.05em;">Study Load</span>';
+    html += '<span style="font-size:14px;color:#7b6b99;font-style:italic;">Does less studying save sleep?</span>';
     html += '<div style="display:flex;gap:3px;">';
     ["Light", "Moderate", "Heavy"].forEach(function (lab) {
         var active = activeFilters.study === lab;
         var s = active
             ? "background:#2d1f6e;border:1px solid #a07cff;color:#c4b0ff;"
             : "background:transparent;border:1px solid #3d2a6e;color:#8a7aaa;";
-        html += '<button onclick="handleFilterClick(\'study\',\'' + lab + '\')" style="' + s + 'padding:3px 10px;border-radius:12px;font-size:11px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
+        html += '<button onclick="handleFilterClick(\'study\',\'' + lab + '\')" style="' + s + 'padding:4px 12px;border-radius:12px;font-size:15px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
     });
     html += '</div></div>';
 
-    // exercise buttons
+    // exercise filter (reframed as a question)
     html += '<div style="display:flex;align-items:center;gap:8px;">';
-    html += '<span style="font-size:10px;color:#7b6b99;text-transform:uppercase;letter-spacing:0.05em;">Exercise</span>';
+    html += '<span style="font-size:14px;color:#7b6b99;font-style:italic;">Can exercise break the cycle?</span>';
     html += '<div style="display:flex;gap:3px;">';
 
     var exerciseOpts = ["Low", "Medium", "High"];
@@ -83,12 +111,12 @@ function drawSankey() {
         var s = active
             ? "background:#2d1f6e;border:1px solid #a07cff;color:#c4b0ff;"
             : "background:transparent;border:1px solid #3d2a6e;color:#8a7aaa;";
-        html += '<button onclick="handleFilterClick(\'activity\',\'' + lab + '\')" style="' + s + 'padding:3px 10px;border-radius:12px;font-size:11px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
+        html += '<button onclick="handleFilterClick(\'activity\',\'' + lab + '\')" style="' + s + 'padding:4px 12px;border-radius:12px;font-size:15px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
     }
     html += '</div></div>';
 
     if (activeFilters.study !== null || activeFilters.activity !== null) {
-        html += '<button onclick="resetFilters()" style="background:transparent;border:1px solid #5a3a7e;color:#7b6b99;padding:3px 12px;border-radius:12px;font-size:10px;cursor:pointer;font-family:sans-serif;">Reset</button>';
+        html += '<button onclick="resetFilters()" style="background:transparent;border:1px solid #5a3a7e;color:#7b6b99;padding:4px 14px;border-radius:12px;font-size:14px;cursor:pointer;font-family:sans-serif;">Reset</button>';
     }
 
     html += '</div>';
@@ -145,26 +173,72 @@ function drawSankey() {
             return true;
         });
         var count = filtered.length;
-        //console.log("filtered count:", count);
+        var hasFilter = activeFilters.study !== null || activeFilters.activity !== null;
 
-        // show count
-        var narY = filterY + filterH + 2;
-        var desc = "";
-        if (activeFilters.study !== null) desc += activeFilters.study.toLowerCase() + " study load";
-        if (activeFilters.activity !== null) {
-            if (desc.length > 0) desc += " & ";
-            desc += activeFilters.activity.toLowerCase() + " exercise";
+        // compute the most-traveled 4-step path
+        var pathCount = {};
+        filtered.forEach(function (d) {
+            var key = d.caffBin + "||" + d.sleepBin + "||" + d.qualBin + "||" + d.screenBin;
+            pathCount[key] = (pathCount[key] || 0) + 1;
+        });
+        var doomKey = null;
+        var doomN = 0;
+        Object.keys(pathCount).forEach(function (k) {
+            if (pathCount[k] > doomN) { doomN = pathCount[k]; doomKey = k; }
+        });
+        var doomParts = doomKey ? doomKey.split("||") : [];
+        var doomLinks = {};
+        if (doomParts.length === 4) {
+            doomLinks[doomParts[0] + ">>" + doomParts[1]] = true;
+            doomLinks[doomParts[1] + ">>" + doomParts[2]] = true;
+            doomLinks[doomParts[2] + ">>" + doomParts[3]] = true;
         }
-        var countText = "Showing " + count + " of 500 students";
-        if (desc.length > 0) countText += " with " + desc;
+        // doom mode is only active when no filters are applied
+        var showDoomPath = !hasFilter;
 
-        svg.append("text")
-            .attr("x", w / 2).attr("y", narY + 10)
-            .attr("text-anchor", "middle")
-            .attr("fill", colors.mutedText)
-            .attr("font-size", "11px")
-            .attr("font-family", "sans-serif")
-            .text(countText);
+        // helper to get the right link opacity based on current state
+        function linkOpacityFor(d) {
+            if (highlightedNode !== null) {
+                var connected = d.source.name === highlightedNode || d.target.name === highlightedNode;
+                return connected ? 0.65 : 0.05;
+            }
+            if (showDoomPath) {
+                return doomLinks[d.source.name + ">>" + d.target.name] ? 0.85 : 0.12;
+            }
+            return 0.3;
+        }
+
+        // show count OR doom path callout
+        var narY = filterY + filterH + 2;
+        if (showDoomPath) {
+            // build descriptive doom path string
+            var doomDesc = doomParts.map(function (p, i) { return describeBin(i, p); }).join("   →   ");
+            svg.append("text")
+                .attr("x", w / 2).attr("y", narY + 14)
+                .attr("text-anchor", "middle")
+                .attr("fill", colors.gold)
+                .attr("font-size", "15px")
+                .attr("font-style", "italic")
+                .attr("font-family", "sans-serif")
+                .text("The most common night:  " + doomDesc + "    ·    " + doomN + " students walk this exact path");
+        } else {
+            var desc = "";
+            if (activeFilters.study !== null) desc += activeFilters.study.toLowerCase() + " study load";
+            if (activeFilters.activity !== null) {
+                if (desc.length > 0) desc += " & ";
+                desc += activeFilters.activity.toLowerCase() + " exercise";
+            }
+            var countText = "Showing " + count + " of 500 students";
+            if (desc.length > 0) countText += " with " + desc;
+
+            svg.append("text")
+                .attr("x", w / 2).attr("y", narY + 12)
+                .attr("text-anchor", "middle")
+                .attr("fill", colors.mutedText)
+                .attr("font-size", "16px")
+                .attr("font-family", "sans-serif")
+                .text(countText);
+        }
 
         // not enough data check
         if (count < 5) {
@@ -230,7 +304,7 @@ function drawSankey() {
         });
 
         // layout setup
-        var margin = { top: 50, right: 140, bottom: 120, left: 140 };
+        var margin = { top: 60, right: 140, bottom: 120, left: 140 };
         var sTop = narY + 22;
         var sWidth = w - margin.left - margin.right;
         var sHeight = h - sTop - margin.top - margin.bottom;
@@ -265,34 +339,31 @@ function drawSankey() {
             .attr("d", d3.sankeyLinkHorizontal())
             .attr("stroke-width", function (d) { return Math.max(1.5, d.width); })
             .attr("stroke", function (d) { return colColors[colMap[d.source.name]]; })
-            .attr("stroke-opacity", 0.3)
+            .attr("stroke-opacity", function (d) { return linkOpacityFor(d); })
             .attr("fill", "none")
             .style("cursor", "pointer");
 
-        // link hover
-        linkEls.on("mouseover", function (d) {
+        // link hover (d3 v7 signature: event first, datum second)
+        linkEls.on("mouseover", function (event, d) {
             d3.select(this).attr("stroke-opacity", 0.7);
             var pct = ((d.value / count) * 100).toFixed(1);
+            var srcCol = colMap[d.source.name];
+            var tgtCol = colMap[d.target.name];
             var tip = "<strong>" + d.value + " students</strong> (" + pct + "%)<br>";
-            tip += "<span style='color:" + colColors[colMap[d.source.name]] + "'>" + d.source.name + "</span>";
+            tip += "<span style='color:" + colColors[srcCol] + "'>" + describeBin(srcCol, d.source.name) + "</span>";
             tip += " → ";
-            tip += "<span style='color:" + colColors[colMap[d.target.name]] + "'>" + d.target.name + "</span>";
+            tip += "<span style='color:" + colColors[tgtCol] + "'>" + describeBin(tgtCol, d.target.name) + "</span>";
             var tt = document.getElementById("tooltip");
             tt.innerHTML = tip;
             tt.style.opacity = 1;
         })
-            .on("mousemove", function () {
+            .on("mousemove", function (event) {
                 var tt = document.getElementById("tooltip");
-                tt.style.left = (d3.event.pageX + 15) + "px";
-                tt.style.top = (d3.event.pageY - 10) + "px";
+                tt.style.left = (event.pageX + 15) + "px";
+                tt.style.top = (event.pageY - 10) + "px";
             })
-            .on("mouseout", function (d) {
-                if (highlightedNode !== null) {
-                    var connected = d.source.name === highlightedNode || d.target.name === highlightedNode;
-                    d3.select(this).attr("stroke-opacity", connected ? 0.65 : 0.05);
-                } else {
-                    d3.select(this).attr("stroke-opacity", 0.3);
-                }
+            .on("mouseout", function (event, d) {
+                d3.select(this).attr("stroke-opacity", linkOpacityFor(d));
                 document.getElementById("tooltip").style.opacity = 0;
             });
 
@@ -314,20 +385,16 @@ function drawSankey() {
             .attr("rx", 3)
             .style("cursor", "pointer");
 
-        // click node to highlight
-        nodeEls.on("click", function (d) {
+        // click node to highlight (d3 v7 signature)
+        nodeEls.on("click", function (event, d) {
             if (highlightedNode === d.name) {
+                // deselect - return to either doom mode or normal mode
                 highlightedNode = null;
-                linkEls.attr("stroke-opacity", 0.3);
+                linkEls.attr("stroke-opacity", function (l) { return linkOpacityFor(l); });
                 svg.selectAll(".hl-label").remove();
             } else {
                 highlightedNode = d.name;
-                linkEls.attr("stroke-opacity", 0.05);
-                linkEls.each(function (lnk) {
-                    if (lnk.source.name === d.name || lnk.target.name === d.name) {
-                        d3.select(this).attr("stroke-opacity", 0.65);
-                    }
-                });
+                linkEls.attr("stroke-opacity", function (l) { return linkOpacityFor(l); });
 
                 svg.selectAll(".hl-label").remove();
                 svg.append("text")
@@ -337,23 +404,24 @@ function drawSankey() {
                     .attr("fill", colors.accent)
                     .attr("font-size", "11px")
                     .attr("font-family", "sans-serif")
-                    .text("Showing paths through: " + d.name + " (" + d.value + " students) — click again to reset");
+                    .text("Showing paths through: " + describeBin(colMap[d.name], d.name) + " (" + d.value + " students) — click again to reset");
             }
         });
 
-        nodeEls.on("mouseover", function (d) {
+        // node hover (d3 v7 signature)
+        nodeEls.on("mouseover", function (event, d) {
             d3.select(this).attr("fill-opacity", 0.8);
             var pct = ((d.value / count) * 100).toFixed(1);
             var tt = document.getElementById("tooltip");
-            tt.innerHTML = "<strong>" + d.name + "</strong><br>" + d.value + " students (" + pct + "%)";
+            tt.innerHTML = "<strong>" + describeBin(colMap[d.name], d.name) + "</strong><br>" + d.value + " students (" + pct + "%)";
             tt.style.opacity = 1;
         })
-            .on("mousemove", function () {
+            .on("mousemove", function (event) {
                 var tt = document.getElementById("tooltip");
-                tt.style.left = (d3.event.pageX + 15) + "px";
-                tt.style.top = (d3.event.pageY - 10) + "px";
+                tt.style.left = (event.pageX + 15) + "px";
+                tt.style.top = (event.pageY - 10) + "px";
             })
-            .on("mouseout", function () {
+            .on("mouseout", function (event) {
                 d3.select(this).attr("fill-opacity", 1);
                 document.getElementById("tooltip").style.opacity = 0;
             });
@@ -378,8 +446,9 @@ function drawSankey() {
             .attr("font-family", "sans-serif")
             .text(function (d) { return d.name + " (" + d.value + ")"; });
 
-        // column headers
+        // column headers + story-role subheads
         var headers = ["Caffeine Intake", "Sleep Duration", "Sleep Quality", "Screen Time"];
+        var subheads = ["the input", "the cost", "the consequence", "the relapse"];
         var colX = [null, null, null, null];
         data.nodes.forEach(function (d) {
             var c = colMap[d.name];
@@ -387,16 +456,28 @@ function drawSankey() {
         });
         for (var hi = 0; hi < headers.length; hi++) {
             if (colX[hi] === null) continue;
+            // main header
             g.append("text")
-                .attr("x", colX[hi]).attr("y", -18)
+                .attr("x", colX[hi]).attr("y", -28)
                 .attr("text-anchor", "middle")
-                .attr("fill", colors.mutedText)
-                .attr("font-size", "10px")
+                .attr("fill", colors.labelText)
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+                .attr("letter-spacing", "0.1em")
                 .attr("font-family", "sans-serif")
                 .text(headers[hi].toUpperCase());
+            // story-role subhead
+            g.append("text")
+                .attr("x", colX[hi]).attr("y", -12)
+                .attr("text-anchor", "middle")
+                .attr("fill", colors.mutedText)
+                .attr("font-size", "11px")
+                .attr("font-style", "italic")
+                .attr("font-family", "sans-serif")
+                .text(subheads[hi]);
         }
 
-        // cycle arrow at the bottom
+        // cycle arrow as the emotional payoff
         var lastX = colX[3];
         var firstX = colX[0];
         if (lastX !== null && firstX !== null) {
@@ -404,33 +485,34 @@ function drawSankey() {
             var startX = lastX + margin.left;
             var endX = firstX + margin.left;
             var baseY = sTop + margin.top + ay;
-            var curveY = baseY + 18;
+            var curveY = baseY + 22;
 
             svg.append("path")
                 .attr("d", "M " + startX + " " + baseY + " Q " + (w / 2) + " " + curveY + " " + endX + " " + baseY)
                 .attr("fill", "none")
-                .attr("stroke", colors.hintText)
-                .attr("stroke-width", 1)
-                .attr("stroke-dasharray", "4,4")
-                .attr("opacity", 0.5);
+                .attr("stroke", colors.gold)
+                .attr("stroke-width", 2)
+                .attr("stroke-dasharray", "5,5")
+                .attr("opacity", 0.85);
 
             // arrowhead
             svg.append("polygon")
                 .attr("points",
                     endX + "," + baseY + " " +
-                    (endX + 8) + "," + (baseY - 4) + " " +
-                    (endX + 8) + "," + (baseY + 4))
-                .attr("fill", colors.hintText)
-                .attr("opacity", 0.5);
+                    (endX + 10) + "," + (baseY - 5) + " " +
+                    (endX + 10) + "," + (baseY + 5))
+                .attr("fill", colors.gold)
+                .attr("opacity", 0.85);
 
             svg.append("text")
-                .attr("x", w / 2).attr("y", curveY + 14)
+                .attr("x", w / 2).attr("y", curveY + 18)
                 .attr("text-anchor", "middle")
-                .attr("fill", colors.hintText)
-                .attr("font-size", "10px")
+                .attr("fill", colors.gold)
+                .attr("font-size", "14px")
                 .attr("font-style", "italic")
+                .attr("font-weight", "bold")
                 .attr("font-family", "sans-serif")
-                .text("the cycle repeats → more caffeine to compensate");
+                .text("Tomorrow's exhaustion  →  tomorrow's caffeine  →  tomorrow's lost sleep.");
         }
 
         // hint text
@@ -444,53 +526,37 @@ function drawSankey() {
                 .text("Click any category to isolate its paths  •  Hover for details  •  Use filters above to compare groups");
         }
 
-        // narrative text at the bottom
-        function getMode(arr, fn) {
-            var tmp = {};
-            arr.forEach(function (d) {
-                var v = fn(d);
-                if (!tmp[v]) tmp[v] = 0;
-                tmp[v]++;
-            });
-            var best = null;
-            var bestN = 0;
-            Object.keys(tmp).forEach(function (v) {
-                if (tmp[v] > bestN) { bestN = tmp[v]; best = v; }
-            });
-            return { value: best, count: bestN };
-        }
-
-        var mCaff = getMode(filtered, function (d) { return d.caffBin; });
-        var mSleep = getMode(filtered, function (d) { return d.sleepBin; });
-        var mQual = getMode(filtered, function (d) { return d.qualBin; });
-        var mScreen = getMode(filtered, function (d) { return d.screenBin; });
-
-        var badSleep = mSleep.value === "< 5 hrs" || mSleep.value === "5-6 hrs";
-        var badQual = mQual.value === "Poor" || mQual.value === "Fair";
-        var hiScreen = mScreen.value === "High (3+h)";
-        var hiCaff = mCaff.value === "High (4-5)" || mCaff.value === "Moderate (2-3)";
-        var hasFilter = activeFilters.study !== null || activeFilters.activity !== null;
+        // revelatory narrative with evidence
+        var lowSleepPct = Math.round(filtered.filter(function (d) {
+            return d.sleepBin !== "7+ hrs";
+        }).length / count * 100);
+        var poorQualPct = Math.round(filtered.filter(function (d) {
+            return d.qualBin === "Poor" || d.qualBin === "Fair";
+        }).length / count * 100);
+        var hiScreenPct = Math.round(filtered.filter(function (d) {
+            return d.screenBin === "High (3+h)";
+        }).length / count * 100);
 
         var narr = "";
         if (!hasFilter) {
-            narr = "Across all 500 students, the most common path flows through " + mCaff.value.toLowerCase() + " caffeine, " + mSleep.value + " of sleep, " + mQual.value.toLowerCase() + " quality, and " + mScreen.value.toLowerCase() + " screen time. Try the filters above to compare groups.";
-        } else if (badQual && hiScreen) {
-            narr = "Among this group, " + mQual.value.toLowerCase() + " sleep quality and " + mScreen.value.toLowerCase() + " screen time dominate — a pattern consistent with the sleepless cycle.";
-        } else if (hiCaff && badSleep) {
-            narr = "This group averages " + mCaff.value.toLowerCase() + " caffeine intake but most still only sleep " + mSleep.value + " — caffeine may not be compensating for lost rest.";
-        } else if (!badQual && hiScreen) {
-            narr = "Most in this group report " + mQual.value.toLowerCase() + " sleep quality despite " + mScreen.value.toLowerCase() + " screen time — suggesting screens alone may not determine sleep quality.";
-        } else if (!badQual && !hiScreen) {
-            narr = "This group trends toward " + mQual.value.toLowerCase() + " sleep quality and " + mScreen.value.toLowerCase() + " screen time — a pattern that suggests the cycle can be broken.";
+            narr = doomN + " students walk this exact path — and " + lowSleepPct + "% of all 500 never reach 7 hours of sleep. The loop holds.";
+        } else if (activeFilters.study === "Heavy") {
+            narr = "Even with a heavy study load, " + lowSleepPct + "% still fall under 7 hours and " + poorQualPct + "% report poor or fair quality. Effort doesn't earn rest.";
+        } else if (activeFilters.study === "Light") {
+            narr = "Even with light study loads, " + lowSleepPct + "% still sleep less than 7 hours. The cycle is structural, not personal.";
+        } else if (activeFilters.activity === "High") {
+            narr = "Exercise helps — but " + lowSleepPct + "% still fall under 7 hours and " + hiScreenPct + "% still rack up 3+ hours of screen time. The cycle weakens, but doesn't break.";
+        } else if (activeFilters.activity === "Low") {
+            narr = "Without exercise, " + poorQualPct + "% report poor or fair sleep quality. The cycle deepens.";
         } else {
-            narr = "This group's most common path: " + mCaff.value.toLowerCase() + " caffeine → " + mSleep.value + " sleep → " + mQual.value.toLowerCase() + " quality → " + mScreen.value.toLowerCase() + " screen time.";
+            narr = "In this group, " + lowSleepPct + "% sleep under 7 hours and " + poorQualPct + "% report poor or fair quality. The cycle holds.";
         }
 
         svg.append("text")
-            .attr("x", w / 2).attr("y", h - 24)
+            .attr("x", w / 2).attr("y", h - 26)
             .attr("text-anchor", "middle")
             .attr("fill", colors.labelText)
-            .attr("font-size", "11px").attr("font-style", "italic")
+            .attr("font-size", "13px").attr("font-style", "italic")
             .attr("font-family", "sans-serif")
             .text(narr);
 
