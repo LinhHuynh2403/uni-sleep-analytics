@@ -90,7 +90,7 @@ This project was developed for the **ECS 163 Information Visualization** course 
 
 Created by:
 * **Linh Huynh**: Worked on Radial Bar Chart
-* **William Pham**
+* **William Pham**: Worked on Heatmap
 * **Pachia Yang**
 * **Parwaan Virk**
 * **Kylie Lallak**
