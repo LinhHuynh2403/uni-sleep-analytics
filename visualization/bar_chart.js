@@ -41,13 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
         "4th Year": "var(--color-4)"
     };
     
-    // Group data by year for easy access (D3 v5 compatible using d3.nest)
-    const dataByYearMap = d3.nest()
-        .key(d => d.University_Year)
-        .entries(data);
-        
-    // Convert to a map for easier lookup
-    const dataByYear = new Map(dataByYearMap.map(d => [d.key, d.values]));
+    // Group data by year for easy access (Supports both D3 v5 and v7)
+    let dataByYear;
+    if (d3.nest) {
+        const dataByYearMap = d3.nest()
+            .key(d => d.University_Year)
+            .entries(data);
+        dataByYear = new Map(dataByYearMap.map(d => [d.key, d.values]));
+    } else {
+        dataByYear = d3.group(data, d => d.University_Year);
+    }
     
     // Add an "intro" group that contains all data
     dataByYear.set("intro", data);
