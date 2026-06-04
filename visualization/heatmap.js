@@ -122,6 +122,7 @@
                         .attr("y", d => y(d.col))
                         .attr("width", x.bandwidth())
                         .attr("height", y.bandwidth())
+                        .style("opacity", 1)
                     ),
                     exit => exit.call(exit => exit.transition(t).style("opacity", 0).remove())
                 )
@@ -151,6 +152,7 @@
                     update => update.call(update => update.transition(t)
                         .attr("x", d => x(d.row) + x.bandwidth() / 2)
                         .attr("y", d => y(d.col) + y.bandwidth() / 2)
+                        .style("opacity", 1)
                     ),
                     exit => exit.call(exit => exit.transition(t).style("opacity", 0).remove())
                 )
