@@ -107,13 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const annotationText = singleGroup.append("text").attr("class", "annotation-text")
             .attr("x", x(6.8)).attr("y", 20).attr("text-anchor", "end");
 
-        const sm = { top: 45, right: 20, bottom: 58, left: 58 };
-        const cols = 2, rows = 2;
-        const svgW = 900, svgH = 880;                        
-        const cellW = svgW / cols;
-        const cellH = svgH / rows;
-        const icW  = cellW - sm.left - sm.right;             
-        const icH  = cellH - sm.top  - sm.bottom;            
+        const sm = { top: 60, right: 140, bottom: 80, left: 70 };
+        const svgW = 900, svgH = 650;
+        const chartW = svgW - sm.left - sm.right;
+        const chartH = svgH - sm.top  - sm.bottom;
 
         const summarySvg = container.append("svg")
             .attr("id", "bc-summary-svg")
@@ -126,80 +123,124 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("opacity", 0)
             .style("pointer-events", "none");
 
-        const sx = d3.scaleLinear().domain([3, 11]).range([0, icW]);
-        const sy = d3.scaleLinear().domain([0, yMax]).range([icH, 0]);
-
         const years = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+        
+        // Filter bins for < 7 hours
+        const targetBins = binsByStep["1st Year"].filter(b => b.x0 < 7);
+        const binLabels = targetBins.map(b => `${b.x0}-${b.x1}h`);
+
+        const sx0 = d3.scaleBand()
+            .domain(binLabels)
+            .range([0, chartW])
+            .paddingInner(0.15)
+            .paddingOuter(0.1);
+
+        const sx1 = d3.scaleBand()
+            .domain(years)
+            .range([0, sx0.bandwidth()])
+            .padding(0.05);
+
+        let maxGroupY = 0;
+        years.forEach(year => {
+            binsByStep[year].forEach(b => {
+                if (b.x0 < 7 && b.length > maxGroupY) maxGroupY = b.length;
+            });
+        });
+
+        const sy = d3.scaleLinear()
+            .domain([0, maxGroupY])
+            .range([chartH, 0]);
+
+        const summaryG = summarySvg.append("g")
+            .attr("transform", `translate(${sm.left},${sm.top})`);
+
+        // X axis
+        summaryG.append("g").attr("class", "x-axis")
+            .attr("transform", `translate(0,${chartH})`)
+            .call(d3.axisBottom(sx0))
+            .selectAll("text")
+            .style("font-size", "14px");
+
+        summaryG.append("text")
+            .attr("x", chartW / 2).attr("y", chartH + 50)
+            .attr("text-anchor", "middle")
+            .style("fill", "#94a3b8").style("font-size", "16px").style("font-weight", "600")
+            .text("Hours of Sleep (< 7 hrs)");
+
+        // Y axis
+        summaryG.append("g").attr("class", "y-axis")
+            .call(d3.axisLeft(sy).ticks(6))
+            .selectAll("text")
+            .style("font-size", "14px");
+
+        summaryG.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -chartH / 2).attr("y", -50)
+            .attr("text-anchor", "middle")
+            .style("fill", "#94a3b8").style("font-size", "16px").style("font-weight", "600")
+            .text("Number of Students");
+
+        // Title
+        summarySvg.append("text")
+            .attr("x", sm.left + chartW / 2).attr("y", sm.top - 20)
+            .attr("text-anchor", "middle")
+            .style("fill", "#f8fafc").style("font-size", "22px").style("font-weight", "800")
+            .text("Sleep Deficit Across 4 Years");
+
+        // Render grouped bars
+        targetBins.forEach((bin) => {
+            const label = `${bin.x0}-${bin.x1}h`;
+            const groupG = summaryG.append("g")
+                .attr("transform", `translate(${sx0(label)},0)`);
+
+            years.forEach(year => {
+                const yearBin = binsByStep[year].find(b => b.x0 === bin.x0);
+                const count = yearBin ? yearBin.length : 0;
+
+                const bar = groupG.append("rect")
+                    .attr("class", "bar bc-sum-bar")
+                    .attr("x", sx1(year))
+                    .attr("y", sy(count))
+                    .attr("width", sx1.bandwidth())
+                    .attr("height", chartH - sy(count))
+                    .style("fill", colorScale[year]);
+
+                bar.on("mouseover", function(a, b) {
+                        const e = b !== undefined ? a : d3.event;
+                        tooltip.style("opacity", 1)
+                            .html(`<strong>${year}</strong><br/><strong>${bin.x0}–${bin.x1} hrs</strong><br/><span style="color:var(--accent-color)">${count} Students</span>`);
+                        d3.select(this).style("filter", "brightness(1.3)");
+                    })
+                    .on("mousemove", function(a, b) {
+                        const e = b !== undefined ? a : d3.event;
+                        tooltip.style("left", (e.clientX + 15) + "px").style("top", (e.clientY - 30) + "px");
+                    })
+                    .on("mouseout", function() {
+                        tooltip.style("opacity", 0);
+                        d3.select(this).style("filter", "none");
+                    });
+            });
+        });
+
+        // Legend
+        const legend = summarySvg.append("g")
+            .attr("transform", `translate(${svgW - sm.right + 20}, ${sm.top})`);
+
         years.forEach((year, i) => {
-            const row = Math.floor(i / cols);
-            const col = i % cols;
-            const g = summarySvg.append("g")
-                .attr("transform", `translate(${col * cellW + sm.left},${row * cellH + sm.top})`);
+            const lg = legend.append("g")
+                .attr("transform", `translate(0, ${i * 30})`);
 
-            // X axis
-            g.append("g").attr("class", "x-axis")
-                .attr("transform", `translate(0,${icH})`)
-                .call(d3.axisBottom(sx).ticks(6))
-                .selectAll("text")
-                .style("font-size", "13px");
-
-            g.append("text")
-                .attr("x", icW / 2).attr("y", icH + 45)
-                .attr("text-anchor", "middle")
-                .style("fill", "#94a3b8").style("font-size", "14px").style("font-weight", "600")
-                .text("Hours of Sleep");
-
-            // Y axis
-            g.append("g").attr("class", "y-axis")
-                .call(d3.axisLeft(sy).ticks(5))
-                .selectAll("text")
-                .style("font-size", "13px");
-
-            g.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("x", -icH / 2).attr("y", -44)
-                .attr("text-anchor", "middle")
-                .style("fill", "#94a3b8").style("font-size", "14px").style("font-weight", "600")
-                .text("# Students");
-
-            // Title
-            g.append("text")
-                .attr("x", icW / 2).attr("y", -18)
-                .attr("text-anchor", "middle")
-                .style("fill", "#f8fafc").style("font-size", "18px").style("font-weight", "800")
-                .text(year);
-
-            // 7h reference line
-            g.append("line").attr("class", "reference-line")
-                .attr("x1", sx(7)).attr("x2", sx(7))
-                .attr("y1", 0).attr("y2", icH);
-
-            // Bars
-            const bars = g.selectAll(".bc-sum-bar")
-                .data(binsByStep[year])
-                .enter().append("rect")
-                .attr("class", "bar bc-sum-bar")
-                .attr("x", d => sx(d.x0) + 1)
-                .attr("width", d => Math.max(0, sx(d.x1) - sx(d.x0) - 1))
-                .attr("y", d => sy(d.length))
-                .attr("height", d => icH - sy(d.length))
+            lg.append("rect")
+                .attr("width", 16).attr("height", 16)
+                .attr("rx", 3).attr("ry", 3)
                 .style("fill", colorScale[year]);
 
-            bars.on("mouseover", function(a, b) {
-                    const e = b !== undefined ? a : d3.event;
-                    const d = b !== undefined ? b : a;
-                    tooltip.style("opacity", 1)
-                        .html(`<strong>${year}</strong><br/><strong>${d.x0}–${d.x1} hrs</strong><br/><span style="color:var(--accent-color)">${d.length} Students</span>`);
-                    d3.select(this).style("filter", "brightness(1.3)");
-                })
-                .on("mousemove", function(a, b) {
-                    const e = b !== undefined ? a : d3.event;
-                    tooltip.style("left", (e.clientX + 15) + "px").style("top", (e.clientY - 30) + "px");
-                })
-                .on("mouseout", function() {
-                    tooltip.style("opacity", 0);
-                    d3.select(this).style("filter", "none");
-                });
+            lg.append("text")
+                .attr("x", 26).attr("y", 13)
+                .text(year)
+                .style("fill", "#f8fafc")
+                .style("font-size", "14px")
+                .style("font-weight", "600");
         });
 
         container.style("position", "relative");
