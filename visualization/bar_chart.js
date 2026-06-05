@@ -91,16 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     singleGroup.append("text").attr("class", "axis-label")
         .attr("x", innerWidth / 2).attr("y", innerHeight + 55)
-        .attr("text-anchor", "middle").text("Hours of Sleep");
+        .attr("text-anchor", "middle").style("fill", "#e8dff5").style("font-size", "14px").style("font-weight", "600")
+        .text("Hours of Sleep");
 
     singleGroup.append("text").attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("y", -55).attr("x", -innerHeight / 2)
-        .attr("text-anchor", "middle").text("Number of Students");
+        .attr("text-anchor", "middle").style("fill", "#e8dff5").style("font-size", "14px").style("font-weight", "600")
+        .text("Number of Students");
 
     const chartTitle = singleGroup.append("text").attr("class", "chart-title")
         .attr("x", innerWidth / 2).attr("y", -20)
-        .attr("text-anchor", "middle").text("All University Students");
+        .attr("text-anchor", "middle").style("fill", "#e8dff5").style("font-size", "16px").style("font-weight", "600")
+        .text("All University Students");
 
     singleGroup.append("line").attr("class", "reference-line")
         .attr("x1", x(7)).attr("x2", x(7))
@@ -152,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
         g.append("text")
             .attr("x", icW / 2).attr("y", icH + 45)
             .attr("text-anchor", "middle")
-            .style("fill", "#94a3b8").style("font-size", "14px").style("font-weight", "600")
+            .style("fill", "#e8dff5").style("font-size", "14px").style("font-weight", "600")
             .text("Hours of Sleep");
 
         // Y axis
@@ -165,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("transform", "rotate(-90)")
             .attr("x", -icH / 2).attr("y", -44)
             .attr("text-anchor", "middle")
-            .style("fill", "#94a3b8").style("font-size", "14px").style("font-weight", "600")
+            .style("fill", "#e8dff5").style("font-size", "14px").style("font-weight", "600")
             .text("# Students");
 
         // Title

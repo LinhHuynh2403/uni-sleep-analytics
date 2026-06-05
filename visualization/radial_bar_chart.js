@@ -81,7 +81,7 @@ function drawActivityRings(callback) {
         .attr("class", "summary-value")
         .attr("y", 130)
         .style("text-anchor", "middle")
-        .style("fill", "#ffffff")
+        .style("fill", "#e8dff5")
         .style("font-size", "1.1rem")
         .style("font-weight", "800")
         .style("opacity", 0)
@@ -101,7 +101,7 @@ function drawActivityRings(callback) {
         .style("font-weight", "600")
         .style("text-transform", "uppercase")
         .style("letter-spacing", "1.5px")
-        .style("fill", "#ffffff")
+        .style("fill", "#e8dff5")
         .text("ACTIVITY");
 
     // for the Time Value inside the ring
@@ -111,7 +111,7 @@ function drawActivityRings(callback) {
         .style("font-size", "3.2rem")
         .style("font-weight", "460000") // Keeping their typo
         .style("letter-spacing", "1.5px")
-        .style("fill", "#ffffff")
+        .style("fill", "#e8dff5")
         .text("0.0h");
 
     // for the Goal Text under the time value

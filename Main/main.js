@@ -64,64 +64,61 @@ function drawSankey() {
         .attr("fill", colors.titleText)
         .attr("font-size", "29px")
         .attr("font-weight", "bold")
-        .attr("font-family", "sans-serif")
+        .attr("font-family", "Libre Baskerville, serif")
         .text("The Sleepless Cycle");
 
     // thesis subtitle
     svg.append("text")
-        .attr("x", w / 2).attr("y", 64)
+        .attr("x", w / 2).attr("y", 72)
         .attr("text-anchor", "middle")
-        .attr("fill", colors.mutedText)
+        .attr("fill", "#a093b5")
         .attr("font-size", "17px")
         .attr("font-family", "sans-serif")
         .text("Most students never close the loop. Follow the flows — sleep lost is rarely sleep regained.");
 
-    var filterY = 76;
-    var filterH = 56;
+    var filterY = 96;
+    var filterH = 110;
 
     var fo = svg.append("foreignObject")
         .attr("x", 0).attr("y", filterY)
         .attr("width", w).attr("height", filterH);
 
     // build filter buttons as html
-    var html = '<div style="display:flex;align-items:center;justify-content:center;gap:24px;padding:8px 20px;font-family:sans-serif;">';
+    var inactiveBtn = "background:rgba(184, 172, 226, 0.36);border:1px solid rgba(121,100,213,0.35);color:#c4b0ff;";
+    var activeBtn   = "background:#2d1f6e;border:1px solid #a07cff;color:#e8dff5;";
 
-    // study load filter (reframed as a question)
-    html += '<div style="display:flex;align-items:center;gap:8px;">';
-    html += '<span style="font-size:14px;color:#7b6b99;font-style:italic;">Does less studying save sleep?</span>';
-    html += '<div style="display:flex;gap:3px;">';
+    var html = '<div style="display:grid;grid-template-columns:240px 1fr;align-items:center;justify-content:center;gap:8px 12px;padding:6px 20px;font-family:sans-serif;width:560px;margin:0 auto;">';
+
+    // study load filter
+    html += '<span style="font-size:13px;color:#a093b5;font-style:italic;text-align:right;">Does less studying save sleep?</span>';
+    html += '<div style="display:flex;gap:5px;">';
     ["Light", "Moderate", "Heavy"].forEach(function (lab) {
         var active = activeFilters.study === lab;
-        var s = active
-            ? "background:#2d1f6e;border:1px solid #a07cff;color:#c4b0ff;"
-            : "background:transparent;border:1px solid #3d2a6e;color:#8a7aaa;";
-        html += '<button onclick="handleFilterClick(\'study\',\'' + lab + '\')" style="' + s + 'padding:4px 12px;border-radius:12px;font-size:15px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
+        var s = active ? activeBtn : inactiveBtn;
+        html += '<button onclick="handleFilterClick(\'study\',\'' + lab + '\')" style="' + s + 'padding:4px 14px;border-radius:12px;font-size:13px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
     });
-    html += '</div></div>';
+    html += '</div>';
 
-    // exercise filter (reframed as a question)
-    html += '<div style="display:flex;align-items:center;gap:8px;">';
-    html += '<span style="font-size:14px;color:#7b6b99;font-style:italic;">Can exercise break the cycle?</span>';
-    html += '<div style="display:flex;gap:3px;">';
-
+    // exercise filter
+    html += '<span style="font-size:13px;color:#a093b5;font-style:italic;text-align:right;">Can exercise break the cycle?</span>';
+    html += '<div style="display:flex;gap:5px;">';
     var exerciseOpts = ["Low", "Medium", "High"];
     for (var ei = 0; ei < exerciseOpts.length; ei++) {
         var lab = exerciseOpts[ei];
         var active = activeFilters.activity === lab;
-        var s = active
-            ? "background:#2d1f6e;border:1px solid #a07cff;color:#c4b0ff;"
-            : "background:transparent;border:1px solid #3d2a6e;color:#8a7aaa;";
-        html += '<button onclick="handleFilterClick(\'activity\',\'' + lab + '\')" style="' + s + 'padding:4px 12px;border-radius:12px;font-size:15px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
+        var s = active ? activeBtn : inactiveBtn;
+        html += '<button onclick="handleFilterClick(\'activity\',\'' + lab + '\')" style="' + s + 'padding:4px 14px;border-radius:12px;font-size:13px;cursor:pointer;font-family:sans-serif;transition:all 0.2s;">' + lab + '</button>';
     }
-    html += '</div></div>';
+    html += '</div>';
 
     if (activeFilters.study !== null || activeFilters.activity !== null) {
-        html += '<button onclick="resetFilters()" style="background:transparent;border:1px solid #5a3a7e;color:#7b6b99;padding:4px 14px;border-radius:12px;font-size:14px;cursor:pointer;font-family:sans-serif;">Reset</button>';
+        html += '<div style="grid-column:1/-1;display:flex;justify-content:center;margin-top:2px;">';
+        html += '<button onclick="resetFilters()" style="background:transparent;border:1px solid #5a3a7e;color:#7b6b99;padding:3px 14px;border-radius:12px;font-size:13px;cursor:pointer;font-family:sans-serif;">Reset</button>';
+        html += '</div>';
     }
 
     html += '</div>';
     fo.append("xhtml:div").html(html);
-
 
     d3.csv("../dataset/student_sleep_patterns.csv").then(function (raw) {
 
@@ -591,4 +588,9 @@ function resetFilters() {
 }
 
 drawSankey();
-window.addEventListener("resize", drawSankey);
+
+var resizeTimer;
+window.addEventListener("resize", function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(drawSankey, 150);
+});

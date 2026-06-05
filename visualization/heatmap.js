@@ -156,7 +156,7 @@
                     ),
                     exit => exit.call(exit => exit.transition(t).style("opacity", 0).remove())
                 )
-                .style("fill", d => d.value !== null && Math.abs(d.value) > 0.45 ? "#ffffff" : "#7b6b99")
+                .style("fill", d => d.value !== null && Math.abs(d.value) > 0.45 ? "#e8dff5" : "#7b6b99")
                 .style("font-weight", "bold")
                 .style("font-size", activeVars.length > 8 ? "11px" : "15px");
         }

@@ -6,7 +6,7 @@
 
 body {
     background-color: var(--bg-color);
-    color: #ffffff;
+    color: #e8dff5;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
@@ -77,19 +77,22 @@ svg {
     margin-left: 50%;
     width: 50%;
     padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
 }
 
 .split-step .content-box {
     text-align: left;
-    max-width: 620px;     
-    width: 92%;
+    max-width: 520px;
+    width: 85%;
     margin: 0 auto;
     padding: 40px 48px;
+    box-sizing: border-box;
 }
 
 .split-step .content-box h2 {
     text-align: center;
-    font-size: 2.8rem;     
+    font-size: 2.4rem;     
     font-weight: 700;
     margin-bottom: 22px;
     line-height: 1.2;
@@ -98,8 +101,8 @@ svg {
 }
 
 .split-step .content-box p {
-    font-size: 1.2rem;       
-    line-height: 2.1;        
+    font-size: 1.25rem;       
+    line-height: 1.8;        
     color: #c8bfe0;         
     margin: 0;
     word-spacing: 1px;
@@ -129,7 +132,7 @@ svg {
 }
 
 h2 {
-    font-size: 2.8rem;
+    font-size: 2.4rem;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 15px;
@@ -137,9 +140,9 @@ h2 {
 }
 
 p {
-    font-size: 1.15rem;
-    line-height: 1.6;
-    color: #e8dff5;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #c8bfe0;
     margin: 0;
 }
 
