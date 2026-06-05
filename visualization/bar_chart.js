@@ -259,14 +259,17 @@ document.addEventListener("DOMContentLoaded", () => {
             rightPanel.style.padding     = "30px 0";   
             rightPanel.style.boxSizing   = "border-box";
             leftPanel.style.width        = "25vw";
-            leftPanel.style.overflow     = "visible";  
+            leftPanel.style.overflow     = "hidden";   // keep box inside left panel
             d3Container.style.maxWidth   = "none";
             d3Container.style.maxHeight  = "none";
             
             const summaryBox = document.querySelector('[data-step="summary"] .bc-box');
             if (summaryBox) {
-                summaryBox.style.transition = "width 0.5s ease";
-                summaryBox.style.width      = "30vw";
+                summaryBox.style.transition  = "all 0.5s ease";
+                summaryBox.style.width       = "auto";   // fill the left panel naturally
+                summaryBox.style.maxWidth    = "22vw";   // but never wider than 22vw
+                summaryBox.style.padding     = "24px 28px"; // tighter internal padding
+                summaryBox.style.boxSizing   = "border-box";
             }
         }
 
@@ -280,7 +283,9 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const summaryBox = document.querySelector('[data-step="summary"] .bc-box');
             if (summaryBox) {
-                summaryBox.style.width = "";
+                summaryBox.style.width    = "";
+                summaryBox.style.maxWidth = "";
+                summaryBox.style.padding  = "";
             }
         }
 
