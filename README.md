@@ -3,6 +3,9 @@
 
 [![Course Project](https://img.shields.io/badge/ECS_163-Information_Visualization-7964d5)](https://cs.ucdavis.edu/schedules-classes/ecs-163-information-interfaces)
 [![Aesthetic](https://img.shields.io/badge/Aesthetic-Dark_Academic_Night-160f29)](#)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://uni-sleep-analytics.vercel.app)
+
+👉 **[View the Live Interactive Dashboard](https://uni-sleep-analytics.vercel.app)**
 
 ---
 
@@ -55,7 +58,15 @@ This project follows a clean, asset-based architecture:
 
 ---
 
-## 🚀 How to Run the Website Locally
+## 🚀 Live Demo & Local Setup
+
+### 🌐 Live Demo
+You can view the fully interactive visualization directly in your browser without needing to clone the repository or configure a local server:
+👉 **[The Exhausted Campus Live Dashboard](https://uni-sleep-analytics.vercel.app)**
+
+---
+
+### 💻 How to Run the Website Locally (Optional)
 
 Since this visualization relies on modular architecture and imports local tracking datasets using modern script bindings, running the file directly via `file://` protocols in your browser may cause **CORS (Cross-Origin Resource Sharing) blockages**. 
 
