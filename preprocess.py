@@ -3,7 +3,7 @@ import json
 
 # Load the core datasets
 df_patterns = pd.read_csv("dataset/student_sleep_patterns.csv")
-df_outcomes = pd.read_csv("dataset/Student Insomnia and Educational Outcomes.csv")
+df_outcomes = pd.read_csv("dataset/insomnia.csv")
 
 # 1. Compute Averages from Student Sleep Patterns (Numeric Data)
 avg_sleep = df_patterns['Sleep_Duration'].mean()
