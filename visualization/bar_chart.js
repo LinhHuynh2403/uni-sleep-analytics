@@ -125,8 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const years = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
         
-        // Filter bins for < 7 hours
-        const targetBins = binsByStep["1st Year"].filter(b => b.x0 < 7);
+        // Filter bins for 4h–7h only (excludes sparse 3-3.5h and 3.5-4h columns)
+        const targetBins = binsByStep["1st Year"].filter(b => b.x0 >= 4 && b.x0 < 7);
         const binLabels = targetBins.map(b => `${b.x0}-${b.x1}h`);
 
         const sx0 = d3.scaleBand()
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let maxGroupY = 0;
         years.forEach(year => {
             binsByStep[year].forEach(b => {
-                if (b.x0 < 7 && b.length > maxGroupY) maxGroupY = b.length;
+                if (b.x0 >= 4 && b.x0 < 7 && b.length > maxGroupY) maxGroupY = b.length;
             });
         });
 
@@ -205,14 +205,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     .attr("height", chartH - sy(count))
                     .style("fill", colorScale[year]);
 
-                bar.on("mouseover", function(a, b) {
-                        const e = b !== undefined ? a : d3.event;
+                bar.on("mouseover", function(event, d) {
+                        const e = event && event.clientX ? event : (d3.event || event);
                         tooltip.style("opacity", 1)
                             .html(`<strong>${year}</strong><br/><strong>${bin.x0}–${bin.x1} hrs</strong><br/><span style="color:var(--accent-color)">${count} Students</span>`);
+                        tooltip.style("left", (e.clientX + 15) + "px").style("top", (e.clientY - 30) + "px");
                         d3.select(this).style("filter", "brightness(1.3)");
                     })
-                    .on("mousemove", function(a, b) {
-                        const e = b !== undefined ? a : d3.event;
+                    .on("mousemove", function(event) {
+                        const e = event && event.clientX ? event : (d3.event || event);
                         tooltip.style("left", (e.clientX + 15) + "px").style("top", (e.clientY - 30) + "px");
                     })
                     .on("mouseout", function() {
