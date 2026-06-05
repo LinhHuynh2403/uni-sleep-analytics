@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const summaryBox = document.querySelector('[data-step="summary"] .bc-box');
             if (summaryBox) {
                 summaryBox.style.transition = "width 0.5s ease";
-                summaryBox.style.width      = "38vw";
+                summaryBox.style.width      = "30vw";
             }
         }
 
