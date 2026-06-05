@@ -58,14 +58,6 @@ This project follows a clean, asset-based architecture:
 
 ---
 
-## 🚀 Live Demo & Local Setup
-
-### 🌐 Live Demo
-You can view the fully interactive visualization directly in your browser without needing to clone the repository or configure a local server:
-👉 **[The Exhausted Campus Live Dashboard](https://uni-sleep-analytics.vercel.app)**
-
----
-
 ### 💻 How to Run the Website Locally (Optional)
 
 Since this visualization relies on modular architecture and imports local tracking datasets using modern script bindings, running the file directly via `file://` protocols in your browser may cause **CORS (Cross-Origin Resource Sharing) blockages**. 
