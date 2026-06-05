@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // =============================================
-    // SHARED DATA SETUP
-    // =============================================
     const data = d3.csvParse(rawCsvData);
     data.forEach(d => { d.Sleep_Duration = +d.Sleep_Duration; });
 
@@ -14,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "4th Year": "var(--color-4)"
     };
 
-    // Group data by year (D3 v5 + v7 compatible)
     let dataByYear;
     if (d3.nest) {
         const map = d3.nest().key(d => d.University_Year).entries(data);
@@ -37,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
         yMax = Math.max(yMax, d3.max(bins, d => d.length));
     });
 
-    // Create shared tooltip
     let tooltip = d3.select("#bc-tooltip");
     if (tooltip.empty()) {
         tooltip = d3.select("body").append("div")
@@ -57,9 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("transition", "opacity 0.1s ease");
     }
 
-    // =============================================
-    // SINGLE CHART SVG
-    // =============================================
     const width = 800, height = 650;
     const margin = { top: 60, right: 40, bottom: 80, left: 70 };
     const innerWidth  = width  - margin.left - margin.right;
@@ -109,10 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const annotationText = singleGroup.append("text").attr("class", "annotation-text")
         .attr("x", x(6.8)).attr("y", 20).attr("text-anchor", "end");
 
-    // =============================================
-    // SUMMARY GRID SVG  (its own full-size SVG)
-    // =============================================
-    // Each mini-chart gets generous margins for labels
     const sm = { top: 45, right: 20, bottom: 58, left: 58 };
     const cols = 2, rows = 2;
     const svgW = 900, svgH = 880;                        // much bigger viewBox
@@ -208,21 +196,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 
-    // Make the container position:relative so absolute children stack properly
     container.style("position", "relative");
 
-    // Grab panel DOM nodes for dynamic resizing
     const rightPanel  = document.querySelector(".bc-right-panel");
     const leftPanel   = document.querySelector(".bc-left-panel");
     const d3Container = document.getElementById("bc-d3-container");
 
-    // Remove the CSS size caps so the single chart fills the full right panel
     d3Container.style.maxWidth  = "none";
     d3Container.style.maxHeight = "none";
-
-    // =============================================
-    // LAYER SWITCHING
-    // =============================================
     function expandForSummary() {
         rightPanel.style.transition  = "width 0.5s ease, padding 0.5s ease";
         leftPanel.style.transition   = "width 0.5s ease";
@@ -240,7 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
         rightPanel.style.width       = "50vw";
         rightPanel.style.padding     = "0";
         leftPanel.style.width        = "45vw";
-        // keep max-width/max-height as "none" so single chart stays full-size
     }
 
     function updateChart(stepName) {
@@ -309,9 +289,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateChart("intro");
 
-    // =============================================
-    // SCROLL OBSERVER
-    // =============================================
     const steps = document.querySelectorAll(".bc-step");
 
     const observer = new IntersectionObserver(entries => {
