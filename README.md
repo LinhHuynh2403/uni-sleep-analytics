@@ -13,7 +13,7 @@
 
 College is routinely celebrated as a foundational era of academic expansion and newfound social discovery. However, hidden right beneath this vibrant surface lies a quiet, accelerating epidemic of sleep deprivation. 
 
-**The Exhausted Campus** is a scroll-driven data narrative built using a **Martini Glass structure**. It guides you from the highly structured macro-realities of student lifestyle pressures straight into an exploratory, self-calibrating interactive workspace.
+**The Exhausted Campus** is a scroll-driven data narrative built using a **Interactive Slideshow structure**. This helps the users to focus on the main interesting trends and insights that we found from the dataset, and they can further narrow it down to categories that they are interested in when interacting with our visualizations.
 
 The narrative arc tracks a compounding cause-and-effect biological loop:
 1. **The Daily Grind (Micro-View):** We start with the daily schedule, analyzing how a student's 24-hour cycle is fundamentally bottlenecked by competitive study demands and pre-bedtime digital interaction.
@@ -53,8 +53,8 @@ This project follows a clean, asset-based architecture:
 * **`Main/`** — Contains the core `index.html` scrollytelling document.
 * **`dataset/`** — Dedicated to raw data files (e.g., `.csv`, `.json`).
 * **`styles/`** — Global and component-specific stylesheets (`radial_bar_chart.css`, `heatmap.css`).
-* **`visualization/`** — All D3.js visualization scripts and data logic (`radial_bar_chart.js`, `bar_chart.js`, `heatmap.js`, `correlation_matrices.js`, `data.js`).
-* **`preprocess.py` & `build_data.py`** — Root-level Python utility scripts for data cleaning and pipeline preparation.
+* **`visualization/`** — All D3.js visualization scripts and data logic (`radial_bar_chart.js`, `bar_chart.js`, `heatmap.js`, `correlation_matrices.js`).
+* **`preprocess.py`** — Root-level Python utility scripts for data cleaning and pipeline preparation.
 
 ---
 
