@@ -3,8 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================================
     // SHARED DATA SETUP
     // =============================================
-    const data = d3.csvParse(rawCsvData);
-    data.forEach(d => { d.Sleep_Duration = +d.Sleep_Duration; });
+    // Try multiple paths depending on where index.html is located
+    Promise.any([
+        d3.csv("../dataset/student_sleep_patterns.csv"),
+        d3.csv("./dataset/student_sleep_patterns.csv"),
+        d3.csv("dataset/student_sleep_patterns.csv"),
+        d3.csv("/dataset/student_sleep_patterns.csv")
+    ]).then(data => {
+        data.forEach(d => { d.Sleep_Duration = +d.Sleep_Duration; });
 
     const colorScale = {
         "intro":    "#94a3b8",
@@ -230,8 +236,15 @@ document.addEventListener("DOMContentLoaded", () => {
         rightPanel.style.padding     = "30px 0";   // breathing room top & bottom
         rightPanel.style.boxSizing   = "border-box";
         leftPanel.style.width        = "25vw";
+        leftPanel.style.overflow     = "visible";  // let the text box spill right
         d3Container.style.maxWidth   = "none";
         d3Container.style.maxHeight  = "none";
+        // Widen the summary step's text box so it doesn't look so elongated
+        const summaryBox = document.querySelector('[data-step="summary"] .bc-box');
+        if (summaryBox) {
+            summaryBox.style.transition = "width 0.5s ease";
+            summaryBox.style.width      = "38vw";
+        }
     }
 
     function collapseFromSummary() {
@@ -240,7 +253,12 @@ document.addEventListener("DOMContentLoaded", () => {
         rightPanel.style.width       = "50vw";
         rightPanel.style.padding     = "0";
         leftPanel.style.width        = "45vw";
+        leftPanel.style.overflow     = "";
         // keep max-width/max-height as "none" so single chart stays full-size
+        const summaryBox = document.querySelector('[data-step="summary"] .bc-box');
+        if (summaryBox) {
+            summaryBox.style.width = "";
+        }
     }
 
     function updateChart(stepName) {
@@ -329,4 +347,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     steps.forEach(step => observer.observe(step));
+    }); // End of d3.csv().then()
 });
