@@ -94,8 +94,8 @@ This project was developed for the **ECS 163 Information Visualization** course 
 Created by:
 * **Linh Huynh**: Worked on Radial Bar Chart
 * **William Pham**: Worked on Heatmap
-* **Pachia Yang**
+* **Pachia Yang**: Work on Layout & Design System
 * **Parwaan Virk**: Worked on Bar Chart
-* **Kylie Lallak**
+* **Kylie Lallak**: Worked on Sankey Diagram
 
 &copy; 2026 The UC Davis Project Sleep Study. All data cited from Kaggle.
