@@ -122,7 +122,7 @@ svg {
     border-radius: 18px;
     max-width: 550px;
     pointer-events: auto;
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(160, 120, 255, 0.2);
     transform: translateY(40px);
     transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -204,6 +204,6 @@ path.foreground-arc:hover {
 }
 
 #summary-step {
-    padding-top: 60vh;
+    padding-top: 120vh;
     padding-bottom: 80vh;
 }
