@@ -26,9 +26,11 @@
 		}
 	</style>
 	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<link rel="stylesheet" href="../styles/bar_chart.css">
 	<link rel="stylesheet" href="../styles/radial_bar_chart.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+		rel="stylesheet">
 </head>
 
 <body style="
@@ -110,7 +112,8 @@
 				<div class="content-box">
 					<h2>The Deficit</h2>
 					<div class="huge-stat">57.2%</div>
-					<p style="color:#c8bfe0";>of university students are surviving on less than 7 hours of sleep a night. College is often
+					<p style="color:#c8bfe0" ;>of university students are surviving on less than 7 hours of sleep a
+						night. College is often
 						celebrated as
 						a time of academic growth and social discovery, but beneath the surface lies a quiet epidemic of
 						exhaustion.
@@ -144,13 +147,14 @@
 			<section class="step centered-step" id="all-rings">
 				<div class="content-box">
 					<h2>24-Hour Cycle</h2>
-					<p style= "color:#c8bfe0";>Here is the full picture of a student's day. Let's break it down layer by layer.</p>
+					<p style="color:#c8bfe0" ;>Here is the full picture of a student's day. Let's break it down layer by
+						layer.</p>
 				</div>
 			</section>
 
 			<section class="step split-step" id="ring-study">
 				<div class="content-box">
-					<h2><i class="fa-solid fa-book"></i>  Study Hours</h2>
+					<h2><i class="fa-solid fa-book"></i> Study Hours</h2>
 					<p>
 						Academics claim the crown. While national research suggests undergraduates study an average of
 						4.0 hours a
@@ -166,7 +170,7 @@
 
 			<section class="step split-step" id="ring-screen">
 				<div class="content-box">
-					<h2><i class="fa-solid fa-clock"></i>  Screen Time</h2>
+					<h2><i class="fa-solid fa-clock"></i> Screen Time</h2>
 					<p>Directly following study obligations, screens capture a significant <strong>2.5 hours</strong> of
 						a
 						student's
@@ -187,7 +191,7 @@
 
 			<section class="step split-step" id="ring-sleep">
 				<div class="content-box">
-					<h2><i class="fa-solid fa-bed"></i>  Sleep Focus</h2>
+					<h2><i class="fa-solid fa-bed"></i> Sleep Focus</h2>
 					<p>This is where the system bottlenecks. While health organizations universally mandate an
 						<strong>7.0-hour to
 							9.0-hour
@@ -207,7 +211,7 @@
 
 			<section class="step split-step" id="ring-bedtime">
 				<div class="content-box">
-					<h2><i class="fa-solid fa-list"></i>  Pre-Bedtime Routine</h2>
+					<h2><i class="fa-solid fa-list"></i> Pre-Bedtime Routine</h2>
 					<p>A student's <strong>1.5-hour transitional evening routine</strong> is rarely peaceful. According
 						to our
 						survey datasets,
@@ -224,7 +228,7 @@
 
 			<section class="step split-step" id="ring-exercise">
 				<div class="content-box">
-					<h2><i class="fa-solid fa-person-running"></i>  Physical Exercise</h2>
+					<h2><i class="fa-solid fa-person-running"></i> Physical Exercise</h2>
 					<p>At an average of just <strong>1.0 hours</strong>, physical recovery and active wellness outlets
 						are the
 						very first
@@ -241,7 +245,8 @@
 			<section class="step centered-step" id="summary-step">
 				<div class="content-box">
 					<h2>The Complete Picture</h2>
-					<p style="color:#c8bfe0";>When viewed together, the cascading effect of these lifestyle factors becomes undeniable. The
+					<p style="color:#c8bfe0" ;>When viewed together, the cascading effect of these lifestyle factors
+						becomes undeniable. The
 						sleep deficit is not an isolated issue, but the result of an unbalanced 24-hour cycle where
 						academic pressures and digital habits constantly erode the foundations of rest and recovery.</p>
 				</div>
@@ -309,158 +314,6 @@
 		}
 	</style>
 
-	<!-- bar chart (Namespaced for safety!) -->
-	<style>
-		:root {
-			--color-1: #3b82f6;
-			--color-2: #0ea5e9;
-			--color-3: #10b981;
-			--color-4: #84cc16;
-			--accent-color: #7964d5;
-		}
-
-		.bc-container {
-			display: flex;
-			flex-direction: row-reverse;
-			width: 100%;
-			position: relative;
-			justify-content: space-between;
-			background: transparent;
-		}
-
-		.bc-right-panel {
-			position: sticky;
-			top: 0;
-			width: 50vw;
-			height: 100vh;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			align-self: flex-start;
-			/* This instantly fixes the vertical stacking bug */
-			z-index: 10;
-		}
-
-		.bc-left-panel {
-			width: 45vw;
-			padding-bottom: 50vh;
-			padding-left: 4vw;
-			z-index: 11;
-			position: relative;
-		}
-
-		.bc-narrative-step {
-			min-height: 120vh;
-			margin-bottom: 30vh;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			padding: 40px;
-			opacity: 0.15;
-			transition: opacity 0.5s ease, transform 0.5s ease;
-			transform: translateY(20px);
-		}
-
-		.bc-narrative-step.active {
-			opacity: 1;
-			transform: translateY(0);
-		}
-
-		.bc-narrative-step[data-step="summary"] {
-			display: flex;
-			justify-content: center;
-			padding: 40px 0;
-		}
-
-		.bc-narrative-step[data-step="summary"] .bc-box {
-			width: 95%;
-			max-width: 780px;
-			box-sizing: border-box;
-			margin-left: -25px;
-		}
-
-		.bc-box {
-			background: rgba(26, 16, 50, 0.85);
-			backdrop-filter: blur(20px);
-			-webkit-backdrop-filter: blur(20px);
-			padding: 40px 50px;
-			border-radius: 24px;
-			border: 1px solid rgba(160, 120, 255, 0.2);
-			box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-		}
-
-		.bc-box h2 {
-			font-size: 2.4rem;
-			font-weight: 800;
-			margin-top: 0;
-			margin-bottom: 20px;
-			color: #e8dff5;
-		}
-
-		.bc-box p {
-			font-size: 1.25rem;
-			line-height: 1.8;
-			color: #c8bfe0;
-			margin-bottom: 0;
-		}
-
-		.bc-box strong {
-			color: inherit;
-		}
-
-		#bc-d3-container {
-			width: 100%;
-			height: 100%;
-			max-width: 800px;
-			max-height: 700px;
-		}
-
-		/* SVG Chart styling NAMESPACED to avoid breaking other graphs */
-		#bc-d3-container .domain,
-		#bc-d3-container .tick line {
-			stroke: #334155;
-		}
-
-		#bc-d3-container .tick text {
-			fill: #94a3b8;
-			font-size: 13px;
-			font-family: sans-serif;
-		}
-
-		#bc-d3-container .axis-label {
-			fill: #e8dff5;
-			font-size: 16px;
-			font-weight: 600;
-		}
-
-		#bc-d3-container .chart-title {
-			fill: #f8fafc;
-			font-size: 24px;
-			font-weight: 800;
-		}
-
-		#bc-d3-container .reference-line {
-			stroke: var(--accent-color);
-			stroke-width: 2px;
-			stroke-dasharray: 6, 6;
-		}
-
-		#bc-d3-container .annotation-text {
-			font-size: 16px;
-			font-weight: 800;
-		}
-
-		#bc-d3-container .bar {
-			opacity: 0.9;
-			transition: opacity 0.2s;
-		}
-
-		#bc-d3-container .bar:hover {
-			opacity: 1;
-			filter: brightness(1.2);
-		}
-	</style>
-
 	<div class="bc-container" id="bar-chart-section">
 		<div class="bc-right-panel">
 			<div id="bc-d3-container"></div>
@@ -471,7 +324,8 @@
 				<div class="bc-box">
 					<h2>The Sleep Debt Epidemic</h2>
 					<p>This highlights the core issue: across all university years, most students aren't getting enough
-						rest, regularly falling below the <strong style="color:#7964d5;">7-hour healthy sleep threshold</strong>. By looking at
+						rest, regularly falling below the <strong style="color:#7964d5;">7-hour healthy sleep
+							threshold</strong>. By looking at
 						this "sleep debt" first, we can better understand how student lifestyles impact their overall
 						health.</p>
 				</div>
@@ -481,7 +335,8 @@
 				<div class="bc-box">
 					<h2>1st Year: The Transition</h2>
 					<p>Freshmen experience a massive lifestyle shift. Away from home for the first time, erratic
-						schedules and late-night socializing push the majority of students into a <strong style="color:#3b82f6">severe sleep deficit</strong>.
+						schedules and late-night socializing push the majority of students into a <strong
+							style="color:#3b82f6">severe sleep deficit</strong>.
 						The data shows that right out of the gate, healthy sleep habits are already crumbling.</p>
 				</div>
 			</div>
@@ -490,7 +345,8 @@
 				<div class="bc-box">
 					<h2>2nd Year: The Sophomore Slump</h2>
 					<p>As academic pressures intensify, students trade sleep for study hours. The distribution slightly
-						shifts, but a significant portion of the cohort remains dangerously <strong style="color:#0ea5e9">below the 7-hour mark</strong>,
+						shifts, but a significant portion of the cohort remains dangerously <strong
+							style="color:#0ea5e9">below the 7-hour mark</strong>,
 						cementing bad habits that will follow them to graduation.</p>
 				</div>
 			</div>
@@ -499,7 +355,8 @@
 				<div class="bc-box">
 					<h2>3rd Year: Peak Burnout</h2>
 					<p>Juniors face major-specific upper-division courses and internship hunting. Stress levels peak,
-						and sleep durations become heavily erratic. We see a <strong style="color:#10b981">wider spread in the data</strong>, but the majority
+						and sleep durations become heavily erratic. We see a <strong style="color:#10b981">wider spread
+							in the data</strong>, but the majority
 						are still failing to close the recovery loop.</p>
 				</div>
 			</div>
@@ -508,8 +365,10 @@
 				<div class="bc-box">
 					<h2>4th Year: The Chronic Deficit</h2>
 					<p>By senior year, chronic sleep deprivation is fully normalized. The highest percentage of students
-						<strong style="color:#84cc16">fall under the 7-hour threshold</strong> here. Four years of accumulated sleep debt leave these
-						soon-to-be graduates exhausted before they even enter the workforce.</p>
+						<strong style="color:#84cc16">fall under the 7-hour threshold</strong> here. Four years of
+						accumulated sleep debt leave these
+						soon-to-be graduates exhausted before they even enter the workforce.
+					</p>
 				</div>
 			</div>
 
@@ -517,8 +376,10 @@
 			<div class="bc-step bc-narrative-step" data-step="summary">
 				<div class="bc-box">
 					<h2>The Big Picture</h2>
-					<p>When we look at the journey side-by-side, the progression is clear. <strong style="color:#e8dff5;">Healthy sleep habits erode
-						quickly in the first year and never fully recover.</strong> The systemic demands of university life
+					<p>When we look at the journey side-by-side, the progression is clear. <strong
+							style="color:#e8dff5;">Healthy sleep habits erode
+							quickly in the first year and never fully recover.</strong> The systemic demands of
+						university life
 						progressively force students into a perpetual cycle of exhaustion.</p>
 				</div>
 			</div>
@@ -566,7 +427,8 @@
 		<div class="scroll-steps">
 			<div class="scroll-step active-step" data-focus="all">
 				<h2> How Strong Does Lifestyle Affect Sleep and Grade?</h2>
-				<p>Here is the overview for the level of impact between different factors from the student's life to their sleep and grades.
+				<p>Here is the overview for the level of impact between different factors from the student's life to
+					their sleep and grades.
 				</p>
 			</div>
 
@@ -605,7 +467,8 @@
 			<div class="narrative-viewer">
 				<h3>Correlation Value Explanation</h3>
 				<div id="factor-narrative-target">
-					<p class="fallback-style">Click on a cell in the heatmap for meaning of the cell. Click again to deselect.</p>
+					<p class="fallback-style">Click on a cell in the heatmap for meaning of the cell. Click again to
+						deselect.</p>
 				</div>
 			</div>
 		</div>
@@ -644,7 +507,7 @@
 
 		<!-- Decorative Icon Divider -->
 		<div style="color: #7964d5; font-size: 3rem; margin-bottom: 30px; opacity: 0.8;">
-    		<i class="fa-solid fa-moon"></i>
+			<i class="fa-solid fa-moon"></i>
 		</div>
 
 		<h2
