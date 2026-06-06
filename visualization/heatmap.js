@@ -93,7 +93,7 @@
             y.domain(activeVars);
 
             // Faster transition speed to prevent overlapping animations when scrolling fast
-            const t = svg.transition("zoom-transition").duration(450).ease(d3.easeCubicInOut);
+            const t = svg.transition("zoom-transition").duration(650).ease(d3.easeCubicInOut);
 
             // Animate axes
             xAxis.transition(t).call(d3.axisTop(x).tickSize(0))
