@@ -95,7 +95,7 @@ Created by:
 * **Linh Huynh**: Worked on Radial Bar Chart
 * **William Pham**: Worked on Heatmap
 * **Pachia Yang**
-* **Parwaan Virk**
+* **Parwaan Virk**: Worked on Bar Chart
 * **Kylie Lallak**
 
 &copy; 2026 The UC Davis Project Sleep Study. All data cited from Kaggle.
