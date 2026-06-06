@@ -42,7 +42,7 @@ body {
 
 .scroll-step {
     min-height: 30vh;
-    padding: 30px;
+    padding: 25px;
     background: rgba(26, 16, 50, 0.85);
     border: 1px solid var(--border-line);
     border-radius: 12px;
